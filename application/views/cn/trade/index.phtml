@@ -1,0 +1,253 @@
+<? include PATH_TPL.'/tpl.header.phtml';?>
+<script>var cointype = "<?=$trade_cookie?>";var isonline = "<?=$isonline?>"</script>
+<style>
+.header_area{ min-width:1200px;}
+.header{ width:1200px;}
+.footer{ min-width:1200px;}
+.leftImg{display: inline-block;margin:7px 0 0 12px;}
+.leftImg img{width: 45px;}
+a.coinDetail {color: #f0af49;}
+a.coinDetail:hover {color: #f0af49;}
+</style>
+<div class="trade_area clearfix">
+<!-- count  -->
+<div class="count_wrap">
+	<div class="leftImg clear"> <img src="/img/coin_<?=$cData['coin_from']?>.png" alt=""></div>
+	<div class="leftInfo clear"><?=$cData['display']?> 对 <?=$cData['display_to']?><?if($cData['url']) {?> <span>&nbsp;[ <a href="<?=$cData['url']?>" target="_blank" class="coinDetail">查看官方</a> ]</span><?}?> <br> <?=strtoupper($cData['coin_from'])?> / <?=strtoupper($cData['coin_to'])?></div>
+	<div class="box">
+		<div class="count_DataBox clear">
+			<dl class="DataDl firstDl">
+				<dt>最新价</dt>
+				<dd><span class="bigest buy" id="<?echo $coin;?>_rmb_box">-</span></dd>
+			</dl>
+			<dl class="DataDl">
+				<dt>买一价</dt>
+				<dd id="<?echo $coin;?>_buyone">-</dd>
+			</dl>
+			<dl class="DataDl">
+				<dt>卖一价</dt>
+				<dd id="<?echo $coin;?>_saleone">-</dd>
+			</dl>
+			<dl class="DataDl">
+				<dt>最高价</dt>
+				<dd id="<?echo $coin;?>_max_box">-</dd>
+			</dl>
+			<dl class="DataDl">
+				<dt>最低价</dt>
+				<dd id="<?echo $coin;?>_min_box">-</dd>
+			</dl>
+			<dl class="DataDl">
+				<dt>日成交量</dt>
+				<dd id="<?echo $coin;?>_sum_box">-</dd>
+			</dl>
+		</div>
+	</div>
+</div>
+<div class="content left">
+	<div id="kline" class="clearfix" style="height: 510px;">
+		<div style="width: 900px; height: 500px;">
+			<iframe style="border:0; width:100%;height:100%;" src="/market?symbol=<?=$cData['name']?>"></iframe>
+		</div>
+	</div>
+	<div class="wrapper clearfix">
+		<div class="entrust left">
+		<h2>委托信息</h2>
+			<div class="realTableLeft">
+				<table cellpadding="0" cellspacing="0" class="Transaction" style="position:relative;">
+					<thead>
+						<tr>
+							<th width="40">买入</th>
+							<th style="padding-left:5px; text-align:left;">买入价</th>
+							<th style="padding-left:5px; text-align:left;">委单量</th>
+						</tr>
+					</thead>
+					<tbody id="buylist">
+						<tr>
+							<td colspan="3">数据加载中...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="realTableRight">
+				<table cellpadding="0" cellspacing="0" class="Transaction Transaction1" style="position:relative;">
+					<thead>
+						<tr>
+							<th width="40">卖出</th>
+							<th style="padding-left:5px; text-align:left;">卖出价</th>
+							<th style="padding-left:5px; text-align:left;">委单量</th>
+						</tr>
+					</thead>
+					<tbody id="salelist">
+						<tr>
+							<td colspan="3">数据加载中...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="right">
+			<h2>最新成交</h2>
+			<div class="s_box">
+
+				<table cellpadding="0" cellspacing="0" class="Transaction">
+					<thead>
+						<tr>
+							<th width="80">成交时间</th>
+							<!--<th>成交类型</th>-->
+							<th style="padding-left:5px; text-align:left;">成交价</th>
+							<th style="padding-left:5px; text-align:left;">成交量</th>
+							<!--<th style="padding-left:5px; text-align:left;">总金额</th>-->
+						</tr>
+					</thead>
+					<tbody id="orderlist">
+						<tr>
+							<td colspan="5">数据加载中...</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+	<div class="wrapper trade tn_trade right" id="trade_tab">
+		<ul id="tn_change" class="clearfix">
+			<li class="selectTagbuy buynav buytab"><a onclick="selectTag(&#39;tagContent0&#39;,this, 'selectTagbuy')" href="javascript:void(0)">买</a> </li>
+			<li class="sellnav selltab"><a onclick="selectTag(&#39;tagContent1&#39;,this, 'selectTagsell')" href="javascript:void(0)">卖</a></li>
+			<li class="trusttab"><a onclick="selectTag(&#39;tagContent2&#39;,this, 'selectTagtrust')" href="javascript:void(0)">我的委托</a></li>
+		</ul>
+		<div id="tagContent" class="passContent">
+			<div class="tagContent selectTag" id="tagContent0" style="display:block; margin-top:30px;">
+				<ul>
+					<li><p class="best_buy">最佳买价：<span id="bpricenice" onclick="Trade.curPrice('b','<?=$cData['coin_from']?>',<?=$cData['number_float']?>,<?=$cData['price_float']?>);"></span>元</p></li>
+					<li><p class="best_buy">最大可买：<span id="buy_max"></span><?=strtoupper($cData['coin_from'])?></p></li>
+					<li style="position:relative; margin-bottom:10px;"><label style="position:absolute; right:3px;"><?=strtoupper($cData['coin_to'])?></label><input type="text" id="bprice" class="indexloginText" placeholder="买入价" onkeyup="Trade.buyPrice(<?=$cData['price_float']?>, <?=$cData['number_float']?>);"></li>
+					<li style="position:relative; margin-bottom:10px;"><label style="position:absolute; right:3px;"><?=strtoupper($cData['coin_from'])?></label><input type="type" id="bnumber" class="indexloginText" placeholder="买入量" onkeyup="Trade.buyNumber(<?=$cData['number_float']?>,<?=$cData['price_float']?>);"></li>
+					<li style="position:relative; margin:10px 0;"><label style="position:absolute; right:3px;" class="CRed"><?=strtoupper($cData['coin_to'])?></label><input type="text" id="bsumprice" class="indexloginText" placeholder="交易额" readonly="readonly"></li>
+					<? if($pwdFlag!=1){ ?>
+					<li style="position:relative; margin:0 0 10px 0;"><input id="bpwdtrade" type="password" class="indexloginText" placeholder="交易密码"></li>
+					<? } ?>
+					<li style="margin:10px 0;overflow: hidden;padding: 0 12px;" class="huaaddbili brate">
+						<span>下单比例</span>
+						<a href="javascript:;" onclick="Trade.numberRate('b', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 4, 0);">1/4</a>
+						<a href="javascript:;" onclick="Trade.numberRate('b', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 3, 1);">1/3</a>
+						<a href="javascript:;" onclick="Trade.numberRate('b', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 2, 2);">1/2</a>
+						<a href="javascript:;" onclick="Trade.numberRate('b', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 1, 3);">1/1</a>
+					</li>
+					<!-- <li>交易额：<strong class="CRed" id="bsumprice">￥0.00</strong></li> -->
+					<!--<li><p class="prompt" id="btrustmsg" style="text-align:center;"></p></li>-->
+					<li><input class="rePWButton1" value="买入" type="button" id="btrustbtcbtn" onclick="Trade.submit('b','<?=$cData['coin_from']?>',<?=$cData['number_float']?>)"></li>
+					<!-- error Tips -->
+					<div class="errorTips" id="bErrorTips" style="width: 258px;margin-top:15px; display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+				</ul>
+			</div>
+			<div class="tagContent selectTag" id="tagContent1" style="display:none; margin-top:30px;">
+				<ul>
+					<li><p class="best_buy best_sell">最佳卖价：<span id="spricenice" onclick="Trade.curPrice('s','<?=$cData['coin_from']?>',<?=$cData['number_float']?>,<?=$cData['price_float']?>);"></span>元</p></li>
+					<li><p class="best_buy best_sell">最大可卖：<span id="sell_max"><?=!empty($user)?substr(sprintf('%.'.($cData['number_float']+1).'f', $user[$cData['coin_from'].'_over']),0,-1):0?></span><?=strtoupper($cData['coin_from'])?></p></li>
+					<li style="position:relative; margin-bottom:10px;"><label style="position:absolute; right:3px;"><?=strtoupper($cData['coin_to'])?></label><input type="text" id="sprice" class="indexloginText" placeholder="卖出价" onkeyup="Trade.sellPrice(<?=$cData['price_float']?>);"></li>
+					<li style="position:relative; margin-bottom:10px;"><label style="position:absolute; right:3px;"><?=strtoupper($cData['coin_from'])?></label><input type="text" id="snumber" class="indexloginText" placeholder="卖出量" onkeyup="Trade.sellNumber(<?=$cData['number_float']?>,<?=$cData['price_float']?>);"></li>
+
+					<li style="position:relative; margin:10px 0;"><label style="position:absolute; right:3px;" class="CRed"><?=strtoupper($cData['coin_to'])?></label><input type="text" id="ssumprice" class="indexloginText" placeholder="交易额" readonly="readonly"></li>
+					<? if($pwdFlag!=1){ ?>
+					<li style="position:relative;"><input id="spwdtrade" type="password" class="indexloginText" placeholder="交易密码"></li>
+					<? } ?>
+					<!-- <li><p>交易额：<strong class="CRed" id="ssumprice">￥0.00</strong></p></li> -->
+					<!-- <li><p class="prompt" id="strustmsg" style="text-align:center;">每笔单都会被系统处理,请谨慎下单,不要重复下单</p></li> -->
+					<li style="margin:10px 0;overflow: hidden;padding: 0 12px;" class="huaaddbili srate">
+						<span>下单比例</span>
+						<a href="javascript:;" onclick="Trade.numberRate('s', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 4, 0);">1/4</a>
+						<a href="javascript:;" onclick="Trade.numberRate('s', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 3, 1);">1/3</a>
+						<a href="javascript:;" onclick="Trade.numberRate('s', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 2, 2);">1/2</a>
+						<a href="javascript:;" onclick="Trade.numberRate('s', <?=$cData['number_float']?>, <?=$cData['price_float']?>, 1, 3);">1/1</a>
+					</li>
+					<li><input class="rePWButton3" value="卖出" type="button" id="strustbtcbtn" onclick="Trade.submit('s','<?=$cData['coin_from']?>',<?=$cData['number_float']?>)" style="border:0;"></li>
+					<!-- error Tips -->
+					<div class="errorTips" id="sErrorTips" style="width: 258px;margin-top: 15px; display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+				</ul>
+			</div>
+			<div class="tagContent selectTag" id="tagContent2" style="display: none;">
+				<table cellpadding="0" cellspacing="0" class="Transaction">
+					<thead>
+						<tr>
+							<th>类型</th>
+							<th>委托价格</th>
+							<th>委单量</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody id="mytrustlist">
+						<tr>
+							<td colspan="4">暂无未交易的委托</td>
+						</tr>
+					</tbody>
+				</table>
+				<!-- error Tips -->
+				<div class="errorTips" id="tErrorTips" style="margin-top: 5px; display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!--滚到顶部-->
+<script type="text/javascript">
+$.fn.fixedDiv = function(actCls){
+	var pos = 0,
+		that = $(this),
+		topVal;
+
+	if(that.length > 0){
+		topVal = that.offset().top;
+	}
+
+	function fix(){
+		pos = $(document).scrollTop();
+
+		if (pos > topVal) {
+			that.addClass(actCls);
+			if (!window.XMLHttpRequest) {
+				that.css({
+					position: 'absolute',
+					top     : pos
+				});
+			}
+		} else {
+			that.removeClass(actCls);
+			if (!window.XMLHttpRequest) {
+				that.css({
+					position: 'static',
+					top     : 'auto'
+				});
+			}
+
+		}
+	}
+	fix();
+
+	$(window).scroll(fix);
+}
+$('#trade_tab').fixedDiv('fixed-div');
+</script>
+
+<script type="text/javascript">
+	/*setInterval('ua_refresh()', 1000);*/
+
+		// ajax
+		btcsum(30, "<?=$coin?>", <?=$cData['price_float']?>, <?=$cData['number_float']?>);
+		btcorder(30, "<?=$coin?>", "<?=$cData['display']?>", <?=$cData['price_float']?>, <?=$cData['number_float']?>);
+
+	<?if(!empty($user)){?>
+		mytrust(1, '<?=$cData['coin_from']?>', <?=$cData['price_float']?>, <?=$cData['number_float']?>);
+	<?}?>
+	yestprice("<?=$coin?>");
+	var type="<?=$coin?>";
+
+
+	//最佳卖价的点击事件；
+	$('#spricenice').click(function(){
+		var oSprice = $(this).html();
+		$('#sprice').val(oSprice);
+	})
+
+</script>
+<script src="<?=host()?>/js/trust.js?v=10"></script>
+
+<? include PATH_TPL.'/tpl.footer.phtml';?>

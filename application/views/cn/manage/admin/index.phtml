@@ -1,0 +1,80 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml";?>
+<style>
+	.tabs li{cursor: pointer;}
+	.addAdmin {width: 400px;height: 300px;margin: 30px 0 0 50px;font-size:14px;display: none;}
+	.addAdmin p {margin-bottom: 20px;}
+	.addAdmin input[type=text] {width: 300px;height: 25px;border: #e3e3e3 1px solid;}
+	.addAdmin input[type=submit] {width: 120px;height: 30px;border: #e3e3e3 1px solid;color: #fff;background: #163483;border-radius: 5px;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">管理员</h3>
+		<ul class="tabs">
+			<li id="lists" class="cur">管理员列表</li>
+			<li id="bind">添加管理员</li>
+		</ul>
+	</div>
+	<div class="addAdmin">
+		<form method="post">
+			<p><span style="display:block;">用户ID：</span><input type="text" name="uid" /></p>
+			<p><input type="submit" value="添加管理员" /></p>
+		</form>
+	</div>
+	<div class="bd">
+		<table class="table_s01">
+			<thead>
+				<tr>
+					<th>UID</th>
+					<th>邮箱</th>
+					<th>名字</th>
+					<th>手机</th>
+					<th>所属角色</th>
+					<th>修改时间</th>
+				</tr>
+			</thead>
+			<tbody>
+				<? foreach($datas as $v1) {?>
+				<tr>
+					<td><?=$v1["uid"]?></td>
+					<td><a href="/manage_user/usersave?uid=<?=$v1['uid']?>"><?=$v1["email"]?></a></td>
+					<td><?=Tool_Str::safestr($v1["name"])?></td>
+					<td><?=Tool_Str::safestr($v1["mo"])?></td>
+					<td>
+						<? if($v1['role']){ ?>
+							<span><?=$v1['role_name']?>（
+							<a href="/manage_admin/role/uid/<?=$v1["uid"]?>">编辑</a> |
+						<? if( $v1['is_bind'] == 0 ){ ?>
+							<a href="/manage_admin/rolebind/id/<?=$v1["user_role_id"]?>/bind/1">解除绑定</a>
+						<? }else{ ?>
+							<a href="/manage_admin/rolebind/id/<?=$v1["user_role_id"]?>/bind/0" style="color:red;">恢复绑定</a>
+						<? } ?>
+							）</span>
+						<? }else{ ?>
+							<a href="/manage_admin/role/uid/<?=$v1["uid"]?>"><span style="color:red;">设置</span></a>
+						<? } ?>
+					</td>
+					<td><?=date('Y-m-d H:i:s', $v1["updated"])?></td>
+				</tr>
+				<?php }?>
+			</tbody>
+		</table>
+		<?=isset($pageinfo) ? $pageinfo : ''?>
+	</div>
+</div>
+
+<script>
+	$('.tabs li').click(function(){
+		var index = $(this).index();
+		$('.tabs li').removeClass('cur').eq(index).addClass('cur');
+		if( index == 1 ){
+			$('.addAdmin').show();
+			$('.bd').hide();
+		}else{
+			$('.addAdmin').hide();
+			$('.bd').show();
+		}
+	});
+</script>
+
+</body>
+</html>

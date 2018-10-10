@@ -1,0 +1,29 @@
+<?php include PATH_TPL.'/manage/tpl.header.phtml'?>
+<?php if(isset($msg)){?><div class="msg<?=isset($msg[1])?$msg[1]:''?>"><?=$msg[0]?></div><?php }?>
+<fieldset>
+	<legend>数据表映射类</legend>
+	<table class="formtable">
+		<tbody>
+		<tr>
+			<th>数据表：</th>
+			<td>
+				<select id="table">
+					<option value="">请选择数据表</option>
+          <?php foreach ($tables as $v1) echo '<option value="'.$v1[0].'">'.$v1[0].'</option>'?>
+        </select>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+</fieldset>
+<fieldset>
+	<table class="formtable">
+		<tbody>
+		<tr>
+			<td><input class="submit" type="button" value="生成" onclick="self.location='/manage_make/model/table/'+$('#table').val()"/></td>
+		</tr>
+		</tbody>
+	</table>
+</fieldset>
+</body>
+</html>

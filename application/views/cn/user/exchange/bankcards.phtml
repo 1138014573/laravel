@@ -1,0 +1,99 @@
+<div style="width:<?echo count($pData) > 4?'517px':'501px'?>; height:514px;" id='cards'>
+<?php
+if(count($pData)){
+?>
+<ul>
+<?php
+$bankImg = array(
+    '工商银行' => 'gh',
+    '建设银行' => 'jh',
+    '农业银行' => 'nyyh',
+    '中国邮政储蓄' => 'zgyz',
+    '交通银行' => 'jtyh',
+    '中国银行' => 'zh',
+    '光大银行' => 'gdyh',
+    '中信银行' => 'zxyh',
+    '招商银行' => 'zsyh',
+    '浦发银行' => 'pfyh',
+    '民生银行' => 'msyh',
+    '兴业银行' => 'xyyh',
+    '平安银行' => 'payh',
+    '广发银行' => 'gfyh',
+    '青岛银行' => 'qdyh',
+    '潍坊银行' => 'wfyh',
+);
+    foreach($pData as $pKey => $pVal){
+?>
+    <li style='cursor:pointer;<? echo count($pData)==($pKey+1)?'border-bottom:0px;':'';?>'  onmouseover="cardover(this)" onmouseout="cardout(this)">
+        <dl data='<?=json_encode($pVal);?>' onclick="card(this)">
+            <dt><img src='<?=host_img()?>/images/yh-logo/<?=$bankImg[$pVal['bank']]?>.png'  /><?=$pVal['bank']?></dt>
+            <dd class='account_name'>开户名:&nbsp;<?=$pVal['name']?></dd>
+            <dd class='account'>银行卡号:&nbsp;<?=substr($pVal['account'],0,strlen($pVal['account'])-4).'****'?></dd>
+        </dl>
+        <span><a href='#' onclick="javascript:delecard(this)" dataid='<?=$pVal['id']?>'><label>删除</label></a></span>
+    </li>
+
+<?php
+    }
+?>
+</ul>
+<script>
+    function card(obj){
+        var data =$(obj).attr('data');
+        var dataObj = JSON.parse(data);
+        $('#account').val(dataObj.account);
+        $('#name').val(dataObj.name);
+
+        $('#bank option').each(function(){
+            if($(this).val() == dataObj.bank){
+                $(this).attr('selected' , true);
+            }
+        });
+        $('#p1 option').each(function(){
+            if($(this).val() == dataObj.province){
+                $(this).attr('selected' , true);
+            }
+        });
+
+        $('#c1').append(createOptions(Items[dataObj.province]));
+        $('#c1 option').each(function(){
+            if($(this).val() == dataObj.city){
+                $(this).attr('selected' , true);
+            }
+        });
+
+        Boxy.get($("body > table.boxy-wrapper").find(".boxy-content")).hide();
+        $("body > table.boxy-wrapper").remove();
+    }
+    function cardover(obj){
+        $(obj).css('background' , 'url(<?=host_img()?>/images/yh-logo/hoverbg.jpg) repeat-x');
+        $(obj).children('span').css('display' ,'block' );
+    }
+    function cardout(obj){
+        $(obj).css('background' , '#efefef');
+        $(obj).children('span').css('display' ,'none' );
+    }
+    function delecard(obj){
+
+       var dataid = $(obj).attr('dataid');
+       if(window.confirm('你确定要删除吗?')){
+       $.getJSON('/user_exchange/delecard?id='+dataid , function(data){
+            if(data.status == 0){//成功
+                $(obj).parent().parent().remove();
+                var lilength = $('#cards > ul').children('li').length;
+                if(lilength == 0){
+                    $('#cards').html("<div class='notice'>&nbsp;</div><div class='noticeD'><img src='<?=host_img()?>/images/notice.png' /></div>");
+                }
+            }else{
+               alert(data.msg);
+            }
+       });
+       }
+    }
+</script>
+<?}else{?>
+    <div class='notice'>&nbsp;</div>
+    <div class='noticeD'><img src='<?=host_img()?>/images/notice.png' /></div>
+<?}?>
+</div>
+

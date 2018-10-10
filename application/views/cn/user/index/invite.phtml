@@ -1,0 +1,70 @@
+<style>
+.buyText_mofiy{width: 770px;min-height: 400px;position: relative;}
+.yqinfo{width: 720px;padding:50px 25px 20px ;}
+.yqcode span{font-size: 18px;color: #333;}
+.yqcode em{font-size: 18px;color: #ff9900;font-style: normal;}
+.inpt{width: 470px;height: 48px;border:1px solid #ccc;border-radius: 8px;font-size: 18px;color: #ccc;line-height: 48px;text-indent: 15px;}
+.intbtn{width: 160px;height: 48px;background: #ff9900;border-radius: 8px;margin-left: 30px;text-align: center;line-height: 48px;font-size: 18px;color: #fff;}
+.intbtn:hover{color: #fff;text-decoration: none;}
+.yqlink{margin:20px 0 40px 0;}
+.yqfriend{margin:10px 0;}
+.yqfriend h2{font-size: 18px;color: #ff9900;line-height: 30px;margin-bottom: 10px;}
+.yqfir_list{width: 640px;padding: 20px 0 20px 20px;border:1px dashed #d9d9d9;}
+.yqfir_list p{font-size: 14px;color: #999;line-height: 30px;}
+.qy_confirm{display: block; width: 640px; font-size: 12px;color: #ff3333;line-height: 22px;}
+</style>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">邀请好友</h3>
+			</div>
+			<div class="buyText_mofiy clear">
+				<? if(isset($_SERVER['HTTPS'])){
+					$str = 'https://'.$_SERVER['HTTP_HOST'].'/user/register/pid/'.$user['uid'];
+        		}else{
+        			$str = 'http://'.$_SERVER['HTTP_HOST'].'/user/register/pid/'.$user['uid'];
+        		} ?>
+        		<div class="yqinfo">
+        			<p class="yqcode">
+        				<span>您的邀请码是:</span>
+        				<em><?=$user['uid'];?></em>
+        			</p>
+        			<div class="yqlink clearfix">
+        				<input type="text" value="<?=$str?>" class="inpt left" id="linkaddress" readonly="readonly">
+        				<a href="javascript:;" class="intbtn left" onclick="jsCopy()">复制链接</a>
+        			</div>
+        			<div class="yqfriend">
+        				<h2>邀请好友：</h2>
+        				<div class="yqfir_list">
+        					<p>1、用户的邀请码为用户ID，若被邀请人填写邀请码则以被邀请人填写的邀请码为准；</p>
+        					<p>2、如果同一用户被多名平台用户所邀请，平台将认定第一位确定的邀请人为该用户邀请人；</p>
+        					<!-- <p>3、对于已经注册的老用户平台不予再受理绑定邀请关系申请；</p> -->
+        					<!-- <p>活动时间：2016/06/09 － 2016/07/09</p> -->
+        					<p>适用平台：触屏版、PC端</p>
+        				</div>
+        			</div>
+        			<!-- <div class="yqfriend">
+        				<h2>邀请好友首次充值奖励给予规则：</h2>
+        				<div class="yqfir_list">
+        					<p>1、在本平台有邀请过好友；</p>
+        					<p>2、邀请人自身是实名注册用户；</p>
+        					<p>3、被邀请的用户在币交所注册并在活动期内完成首次充值</p>
+        					<p>4、邀请人可在活动期内获得被推荐人首次充值金额的0.1%作为奖励；</p>
+        					<p>适用平台：触屏版、PC端</p>
+        				</div>
+        			</div> -->
+        			<strong class="qy_confirm">声明：此部分奖励为官方平台奖励支出，严禁通过作弊等手段进行虚假邀请注册骗取奖励，如被发现将取消奖励并酌情处罚。本次活动最终解释权归官方所有。</strong>
+        		</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+    function jsCopy(){
+        var e=document.getElementById("linkaddress");//对象是content
+        e.select(); //选择对象
+        document.execCommand("Copy"); //执行浏览器复制命令
+       alert("已复制到粘贴板");
+    }
+</script>

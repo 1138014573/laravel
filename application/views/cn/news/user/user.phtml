@@ -1,0 +1,67 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="uid">uid</option>
+				<option value="email">邮箱</option>
+			</select>
+      <script>$('#yaf_field').val('<?=isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>操作</th>
+				<th>id</th>
+				<th>邮箱</th>
+				<th>BTC余额</th>
+				<th>BTC冻结</th>
+				<th>RMB余额</th>
+				<th>RMB冻结</th>
+				<th>名字</th>
+				<th>手机</th>
+				<th>注册时间</th>
+				<th>更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td width="90">
+				<a title="清除双重验证" onclick="WVKE.confirm('/manage_user/usergaclose/uid/<?=$v1["uid"]?>', 'ok')">
+					<img src="/img/pma/s_passwd.png" alt="修改">
+				</a>
+				<a title="重置交易密码" onclick="WVKE.confirm('/manage_user/usertpchange/uid/<?=$v1["uid"]?>', 'ok')">
+					<img src="/img/pma/b_usredit.png" alt="修改">
+				</a>
+				<a href="/manage_user/usersave?uid=<?=$v1["uid"]?>" title="修改">
+					<img src="/img/pma/s_rights.png" alt="修改">
+				</a>
+				<a href="/manage_user/rmbin/uid/<?=$v1['uid']?>" title="充值">
+					<img src="/img/pma/money.gif" alt="充值">
+				</a>
+			</td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["email"]?></td>
+      <td><?=$v1["btc_over"]?></td>
+      <td><?=$v1["btc_lock"]?></td>
+      <td><?=$v1["rmb_over"]?></td>
+      <td><?=$v1["rmb_lock"]?></td>
+			<td><?=Tool_Str::safestr($v1["name"])?></td>
+			<td><?=Tool_Str::safestr($v1["mo"])?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><? if($v1["updated"]) echo date('Y-m-d H:i:s', $v1["updated"])?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

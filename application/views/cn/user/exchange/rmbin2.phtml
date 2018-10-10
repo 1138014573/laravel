@@ -1,0 +1,200 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<?php if(isset($id) && $id == 0){?>
+			<div class="TitleBox">
+				<h3 class="PlateTitle">银行汇款</h3>
+			</div>
+			<div style="margin-top: 46px;">
+				<form method="post" action="/user_exchange/rmbin" onsubmit="return bankconfirm();" class="uadd_rmbinfm">
+					<div class="buyText clearfix rePW"> <span>充值金额：</span>
+						<div class="sellmonyr">
+							<p class="ipt_outp">
+								<input name="number" id="epaynumber" class="loginValue" type="text" onblur="return pullRand();" onkeyup="value=value.replace(/[^\d.]/g,'')" value="">
+								<b class="rePWB">您当前的小数位是：<span><?=$rand?></span>（必须）。</b>
+							</p>
+							<input type="hidden" name="floatnum" id="hide-rand" value="<?=$rand?>" />
+						</div>
+					</div>
+					<div style="color:#f00;margin: 5px 5px 5px 82px;line-height: 18px;">
+						重要提示：请您务必按照系统给你分配的小数点数额进行转账，否则会造成您无法到账。
+					</div>
+					<div class="buyText clearfix rePW"> <span>开户姓名：</span>
+						<div class="sellmonyr">
+							<p class="ipt_outp">
+								<input type="text" id="name" name="name" value="" class="input" placeholder="请填写开户姓名">
+						</div>
+					</div>
+					<div class="buyText clearfix rePW"> <span>银行名称：</span>
+						<div class="sellmonyr">
+							<p class="ipt_outp">
+								<input type="text" id="bankfrom" name="bankfrom" value="" class="input" placeholder="请输入银行全称，如”中国工商银行“">
+							</p>
+						</div>
+					</div>
+					<div class="buyText clearfix rePW"><span>银行账号：</span>
+						<div class="sellmonyr">
+							<p class="ipt_outp">
+								<input type="text" id="account" name="account" value="" class="input" placeholder="请仔细核对银行账号，否则无法及时到账">
+							</p>
+						</div>
+					</div>
+					<!-- error Tips -->
+					<div class="errorTips rmbinErrorTips" id="errorTips" style="display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+					<div class="rePWBtn">
+						<input type="submit" value="去充值" class="rePWButton">
+					</div>
+				</form>
+			</div>
+			<div class="rmbin_confirmtil">
+          		<h3>充值须知：</h3>
+				<p>
+					1. 最小充值金额<span><?=Exchange_CnyModel::LOWEST_IN_MONEY?>元</span>。<br />
+		            2. 按要求充值用户20分钟之内到账。<br />
+					3. 充值免手续费（汇出行手续费自行承担）。<br>
+					4. 请您在汇款之前确认已在此页面提交充值订单并严格按照此金额汇款，否则<span>无法快速到账</span>，给您带来的不便敬请见谅。
+		        </p>
+			</div>
+	
+			<?}elseif($id != 0){?>
+			
+			<div class="TitleBox">
+				<h3 class="PlateTitle">确认充值信息</h3>
+			</div>
+			<div id="MaskBg" class="MaskBg"></div>
+			<div id="Mask1" class="Mask">
+				<div class="MaskContent1">
+					<div class="MaskTitle1">登录网上银行充值</div>
+					<div style="padding:0 20px">
+						<p>请在新开网银页面完成充值后选择：</p>
+						<div style="padding:20px 0"> <img src="<?=host_img()?>/images/loginB_bg1.jpg"> 充值成功 ｜ 您可以：<a href="/user_exchange/rmbin2">查看充值记录</a>&#12288;&#12288;<a href="/">购买富途币</a> </div>
+						<div> <img src="<?=host_img()?>/images/loginB_bg.jpg"> 充值失败 ｜ 您可以：<a href="/user_exchange/rmbin2">继续充值</a> </div>
+					</div>
+					<div class="CloseM close"></div>
+				</div>
+			</div>
+			<table id="formbox" class="payRMB">
+				<tbody>
+					<tr>
+						<td>
+							<form action="http://ybh.sandoop.net/ybh/payment.php" name="form" id="form" method="post">
+								<div class="buyText clear rePW" style="margin-top:20px;">
+									<p><span style="width:170px">充值金额：</span>
+										<input type="text" value="<?=$Amount?>" disabled="disabled" class="loginValue" style="margin:3px 0">
+									</p>
+								</div>
+								<div class="buyText clear rePW">
+									<p><span style="width:170px">开户姓名：</span>
+										<input type="text" value="<?=$name?>" disabled="disabled" class="loginValue" style="margin:3px 0">
+									</p>
+								</div>
+								<input type="hidden" name="MerNo" value="<?=$MerNo?>">
+								<input type="hidden" name="BillNo" value="<?=$BillNo?>">
+								<input type="hidden" name="Amount" value="<?=$Amount?>">
+								<input type="hidden" name="name" value="<?=$name?>">
+								<input type="hidden" name="MD5info" value="<?=$MD5info?>">
+								<input type="hidden" name="MerRemark" value="<?=$MerRemark?>">
+								<input type="hidden" name="products" value="<?=$products?>">
+								<div class="rePWBtn">
+									<input type="submit" class="rePWButton" value="支付">
+								</div>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<?}?>
+		</div>
+	</div>
+</div>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">充值记录</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+					<tr>
+						<th>订单ID</th>
+						<th>时间</th>
+						<th>金额</th>
+						<th>充值方式</th>
+						<th>状态</th>
+					</tr>
+				</thead>
+				<tbody>
+					<? foreach($datas as $v1){ ?>
+					<tr>
+						<td><?=$v1['id']?></td>
+						<td><?=date('Y-m-d H:i', $v1['created'])?></td>
+						<td><?=$v1['money']?></td>
+						<td><?if($v1['accounttype'] == '双乾'){echo "直充";}else{echo $v1['accounttype'];}?></td>
+						<td class="tableEnd<?if('成功'==$v1['status'])echo ' sell'?>"><?=$v1['status']=='等待'?'处理中':$v1['status']?></td>
+					</tr>
+					<? }?>
+				</tbody>
+			</table>
+			<?=$pageinfo?>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	function bankconfirm(){
+		if( $("#epaynumber").val()<0 ){
+			$('#errorTips').html('充值金额错误').show();
+	        return false;
+		}
+	    if($("#epaynumber").val() < <?=Exchange_CnyModel::LOWEST_IN_MONEY?>){
+	    	$('#errorTips').html('充值最小金额为'+<?=Exchange_CnyModel::LOWEST_IN_MONEY?>+'元，请重新输入').show();
+	        return false;
+	    }
+		if($("#name").val() == ""){
+			$('#errorTips').html('姓名不能为空').show();
+	        return false;
+	    }
+	    if($("#bankfrom").val() == ""){
+			$('#errorTips').html('银行名称不能为空').show();
+	        return false;
+	    }
+		if($("#account").val() == ""){
+			$('#errorTips').html('银行账号不能为空').show();
+	        return false;
+	    }else{
+			var p = /^(\d{16}|\d{18}|\d{19})$/;
+			if(!p.exec($("#account").val())){
+				$('#errorTips').html('银行账号不正确1').show();
+				return false;
+			}
+	    }
+	    if(confirm('您本次充值金额'+num+'.'+<?=$rand?>+'元')){
+	        return true;
+	    } else{
+	        return false;
+	    }
+	}
+
+	function pullRand(){
+		var money = $("#epaynumber").val();
+		if( money < 100){
+			$('#errorTips').html('充值最小金额为100元，请重新输入').show();
+	        return false;
+	    }else{
+	    	$('#errorTips').html('').hide();
+	    }
+
+	    var index = money.indexOf('.');
+	    if(index == -1){
+	    	money = money.substr(0, money.length-1);
+	    }else{
+			money = money.substr(0, index-1);
+	    }
+
+
+	    money = parseFloat( money + $('#hide-rand').val() );
+
+	    $("#epaynumber").val(money);
+	}
+
+</script>

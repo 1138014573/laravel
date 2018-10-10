@@ -1,0 +1,56 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<?$tTS = $type.$status?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">富途币</h3>
+		<ul class="tabs">
+			<li<?if($tTS=='out等待') echo ' class="cur"'?>><a href="/manage_user/btc/type/out/status/<?=urlencode('等待')?>">等待转出</a></li>
+			<li<?if($tTS=='in确认中') echo ' class="cur"'?>><a href="/manage_user/btc/type/in/status/<?=urlencode('确认中')?>">转入确认</a></li>
+			<li<?if($tTS=='out成功') echo ' class="cur"'?>><a href="/manage_user/btc/type/out/status/<?=urlencode('成功')?>">成功转出</a></li>
+			<li<?if($tTS=='in成功') echo ' class="cur"'?>><a href="/manage_user/btc/type/in/status/<?=urlencode('成功')?>">成功转入</a></li>
+		</ul>
+		<?search_form(array('uid'=>'用户', 'email'=>'邮箱'))?>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<?if($tTS=='out等待'){?>
+					<th width="100">操作</th>
+				<?}?>
+				<th width="100">id</th>
+				<th width="100">用户id</th>
+				<th>用户名</th>
+				<th>钱包地址</th>
+				<th width="100">数量</th>
+				<?if($tTS=='in确认中' || $tTS=='in成功'){?><th width="100">确认数</th><?}?>
+				<th width="150">创建时间</th>
+				<th width="150">创建ip</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php foreach ($datas as $v1){?>
+		<tr>
+			<?if('out等待'==$tTS){?>
+				<td>
+					<button onclick="WVKE.confirm('/manage_user/btcout/id/<?=$v1['id']?>', 'ok')">成功</button>
+					<button onclick="WVKE.confirm('/manage_user/btcout/id/<?=$v1['id']?>/cancel/1', 'ok')">撤消</button>
+				</td>
+			<?}?>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["email"]?></td>
+			<td><?=$v1["btckey"]?></td>
+			<td><?=(float)$v1["number"]?></td>
+			<?if($tTS=='in确认中' || $tTS=='in成功'){?><td><?=$v1["confirm"]?></td><?}?>
+			<td><?=date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><a href="http://www.ip138.com/ips1388.asp?ip=<?=$v1["createip"]?>&action=2" target="_blank"><?=$v1["createip"]?></a></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

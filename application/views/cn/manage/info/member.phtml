@@ -1,0 +1,42 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="id">id</option>
+				<option value="uid">uid</option>
+				<option value="type">type</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>uid</th>
+				<th>积分</th>
+				<th>原因</th>
+				<th>奖励时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["credit"]?></td>
+			<td><?=$v1['type'].'|'.$v1['description']?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["created"])?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<style>
+.bankInfo td{ padding:10px; }
+.bankInfo span{ padding:0; width:160px; }
+</style>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">填写银行汇款确认单</h3>
+			</div>
+			<table class="bankInfo">
+				<tbody>
+				<form method="post" action="/user_exchange/bankinfo" onsubmit="return bankcheck();">
+                <tr>
+                    <td><span>您从哪个银行汇出：</span></td>
+                    <td colspan="3">
+				     <input name="bank" id="bank" class="loginValue" type="text">
+                    </td>
+				</tr>
+                <tr>
+                    <td><span>银行账号：</span></td>
+                    <td colspan="3">
+				     <input name="account" id="account" class="loginValue" type="text">
+                    </td>
+				</tr>
+                <tr>
+                    <td><span>银行卡持有人的姓名：</span></td>
+                    <td colspan="3">
+				     <input name="name" id="name" class="loginValue" type="text">
+                    </td>
+				</tr>
+                <tr>
+                <td colspan=4>
+			        <div class="rePWBtn">
+				        <input type="submit" value="提交" class="rePWButton">
+                    </div>
+                </td>
+                </tr>
+                </form>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+function bankcheck(){
+    if(!$('#bank').val){
+        alert('汇款银行不能为空');
+        return false;
+    }
+    if(!$('#account').val){
+        alert('银行账号不能为空');
+        return false;
+    }
+    if(!$('#name').val){
+        alert('汇款人姓名不能为空');
+        return false;
+    }
+    return true;
+}
+</script>

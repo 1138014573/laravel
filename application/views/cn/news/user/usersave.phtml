@@ -1,0 +1,74 @@
+<?php include PATH_TPL . "/manage/tpl.header.phtml" ?>
+<form method="post">
+  <input id="yaf_uid" name="uid" type="hidden" value="<?=$data["uid"]?>"/>
+  <fieldset>
+    <legend><h3 class="title">用户</h3></legend>
+    <table class="formtable">
+      <tbody>
+			<tr>
+				<th>邮箱</th>
+				<td><?=$data["email"]?></td>
+			</tr>
+			<? /*
+			<tr>
+				<th>密码</th>
+				<td>
+					<input id="yaf_pwd" name="pwd"/> 密码为空时不修改密码
+				</td>
+			</tr>
+ 			*/?>
+			<tr>
+				<th>角色</th>
+				<td><?=$data["role"]?></td>
+			</tr>
+      <tr>
+        <th>名字</th>
+        <td><?=Tool_Str::safestr($data["name"], '无')?></td>
+      </tr>
+      <tr>
+        <th>身份证</th>
+				<td><?=Tool_Str::safestr($data["idcard"], '无')?></td>
+      </tr>
+      <tr>
+        <th>电话</th>
+				<td><?=Tool_Str::safestr($data["mo"], '无')?></td>
+      </tr>
+			<tr>
+				<th>YBC余额</th>
+				<td><?=$data["btc_over"]?></td>
+			</tr>
+			<tr>
+				<th>YBC冻结</th>
+				<td><?=$data["btc_lock"]?></td>
+			</tr>
+			<tr>
+				<th>RMB余额</th>
+				<td><?=$data["rmb_over"]?></td>
+			</tr>
+			<tr>
+				<th>RMB冻结</th>
+				<td><?=$data["rmb_lock"]?></td>
+			</tr>
+			<tr>
+				<th>注册时间</th>
+				<td><?=date('Y-m-d H:i:s', $data["created"])?></td>
+			</tr>
+			<tr>
+				<th>注册IP</th>
+				<td><?=$data["createip"]?></td>
+			</tr>
+			<tr>
+				<th>修改时间</th>
+				<td><?=date('Y-m-d H:i:s', $data["updated"])?></td>
+			</tr>
+			<tr>
+				<th>修改IP</th>
+				<td><?=$data["updateip"]?></td>
+			</tr>
+      </tbody>
+    </table>
+  </fieldset>
+	<? /*<fieldset><input class="submit" type="submit" value="生成"></fieldset>*/?>
+</form>
+</body>
+</html>

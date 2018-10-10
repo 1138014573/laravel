@@ -1,0 +1,72 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml";?>
+<?
+$coinArr = [];
+if(isset($datas[0])) {
+	foreach ($datas[0] as $key => $value){
+		if( strpos($key, '_over') !== false ){
+			$ar = explode('_', $key);
+			$coinArr[] = $ar[0];
+		}
+	}
+}
+?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">银行卡</h3>
+		<ul class="tabs">
+			<li<?if($status=='0') echo ' class="cur"'?>><a href="/manage_user/bankcards/status/<?=urlencode('0')?>">使用中</a></li>
+			<li<?if($status=='1') echo ' class="cur"'?>><a href="/manage_user/bankcards/status/<?=urlencode('1')?>">已删除</a></li>
+		</ul>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="uid">uid</option>
+				<option value="email">邮箱</option>
+				<option value="account">银行帐号</option>
+			</select>
+      <script>$('#yaf_field').val('<?=isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<? if(!$status) {?><th>操作</th><?}?>
+				<th>ID</th>
+				<th>用户ID</th>
+				<th>邮箱</th>
+				<th>姓名</th>
+				<th>开户行</th>
+				<th>支行</th>
+				<th>银行账号</th>
+				<th width="120">绑定时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas['list'] as $v1){?>
+		<tr>
+			<? if(!$status) {?>
+				<td>
+					<? if($btnAuth['user_bankcards_del']){ ?>
+						<a href="/manage_user/delcard?id=<?=$v1['id']?>">删除</a>
+					<? } ?>
+				</td>
+			<?}?>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["email"]?></td>
+			<td><?=$v1["name"]?></td>
+			<td><?=$v1["bank"]?></td>
+			<td><?=$v1["province"],$v1["city"],$v1['district'],$v1['subbranch']?></td>
+			<td><?=$v1["account"]?></td>
+			<td><?=date('Y-m-d H:i', $v1["created"])?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=isset($datas['pageinfo']) ? $datas['pageinfo'] : ''?>
+	</div>
+</div>
+</body>
+</html>

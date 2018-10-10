@@ -1,0 +1,225 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"; ?>
+<style>
+	.tabs li{cursor: pointer;}
+	.bind-rights{width: 400px;height: 300px;font-size: 14px;margin-left: 20px;padding-top: 30px;}
+	.bind-rights p, .role-form p {margin-bottom: 20px;}
+	.bind-rights h3, .role-form h3 {height: 80px;line-height: 80px;}
+	input[type=text] {width: 300px;height: 25px;border: #e3e3e3 1px solid;}
+	#role-id2 {width: 300px;height: 25px;border: #e3e3e3 1px solid;}
+	input[type=submit] {width: 120px;height: 30px;border: #e3e3e3 1px solid;color: #fff;background: #163483;border-radius: 5px;}
+	.roleForm{width: 800px;margin-left: 100px;}
+	.twoClass{margin-left: 50px;}
+	.twoClass p{margin-bottom: 5px;}
+	.threeClass{display: block;margin-left: 50px;}
+	#roleSubmit{margin: 30px 0;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">权限设置</h3>
+	</div>
+	<div class="bind-rights">
+		<!-- <h3>绑定角色权限关系</h3> -->
+		<form method="post" class="roleForm">
+			<input type="hidden" name="role_id" value="<?=$role_id?>">
+			<input type="hidden" name="hasSet" value="<?=$hasSet?>">
+			<p>
+				<span style="display:block;">角色名称：<?=$roleInfo['role_name']?></span>
+			</p>
+			<div class="roleBox">
+				<div class="topClass">
+					<input type="checkbox" class="topCheck" name="rights[]" value="user" <?if(isset($rights) && in_array('user', $rights['rights'])){echo 'checked';}?> > 运营
+					<div class="twoClass">
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="user_user" <?if(isset($rights) && in_array('user_user', $rights['rights'])){echo 'checked';}?>> 用户
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="user_user_look" <?if(isset($rights) && in_array('user_user_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="user_user_2fa" <?if(isset($rights) && in_array('user_user_2fa', $rights['rights'])){echo 'checked';}?>> 清除双重验证
+								<input type="checkbox" name="rights[]" value="user_user_pwd" <?if(isset($rights) && in_array('user_user_pwd', $rights['rights'])){echo 'checked';}?>> 重置交易密码
+								<input type="checkbox" name="rights[]" value="user_user_modify" <?if(isset($rights) && in_array('user_user_modify', $rights['rights'])){echo 'checked';}?>> 修改账户资料
+								<input type="checkbox" name="rights[]" value="user_user_rmbin" <?if(isset($rights) && in_array('user_user_rmbin', $rights['rights'])){echo 'checked';}?>> 充值
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="user_rmb" <?if(isset($rights) && in_array('user_rmb', $rights['rights'])){echo 'checked';}?>> 人民币
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="user_rmb_look" <?if(isset($rights) && in_array('user_rmb_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="user_rmb_outsuccess" <?if(isset($rights) && in_array('user_rmb_outsuccess', $rights['rights'])){echo 'checked';}?>> 等待转出成功操作
+								<input type="checkbox" name="rights[]" value="user_rmb_outcancel" <?if(isset($rights) && in_array('user_rmb_outcancel', $rights['rights'])){echo 'checked';}?>> 等待转出撤销操作
+								<input type="checkbox" name="rights[]" value="user_rmb_incancel" <?if(isset($rights) && in_array('user_rmb_incancel', $rights['rights'])){echo 'checked';}?>> 充值等待撤销操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="user_msg" <?if(isset($rights) && in_array('user_msg', $rights['rights'])){echo 'checked';}?>> 短信到账
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="user_msg_look" <?if(isset($rights) && in_array('user_msg_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="user_msg_pay" <?if(isset($rights) && in_array('user_msg_pay', $rights['rights'])){echo 'checked';}?>> 到账操作
+								<input type="checkbox" name="rights[]" value="user_msg_cancel" <?if(isset($rights) && in_array('user_msg_cancel', $rights['rights'])){echo 'checked';}?>> 撤销操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="user_summary" <?if(isset($rights) && in_array('user_summary', $rights['rights'])){echo 'checked';}?>> 对账
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="user_email" <?if(isset($rights) && in_array('user_email', $rights['rights'])){echo 'checked';}?>> 验证邮箱
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="user_modifyassets" <?if(isset($rights) && in_array('user_modifyassets', $rights['rights'])){echo 'checked';}?>> 变更用户资产
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="user_forbidden" <?if(isset($rights) && in_array('user_forbidden', $rights['rights'])){echo 'checked';}?>> 冻结用户
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="user_forbidden_look" <?if(isset($rights) && in_array('user_forbidden_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="user_forbidden_edit" <?if(isset($rights) && in_array('user_forbidden_edit', $rights['rights'])){echo 'checked';}?>> 编辑操作
+								<input type="checkbox" name="rights[]" value="user_forbidden_del" <?if(isset($rights) && in_array('user_forbidden_del', $rights['rights'])){echo 'checked';}?>> 解除冻结操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="user_bankcards" <?if(isset($rights) && in_array('user_bankcards', $rights['rights'])){echo 'checked';}?>> 银行卡
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="user_bankcards_look" <?if(isset($rights) && in_array('user_bankcards_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="user_bankcards_del" <?if(isset($rights) && in_array('user_bankcards_del', $rights['rights'])){echo 'checked';}?>> 删除操作
+							</span>
+						</p>
+					</div>
+				</div>
+				<div class="topClass">
+					<input type="checkbox" class="topCheck" name="rights[]" value="ybc" <?if(isset($rights) && in_array('ybc', $rights['rights'])){echo 'checked';}?>> 数字货币
+					<div class="twoClass">
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="ybc_ybc" <?if(isset($rights) && in_array('ybc_ybc', $rights['rights'])){echo 'checked';}?>> 数字货币
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="ybc_ybc_look" <?if(isset($rights) && in_array('ybc_ybc_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="ybc_ybc_out" <?if(isset($rights) && in_array('ybc_ybc_out', $rights['rights'])){echo 'checked';}?>> 导出操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="ybc_trust" <?if(isset($rights) && in_array('ybc_trust', $rights['rights'])){echo 'checked';}?>> 委托
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="ybc_trust_look" <?if(isset($rights) && in_array('ybc_trust_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="ybc_trust_out" <?if(isset($rights) && in_array('ybc_trust_out', $rights['rights'])){echo 'checked';}?>> 导出操作
+								<input type="checkbox" name="rights[]" value="ybc_trust_cancel" <?if(isset($rights) && in_array('ybc_trust_cancel', $rights['rights'])){echo 'checked';}?>> 撤销操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="ybc_order" <?if(isset($rights) && in_array('ybc_order', $rights['rights'])){echo 'checked';}?>> 成交
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="ybc_order_look" <?if(isset($rights) && in_array('ybc_order_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="ybc_order_out" <?if(isset($rights) && in_array('ybc_order_out', $rights['rights'])){echo 'checked';}?>> 导出操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="ybc_cancel" <?if(isset($rights) && in_array('ybc_cancel', $rights['rights'])){echo 'checked';}?>> 一键撤单
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="ybc_top" <?if(isset($rights) && in_array('ybc_top', $rights['rights'])){echo 'checked';}?>> 持有量Top20
+						</p>
+					</div>
+				</div>
+				<div class="topClass">
+					<input type="checkbox" class="topCheck" name="rights[]" value="message" <?if(isset($rights) && in_array('message', $rights['rights'])){echo 'checked';}?>> 消息管理
+					<div class="twoClass">
+						<p>
+							<input type="checkbox" class="twoCheck" name="rights[]" value="message_news" <?if(isset($rights) && in_array('message_news', $rights['rights'])){echo 'checked';}?>> 公告列表
+							<span class="threeClass">
+								<input type="checkbox" name="rights[]" value="message_news_look" <?if(isset($rights) && in_array('message_news_look', $rights['rights'])){echo 'checked';}?>> 浏览查询
+								<input type="checkbox" name="rights[]" value="message_news_edit" <?if(isset($rights) && in_array('message_news_edit', $rights['rights'])){echo 'checked';}?>> 编辑操作
+								<input type="checkbox" name="rights[]" value="message_news_del" <?if(isset($rights) && in_array('message_news_del', $rights['rights'])){echo 'checked';}?>> 删除操作
+							</span>
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="message_release" <?if(isset($rights) && in_array('message_release', $rights['rights'])){echo 'checked';}?>> 发布公告
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="message_to2to" <?if(isset($rights) && in_array('message_to2to', $rights['rights'])){echo 'checked';}?>> 点对点消息
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="message_list" <?if(isset($rights) && in_array('message_list', $rights['rights'])){echo 'checked';}?>> 点对点主题列表
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="message_msglist" <?if(isset($rights) && in_array('message_msglist', $rights['rights'])){echo 'checked';}?>> 点对点消息列表
+						</p>
+					</div>
+				</div>
+				<div class="topClass">
+					<input type="checkbox" class="topCheck" name="rights[]" value="log" <?if(isset($rights) && in_array('log', $rights['rights'])){echo 'checked';}?>> 记录
+					<div class="twoClass">
+						<p>
+							<input type="checkbox" name="rights[]" value="log_relation" <?if(isset($rights) && in_array('log_relation', $rights['rights'])){echo 'checked';}?>> 邀请关系记录
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_reward" <?if(isset($rights) && in_array('log_reward', $rights['rights'])){echo 'checked';}?>> 邀请奖励记录
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_rmbcsv" <?if(isset($rights) && in_array('log_rmbcsv', $rights['rights'])){echo 'checked';}?>> 人民币导出记录
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_userlogin" <?if(isset($rights) && in_array('log_userlogin', $rights['rights'])){echo 'checked';}?>> 用户登录记录
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_useredit" <?if(isset($rights) && in_array('log_useredit', $rights['rights'])){echo 'checked';}?>> 用户信息修改日志
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_assets" <?if(isset($rights) && in_array('log_assets', $rights['rights'])){echo 'checked';}?>> 变更用户资产记录
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_getcode" <?if(isset($rights) && in_array('log_getcode', $rights['rights'])){echo 'checked';}?>> 非富途币验证码
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_coinout" <?if(isset($rights) && in_array('log_coinout', $rights['rights'])){echo 'checked';}?>> 转币邮件查询
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="log_float" <?if(isset($rights) && in_array('log_float', $rights['rights'])){echo 'checked';}?>> 每日涨跌幅
+						</p>
+					</div>
+				</div>
+				<!-- <div class="topClass">
+					<input type="checkbox" class="topCheck" name="rights[]" value="admin" <?if(isset($rights) && in_array('admin', $rights['rights'])){echo 'checked';}?>> 官方
+					<div class="twoClass">
+						<p>
+							<input type="checkbox" name="rights[]" value="admin_admin" <?if(isset($rights) && in_array('admin_admin', $rights['rights'])){echo 'checked';}?>> 管理员
+						</p>
+						<p>
+							<input type="checkbox" name="rights[]" value="admin_role" <?if(isset($rights) && in_array('admin_role', $rights['rights'])){echo 'checked';}?>> 角色管理
+						</p>
+					</div>
+				</div> -->
+			</div>
+			<p id="roleSubmit"><span><input type="submit" value="确定" /></span></p>
+		</form>
+		<!-- <p><span style="display:block;width: 80px;">权限编码：</span><input type="text" id="code" /></p>
+		<p><span><input type="submit" id="bind-rights-btn" value="绑定权限" /></span></p> -->
+	</div>
+</div>
+
+<script>
+	// 一级菜单点击
+	$('.topCheck').click(function(){
+		if( $(this).attr('checked') ){
+			$(this).attr('checked', false);
+			$(this).next().find('input').prop('checked', false);
+		}else{
+			$(this).attr('checked', true);
+			$(this).next().find('input').prop('checked', true);
+		}
+	});
+
+	// 二级菜单点击
+	$('.twoCheck').click(function(){
+		if( $(this).attr('checked') ){
+			$(this).attr('checked', false);
+			$(this).next().find('input').prop('checked', false);
+		}else if( !$(this).attr('checked') ){
+			$(this).attr('checked', true);
+			$(this).next().find('input').prop('checked', true);
+		}else if( $(this).prop('checked') ){
+			$(this).prop('checked', true);
+			$(this).next().find('input').prop('checked', true);
+		}else if( !$(this).prop('checked') ){
+			$(this).prop('checked', false);
+			$(this).next().find('input').prop('checked', false);
+		}
+	});
+</script>
+
+</body>
+</html>

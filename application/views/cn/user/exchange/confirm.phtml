@@ -1,0 +1,23 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">确认充值信息</h3>
+			</div>
+			<table class="payRMB">
+				<tbody>
+				<tr>
+					<td><div class="buyText clear rePW"><form method="post" action="/pay_alipay/pay">
+				<span>充值金额：</span> <input class="loginValue" type="text" disabled="disabled" value="<?=$money ?>"><br>
+				<input type="hidden" name="money" value="<?=$money ?>">
+				<span>手续费：</span> 1% 　<font style="color:#888">手续费是由支付宝收取</font><br>
+				<span>实际到账：</span> <?=$realmoney?><br>
+			</div><div class="rePWBtn">
+				<input type="submit" value="支付" class="rePWButton"></form>
+			</div></td>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

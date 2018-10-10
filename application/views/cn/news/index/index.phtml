@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head >
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>后台管理</title>
+<link href="<?=host()?>/css/admin/style.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="<?=host()?>/js/jquery/1.9.1.min.js"></script>
+<script type="text/javascript" src="<?=host()?>/js/jquery/wvke.js"></script>
+<script>
+	menu = {
+		"setting" : {"name":"消息管理", "left":[
+		{"name":"消息列表", "url":"/News_info/news"},
+		{"name":"发布消息", "url":"/News_info/release"},
+		{"name":"点对点消息", "url":"/News_info/to2to"},
+		{"name":"点对点消息列表", "url":"/News_info/messagelist"},
+		]},
+	};
+</script>
+</head>
+
+<body>
+
+<div id="page_head" style="position: relative;z-index: 999;">
+	<div class="l logo">后台</div>
+	<nav id="nav"></nav>
+  <div class="option r">
+    您好，<?=$user['name']?> <a href="/user/logout/">[退出]</a>
+  </div>
+</div>
+
+<section id="page_body">
+	<div class="left_bar" id="left_bar"></div>
+	<div class="main_page">
+		<iframe src="" class="main_iframe" id="main_iframe" name="main_iframe" frameborder="0" scrolling="yes" scrolling="yes" hidefocus=""></iframe>
+	</div>
+</section>
+
+<footer id="page_foot"></footer>
+
+<div id="block"><!--[if lt IE 7]><iframe style="position:absolute;z-index:-1;filter:alpha(opacity=0);"></iframe><![endif]--></div>
+<div id="pop"></div>
+
+<script type="text/javascript">
+//框架
+$("#main_iframe").attr("scrolling", navigator.appVersion.search(/MSIE 6/i)==-1? "auto": "yes");
+//菜单
+var menufirst = 0, menuhtml = '', menucur = 'class="cur"';
+for(var i in menu){
+	menuhtml += "<a "+menucur+" onclick=\"WVKE.menu('"+i+"')\">"+menu[i].name+"</a>";
+	if(0==menufirst){ WVKE.menu(i); menufirst = 1; menucur = ''; }
+}
+$('#nav').html(menuhtml);
+//绑定点击事件
+$('#nav > a').bind("click", function(){
+	$('#nav > a').removeClass("cur");
+	$(this).addClass("cur");
+});
+$(document).ready(function(){
+	$(".addbox").hover(function(){$(".addbox").css('height','auto'); $(".addbox dd").css('display','block')},function(){$(".addbox dd").css('display','none')});
+	$(".addbox p").hover(function(){$(".addbox").css('height','auto')});
+	$(".addbox dd").hover(function(){$(this).find("p").show();},function(){$(this).find("p").hide();});
+});
+</script>
+</body>
+</html>

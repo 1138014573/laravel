@@ -1,0 +1,48 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<?php
+	$status=array(1=>'名字', 2=>'邮箱', 3=>'手机号',4=>'证件号');
+?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户修改日志</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="id">id</option>
+				<option value="uid">uid</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>uid</th>
+				<th>旧信息</th>
+				<th>新信息</th>
+				<th>原因</th>
+				<th>修改人</th>
+				<th>时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["con"]?></td>
+			<td><?=$v1["newcon"]?></td>
+			<td><?=$v1["message"]?></td>
+			<td><?=$v1["aid"]?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["ctime"])?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

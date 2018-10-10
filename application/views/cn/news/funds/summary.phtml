@@ -1,0 +1,60 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">对账日期：<?=$today?></h3>
+		<form style="float:right">
+			<input name="kw" value="<?=$today ?>">
+			<input type="submit" value="查询">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th width="100px">名称</th>
+				<th width="150px">转入</th>
+				<th width="150px">转出</th>
+				<th width="100px">结余</th>
+				<th width="50px"></th>
+				<th width="150px">网站总额</th>
+				<th width="150px">可用总额</th>
+				<th width="150px">冻结总额</th>
+				<th width="50px"></th>
+				<th width="100px">当日成交量</th>
+				<th width="100px">24小时成交量</th>
+				<th width="100px">当日手续费</th>
+			</tr>
+		</thead>
+		<tbody>
+		<tr><td>人民币</td>
+			<td><?=$rmb_in?><br>支付宝：<?=$rmb_in_alipay?><br>财付通：<?=$rmb_in_tenpay?><br>银行卡：<?=$rmb_in_bank ?></td>
+			<td>-<?=$rmb_out?><br>支付宝：<?=$rmb_out_alipay?><br>财付通：<?=$rmb_out_tenpay?><br>银行卡：<?=$rmb_out_bank ?></td>
+			<td><?=$rmb_in - $rmb_out?></td>
+			<td></td>
+			<td><?=$rmb_over+$rmb_lock?></td>
+			<td><?=(float)$rmb_over ?></td>
+			<td><?=(float)$rmb_lock ?></td>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td><?=(float)$fee_money ?></td>
+		</tr>
+		<tr><td>BTC</td>
+			<td><?=(float)$btc_in?></td>
+			<td>-<?=(float)$btc_out?></td>
+			<td><?=$btc_in - $btc_out?></td>
+			<td></td>
+			<td><?=$btc_over+$btc_lock?></td>
+			<td><?=$btc_over?></td>
+			<td><?=(float)$btc_lock?></td>
+			<td></td>
+			<td><?=(float)$btc_vol?></td>
+			<td><?=(float)$btc_vol_24?></td>
+			<td><?=(float)$fee_btc ?></td>
+		</tr>
+		</tbody>
+	</table>
+	</div>
+</div>
+</body>
+</html>

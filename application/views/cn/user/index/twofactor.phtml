@@ -1,0 +1,81 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">账号双重验证</h3>
+			</div>
+			<? if(isset($ga)){?>
+			<p class="prompt1" style="margin-left: 20px;">您的账户已启用双重验证</p>
+			<? } else {?>
+			<p class="prompt1" style="margin-left: 20px;">您的账户未启用用双重验证</p>
+
+			<p class="warningp1">1. 在“Google Authenticator (身份验证器)”应用程序中，点击“添加新账户 (iOS 下是 + 号)”->“扫描条形码”。</p>
+
+			<p class="warningp1">2. 将手机上的相机镜头对准下图扫描该条形码。</p>
+
+			<div class="erwei">
+				<?$qrimages = urlencode('otpauth://totp/'.$user['email'].'%20-%20bijiaosuo.com?secret='.$secret.'&issuer='.$user['email']);?>
+				<img src="/api/qrimages?text=<?=$qrimages?>" style="width:150px;">
+			</div>
+
+			<p class="warningp1">3. 如果您无法扫描成功上图的条形码，您还可以手动添加账户，并输入如下密匙：<b><?=$secret?></b></p>
+
+			<p class="warningp1">4. 配置完成后，手机上会显示一个 6 位数字，每隔 30 秒变化一次。这个数字即为您的双重验证密码。</p><br/>
+
+			<p class="warningp1">在下面输入您当前的双重验证密码。一般情况下，请勿删除应用程序内的双重验证密码账户，否则会导致您无法进行账户操作。<br></btr>如果出现这种情况，请联系管理员。</p>
+
+			<? }?>
+
+			<form method="post" class="twofactor_fm">
+				<? if(isset($ga)){?>
+					<div class="buyText clear">
+						<div class="warText1"><b>*</b>双重验证密码：</div>
+						<input class="loginValue inputColor" type="password" maxlength="6" size="10" value="" name="hotp">
+					</div>
+					<!-- error Tips -->
+					<div class="errorTips twofactorErrorTips" id="errorTips" style="display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+					<div class="buyBtn">
+						<input type="hidden" value="close" id="opt" name="opt">
+						<input type="hidden" value="<?=$ga['secret']?>" name="secret">
+						<? if($ga['open']){?>
+							<input type="submit" onclick="$('#opt').val('close')" value="关闭双重密码" class="inBtnA1" style="width: 232px;">
+						<? } else {?>
+							<input type="submit" onclick="$('#opt').val('open')" value="开启双重密码" class="inBtnA1" style="width: 232px;">
+						<? }?>
+						<input type="submit" onclick="$('#opt').val('clear')" value="清除双重密码" class="inBtnA1" style="width: 232px;">
+					</div>
+				<? } else {?>
+					<div class="buyText clear">
+						<div class="warText1"><b>*</b>双重验证密码：</div>
+						<input class="loginValue inputColor" type="password" maxlength="6" size="10" value="" id="hotp" name="hotp">
+						<div class="clear" style="margin-bottom: 12px;"></div>
+						<div>　　　　　　　　　　请输入手机应用程序上显示的双重验证密码。</div>
+					</div>
+					<!-- error Tips -->
+					<div class="errorTips twofactorErrorTips" id="errorTips" style="display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+					<div class="buyBtn" style="margin:20px 0 20px 120px;">
+						<input type="button" value="验证并启用" class="inBtnA1" onclick="createGA('<?=$secret?>')" style="width:232px;margin:0;">
+					</div>
+				<? }?>
+			</form>
+		</div>
+	</div>
+</div>
+<script>
+var reloadPage = '<?=isset($errorTips) ? $errorTips : '';?>';
+if (reloadPage == '您已清除双重验证密码' || reloadPage == '您已关闭双重验证密码' || reloadPage == '您已开启双重验证密码') {
+	setTimeout(function() {
+		top.location = '/user_index/twofactor';
+	}, 2000);
+}
+function createGA(secret){
+	$.post('/user_index/twofactor', {'hotp': $('#hotp').val(), 'secret': secret}, function(d){
+		$('#errorTips').html(d.msg).show();
+		if(d.status) {
+			setTimeout(function() {
+				top.location = '/user_index/twofactor';
+			}, 2000);
+		}
+	}, 'json');
+}
+</script>

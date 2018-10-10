@@ -1,0 +1,45 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">消息列表</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="id">id</option>
+			</select>
+      <script>$('#yaf_field').val('<?=isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01" style="word-break:break-all; word-wrap:break-all;">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th width="150">标题</th>
+				<th width="350">内容</th>
+				<th>接受人条件</th>
+				<th>接受人数量</th>
+				<th>发送时间</th>
+				<th>更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["title"]?></td>
+			<td><?=$v1["message"]?></td>
+			<td><?=$v1["where"]?></td>
+			<td><?=$v1["num"]?></td>
+			<td><?=date('m-d H:i:s', $v1["ctime"])?></td>
+			<td><?=date('m-d H:i:s', $v1["utime"])?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

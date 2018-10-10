@@ -1,0 +1,215 @@
+<script type="text/javascript" src="/js/jquery/jquery-migrate-1.2.1.min.js" ></script>
+<script type="text/javascript" src="/js/jquery/jquery-plugin-boxy/js/jquery.boxy.js"></script>
+<link href="/js/jquery/jquery-plugin-boxy/css/boxy.css" rel="stylesheet" type="text/css" />
+<style>
+/* m_zlxg */
+#sjld{width:520px;position:relative;}
+#shenfen{margin:0 10px 0 10px;}
+.m_zlxg{ width:93px; height:40px; line-height:40px; cursor:pointer; float:left; margin:0 10px 0 0; display:inline; background:url(/img/zlxg3.jpg) no-repeat; }
+.m_zlxg p{ width:80px; padding-left:10px; overflow:hidden; line-height:40px; color:#333333; font-size:12px; font-family:"微软雅黑"; text-overflow:ellipsis; white-space:nowrap; }
+.m_zlxg2{ position:absolute; top:29px; border:1px solid #ded3c1; background:#fff; width:91px; display:none; max-height:224px; -height:224px; overflow-x:hidden; overflow-y:auto; white-space:nowrap; }
+.m_zlxg2 li{ line-height:28px; white-space:nowrap; padding-left:10px; font-family:"微软雅黑"; color:#333333; font-size:12px; }
+.m_zlxg2 li:hover{ color:#7a5a21; }
+</style>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">绑定银行卡</h3>
+			</div>
+			<form method="post" onsubmit="return bankbindDo();" class="uadd_bankbindfm">
+				<!-- 姓名 -->
+				<div class="buyText clear rePW"> <span>姓名：</span>
+					<input type="text" name="name" id="name" value="<?=isset($name) ? $name :'';?>" class="loginValue" readonly/>
+					<?if(isset($msg_name)){?>
+					<b class="false" id="namemsg">
+					<?=$msg_name?>
+					</b>
+					<? } else{?>
+					<b class="rePWB" id="namemsg">请输入提款人姓名</b>
+					<?}?>
+				</div>
+				<!-- 提現方式 -->
+				<input type='hidden' name='accounttype' id='accounttype' value='银行卡' />
+				<!-- 银行名称 -->
+				<div class="buyText clear rePW"> <span><b class="importantB">*</b>银行名称：</span>
+					<select name="bank" id="bank" class="loginValue" style="width:301px; height:40px;">
+						<option value="">请选择银行</option>
+						<option>工商银行</option>
+						<option>建设银行</option>
+						<option>农业银行</option>
+						<option>中国邮政储蓄</option>
+						<option>交通银行</option>
+						<option>中国银行</option>
+						<option>光大银行</option>
+						<option>中信银行</option>
+						<option>招商银行</option>
+						<option>浦发银行</option>
+						<option>民生银行</option>
+						<option>兴业银行</option>
+						<option>平安银行</option>
+						<option>广发银行</option>
+						<option>青岛银行</option>
+						<option>潍坊银行</option>
+					</select>
+					<b class="rePWB" id="bankmsg">
+					</b> </div>
+				<div class="buyText clear rePW"> <span>银行卡所在地：</span>
+					<div id="sjld">
+						<div class="m_zlxg" id="shenfen">
+							<p title="">选择省份</p>
+							<div class="m_zlxg2">
+								<ul>
+								</ul>
+							</div>
+						</div>
+						<div class="m_zlxg" id="chengshi">
+							<p title="">选择城市</p>
+							<div class="m_zlxg2">
+								<ul>
+								</ul>
+							</div>
+						</div>
+						<div class="m_zlxg" id="quyu">
+							<p title="">选择区域</p>
+							<div class="m_zlxg2">
+								<ul>
+								</ul>
+							</div>
+						</div>
+						<input id="sfdq_num" type="hidden" value="" />
+						<input id="csdq_num" type="hidden" value="" />
+						<input id="sfdq_tj" type="hidden" value="北京" name="province"/>
+						<input id="csdq_tj" type="hidden" value="市辖区" name="city"/>
+						<input id="qydq_tj" type="hidden" value="东城区" name="district"/>
+					</div>
+				</div>
+				<!-- 支行信息 -->
+				<div class="buyText clear rePW"> <span>支行：</span>
+					<input type="text" value="" class="loginValue" name="subbranch" id="subbranch" placeholder="请在这里输入支行信息">
+				</div>
+				<!-- 提现账户 -->
+				<div class="buyText clear rePW"> <span>银行卡号：</span>
+					<input type="text"  name="account" id="account" value="" class="loginValue" placeholder="请在这里输入银行卡号">
+				</div>
+				<div class="buyText clear rePW">
+					<span>验证码：</span><input style="width:176px;" class="loginValue signinCode" name="captcha" id="captcha" placeholder="请输入验证码">
+					<img id="captchaimg" src="/index/captcha?t=<?=rand(100000, 999999)?>" style="float:left;margin-left: 10px;width: 106px;height: 36px"> <a id="changeCode" href="javascript:void(0);" onclick="$('#captchaimg').attr('src', '/index/captcha?t='+Math.random())" style="float:left; line-height:40px; padding-left:10px;">看不清，再换一张</a>
+				</div>
+				<div class="buyText clear rePW"> <span>手机验证码：</span>
+					<input type="code" name="code" id="code" value="" class="loginValue">
+				</div>
+				<div class="phone_verify clearfix">
+					<a class="aButton1 left" onclick="verifySub(this,1,'人民币');">获取短信验证码</a>
+					<a class="aButton1 right" onclick="verifySub(this,5,'人民币');">获取语音验证码</a>
+				</div>
+
+				<!-- error Tips -->
+				<div class="errorTips bankbindErrorTips" id="errorTips" style="display:<?=isset($errorTips) ? 'block' :'none'; ?>;"><?=isset($errorTips) ? $errorTips :''; ?></div>
+				<!-- 提交请求 -->
+				<div class="rePWBtn">
+					<input type="submit" value="确定" class="rePWButton">
+					<b class="rePWB" style="color:#ff0000;" id="msg_sub">
+					<?=isset($msg_sub)?$msg_sub:''?>
+					</b> </div>
+			</form>
+		</div>
+		<script src="<?= host() ?>/js/form.js"></script>
+		<script>
+        $(function(){
+            $("#sjld").sjld("#shenfen","#chengshi","#quyu");
+        });
+       	function bankbindDo(){
+
+       		if ($('#bank').val().length == 0){
+       			$('#errorTips').html('请选择开户银行').show();
+       			return false;
+       		}
+
+       		if (!$('#subbranch').val()){
+       			$('#errorTips').html('请填写支行信息').show();
+       			return false;
+       		}
+
+			if($('#name').val().length == 0){
+				$('#errorTips').html('请填写姓名').show();
+				return false;
+			}
+
+			if($('#account').val().length == 0){
+				$('#errorTips').html('请填写银行卡号').show();
+				return false;
+			}else{
+				var p = /^(\d{16}|\d{17}|\d{19})$/;
+				if(!p.exec($("#account").val())){
+					$('#errorTips').html('银行卡号不正确').show();
+					return false;
+				}
+			}
+
+			if ($('#code').val().length < 6){
+				$('#errorTips').html('请填写手机验证码').show();
+				return false;
+			}
+
+    	}
+
+    	// 验证码
+    	function verifySub(obj, num, name){
+    		if( !$('#captcha').val() ){
+    			$('#errorTips').html('请填写图形验证码').show();
+				return false;
+    		}
+    		$.post('/user_exchange/verifycheck', {'captcha':$('#captcha').val()}, function(data){
+    			if( data == 'fail' ){
+    				$('#errorTips').html('图形验证码错误').show();
+					return false;
+    			}
+    			sendmsg(obj, num, name);
+    		})
+    	}
+	</script>
+	</div>
+</div>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">银行卡列表</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+					<tr>
+						<th width="15%">绑定时间</th>
+						<th width="35%">银行帐号</th>
+						<th width="20%">银行名称</th>
+						<th width="20%">持卡人</th>
+						<th width="10%">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+					<? foreach($banklist as $v1){ ?>
+					<tr>
+						<td class="tableEnd"><?=date('Y-m-d', $v1['created'])?></td>
+						<td><span style="font-size: 14px;">**** **** **** </span><?=substr($v1['account'], -4, 4)?></td>
+						<td><?=$v1['bank']?></td>
+						<td><?=$v1['name']?></td>
+						<td><a href="/user_exchange/delcard?id=<?=$v1['id']?>">删除</a></td>
+					</tr>
+					<? }?>
+				</tbody>
+			</table>
+			<?=isset($pageinfo) ? $pageinfo : '';?>
+		</div>
+	</div>
+</div>
+<!-- <script src="/js/address.js"></script> -->
+<script src="/js/address.min.js"></script>
+<script>
+var reloadPage = '<?= isset($errorTips) ? $errorTips : '' ?>';
+if (reloadPage == '银行卡添加成功'){
+	setTimeout(function(){
+		top.location = '/user_exchange/bankbind';
+	}, 2000);
+}
+</script>

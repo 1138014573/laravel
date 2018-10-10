@@ -1,0 +1,57 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">每日对帐</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="tdate">日期</option>
+			</select>
+      <script>$('#yaf_field').val('<?=isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+                <th>日期</th>
+                <th>RMB总额</th>
+                <th>昨日RMB流入</th>
+                <th>昨日RMB流出</th>
+                <th>RMB净流量</th>
+                <th>GOC总额</th>
+                <th>昨日GOC流入</th>
+                <th>昨日GOC流出</th>
+                <th>GOC净流量</th>
+                <th>BTC总额</th>
+                <th>昨日BTC流入</th>
+                <th>昨日BTC流出</th>
+                <th>BTC净流量</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td width="100"><?=$v1['tdate']?></td>
+			<td><?=$v1["urmb"]?></td>
+              <td><?=$v1["rmbin"]?></td>
+              <td><?=$v1["rmbout"]?></td>
+              <td><?=$v1["rmbin"]-$v1['rmbout']?></td>
+              <td><?=$v1["uybc"]?></td>
+              <td><?=$v1["ybcin"]?></td>
+              <td><?=$v1["ybcout"]?></td>
+              <td><?=$v1["ybcin"]-$v1['ybcout']?></td>
+              <td><?=$v1["ubtc"]?></td>
+              <td><?=$v1["btcin"]?></td>
+              <td><?=$v1["btcout"]?></td>
+              <td><?=$v1["btcin"]-$v1['btcout']?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

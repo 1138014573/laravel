@@ -1,0 +1,55 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<?php
+	function ipadd($ip){
+		$data = json_decode(file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip='.$ip), true);
+		$data = $data['data'];
+		return $data['country'].' '.$data['region'].' '.$data['city'].' '.$data['isp'];
+	}
+?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">短信使用日志&nbsp;&nbsp;&nbsp;短信剩余<?=$num?>条</h3>
+		<form style="float:right">
+			<input name="kw" value="<?if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="id">id</option>
+				<option value="uid">uid</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<?$action = array(1=>'人民币提现', 2=>'富途币提现', 3=>'绿色通道验证码');$status = array('未使用','已使用','已过期');?>
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>uid</th>
+				<th>手机号</th>
+				<th>用途</th>
+				<th>信息</th>
+				<th>操作ID</th>
+				<th>使用时间</th>
+				<th>使用结果</th>
+			</tr>
+		</thead>
+		<tbody>
+		<? foreach($datas as $v1){?>
+		<tr>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["uid"]?></td>
+			<td><?=$v1["mo"]?></td>
+			<td><?=$action[$v1["action"]]?></td>
+			<td><?=$v1["message"]?></td>
+			<td><?=$v1["aid"]?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["ctime"])?></td>
+			<td><?=$status[$v1["status"]]?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$pageinfo?>
+	</div>
+</div>
+</body>
+</html>

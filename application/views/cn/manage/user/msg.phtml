@@ -1,0 +1,79 @@
+<?php include PATH_TPL."/manage/tpl.header.phtml"?>
+<?$tTS = $status?>
+<style>
+	.msgsubmit{width: 70px;font: 14px/32px "微软雅黑";background-color: #365493;color: #FFF;float: left;border:none;margin:5px 5px 0 0;cursor: pointer;}
+	.msginput{height: 25px;line-height: 25px;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">短信充值人民币</h3>
+		<ul class="tabs">
+			<li<?if($tTS=='1') echo ' class="cur"'?>><a href="/manage_user/msg/status/1">等待转入</a></li>
+			<li<?if($tTS=='2') echo ' class="cur"'?>><a href="/manage_user/msg/status/2">成功转入</a></li>
+		</ul>
+		<?search_form(array('uid'=>'用户', 'email'=>'邮箱', 'id'=>'订单ID'))?>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<?if(1==$status){?>
+				<th width="100">操作</th>
+				<?}?>
+				<th>id</th>
+				<th>短信内容</th>
+				<th>发送时间</th>
+				<th>创建时间</th>
+				<th>更新时间</th>
+				<th>充值状态</th>
+				<th>备注</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		<?php foreach ($datas['msglist'] as $v1){?>
+			<?if($tTS==1){?>
+			<td>
+				<input class="msginput" type="text" placeholder="订单ID">
+				<input type="hidden" value="<?=$v1['id']?>">
+				<? if($btnAuth['user_msg_pay']){ ?>
+					<button class="msgsubmit ajaxpay">到账</button>
+				<? } ?>
+				<? if($btnAuth['user_msg_cancel']){ ?>
+					<button class="msgsubmit ajaxstatus">撤消</button>
+				<? } ?>
+			</td>
+			<?}?>
+			<td><?=$v1["id"]?></td>
+			<td><?=$v1["message"]?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["sent_timestamp"])?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><?=date('Y-m-d H:i:s', $v1["updated"])?></td>
+			<td><?=($v1["status"] == 1) ? '等待' : '成功'?></td>
+			<td><?=$v1["bak"]?></td>
+		</tr>
+		<?php }?>
+		</tbody>
+	</table>
+	<?=$datas['pageinfo']?>
+	</div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+	$('.ajaxpay').click(function(){
+	    msmId = $(this).prev().val();
+	    orderId = $(this).prev().prev().val();
+	    $.post("/manage_exchange/ajaxpay", {orderId:orderId,msmId:msmId},function(data){
+	          alert(data);
+		  location.href = "/manage_user/msg";
+	    });
+	});
+	$('.ajaxstatus').click(function(){
+	    msmId = $(this).prev().prev().val();
+	    $.post("/manage_exchange/ajaxstatus", {msmId:msmId},function(data){
+	          alert(data);
+		  location.href = "/manage_user/msg";
+	    });
+	});
+</script>

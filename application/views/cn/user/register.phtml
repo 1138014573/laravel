@@ -1,0 +1,158 @@
+<? include PATH_TPL.'/tpl.header.phtml';?>
+<!-- 风险提示 -->
+<div class="reg_addbftips" <?if(isset($posttype) && $posttype == 1){?>style="display: none;"<?}?>>
+	<div class="main" id="reg_prev">
+		<div class="main_box">
+			<div class="warning1">
+				<h2>风险警示</h2>
+				<p>
+				根椐人民银行等有关部委的相关规定，比特币等数字货币系特殊的虚拟商品，作为互联网上的商品买卖行为，普通民众在自担风险的前提下拥有参与的自由。数字货币行业目前存在很多不确定，不可控的风险因素（如预挖、暴涨暴跌、庄家操控、团队解散、技术缺陷等），导致交易具有极高的风险。币交所仅为数字货币等虚拟商品的爱好者提供一个自由的网上交换平台，对在币交所平台交换的数字货币等虚拟商品的来源、价值，网站运营方不承担任何审查、担保、赔偿的法律责任。</p>
+				<h3>请您务必注意以下几点：</h3>
+				<p>1.警惕虚假宣传，不要听信任何币值会永远上涨的宣传，数字货币作为一种虚拟商品，具有极高的风险，很可能出现价值归零的情况。		<br>
+				2.对于推广和运营方的市场承诺，需要谨慎判别，目前并没有相关法律能保证其兑现承诺，币交所不会对任何数字货币进行背书和承诺。<br>
+				3.坚决拒绝多层次传销组织，在我国参与该类组织是违法行为，造成的一切后果自负，平台将配合相关执法部门的要求进行调查、取证。<br>
+				4.根据《中华人民共和国反洗钱法》等有关法律规定，严格禁止利用平台进行洗钱等违法犯罪活动，平台将配合相关执法部门的要求进行调查、取证。<br>
+				5.数字货币和数字积分等虚拟商品所对应的实物财产和持有者享有的权利存在因发行方等义务相关方破产，关闭或违法犯罪等其他经营风险导致无法兑现的风险。<br>
+				6.在币交所注册参与交换的用户，应保证注册身份信息的真实、准确，保证拟交换的数字货币等虚拟商品的来源合法。因信息不真实造成的任何问题，平台概不负责。<br>
+				7.因国家法律，法规及政策性文件的制定和修改，导致数字货币等虚拟商品的交易被暂停或者禁止的，由此导致的全部损失由用户自行承担。<br>
+				8.请控制风险，不要投入超过您风险承受能力的资金，不要购买您所不了解的数字货币，数字积分等虚拟商品。</p>
+			</div>
+			<div class="bjs_user2 clearfix">
+				<div class="bjs_text left" style="margin: 0 5px 0 0;"><input type="checkbox" name='agree' id="tongyi"/></div>
+				<div class="bjs_hint left"><label for="tongyi">我已经认真阅读以上风险提示，并已同意币交所 <a href="/service.html?type=1" id="agreement" class="tycolor">服务条款</a>，同意在自担风险，自担损失的情况下参与交</label></div>
+				<div class="bjs_hint left"><span id="agree"></span></div>
+			</div>
+			<div class="bjs_user1 clearfix">
+				<div class="bjs_label left"><label>&nbsp;</label></div>
+				<div class="bjs_text left"><input type="submit" value="继续注册" id="next_btn" class="bjs_next" style="background-color:#e1e1e1; " /></div>
+				<div class="bjs_hint1 left"><span id="agree"> <a href="/" class="tycolor">取消</a></span></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 注册页面内容 -->
+<div class="login_wrap display_c" id="reg_now" <?if(isset($posttype) && $posttype == 1){?>style="display: block;"<?}?>>
+	<div class="login_con register_con">
+		<h2>注册账户</h2>
+		<form class="register_form"  id="form" method="post" onsubmit="return signupDo();">
+			<div class="login_list lg_email">
+				<em></em>
+				<input type="text" placeholder="电子邮箱"  value="<? if(isset($data['email'])) echo $data['email'] ?>" id="email" name="email">
+			</div>
+			<div class="login_list lg_psw">
+				<em></em>
+				<input type="password" placeholder="登录密码" id="pwd" name="pwd">
+			</div>
+			<div class="login_list lg_surepsw">
+				<em></em>
+				<input type="password" placeholder="确认密码" value="" id="repwd" name="repwd">
+			</div>
+			<div class="login_list lg_veri">
+				<em></em>
+				<input type="text" placeholder="验证码" name="captcha" id="captcha">
+				<img id="captchaimg" src="/index/captcha?t=<?=rand(100000, 999999)?>">
+			</div>
+			<div class="login_list lg_yqcode">
+				<em></em>
+				<input type="text" placeholder="邀请码" value="<? if($pid) echo $pid; ?>" id="pid" name="pid">
+			</div>
+
+			<div class="reg_agreetk clearfix">
+				<div class="reg_check left active">
+					<input type="checkbox" checked>
+				</div>
+				<span class="reg_agrespn left">已阅读并同意 <a href="/service.html?type=1">币交所网络服务条款</a></span>
+			</div>
+			<!-- error Tips -->
+			<div class="errortip_box errorTips" id="errorTips" style="display: <?=isset($errorTips) ? 'block' : 'none'; ?>;"><?=isset($errorTips) ? $errorTips : ''; ?></div>
+			<div class="login_list lg_nobor">
+				<input type="submit" value="注册" class="loginSubmit">
+			</div>
+			<div class="login_forgot clearfix">
+				<span class="reg_kslogin">我已经注册，现在<a href="/user/login">登录</a></span>
+			</div>
+		</form>
+	</div>
+</div>
+<script src="<?=host()?>/js/form.js"></script>
+<script>
+	$(function(){
+		$('#tongyi').click(function() {
+			var isAgree = $(this).attr('checked');
+			if(isAgree) {
+				$(this).removeAttr('checked');
+				$('#next_btn').css({'background':'#e1e1e1'});
+			} else {
+				$(this).attr("checked",'true');
+				$('#next_btn').css({'background':'#fcae00'});
+			}
+		});
+		$('#next_btn').click(function() {
+			var isAgree = $('#tongyi').attr('checked');
+			if(isAgree) {
+				$('#reg_prev').hide();
+				$('#reg_now').show();
+			}
+		});
+	});
+	// 验证码点击事件
+	$('#captchaimg').click(function(){
+		$(this).attr('src', '/index/captcha?t='+Math.random());
+		$(this).parent().addClass('lg_borcor');
+	});
+	// 输入框获得焦点时改变边框颜色
+	$('.login_list input').focus(function(){
+		$(this).parent().addClass('lg_borcor');
+	}).focusout(function(){
+		$(this).parent().removeClass('lg_borcor');
+	});
+
+	// 点击注册前的同意条款
+	$('.reg_check').click(function(){
+		var oChecked = $('.reg_check input').is(':checked');
+		if(oChecked == false){
+			$(this).removeClass('active');
+		}else{
+			$(this).addClass('active');
+		}
+	})
+
+</script>
+<script>
+	function signupDo() {
+		var html = $.ajax({type: "get", url: '/ajax/user/email/' + encodeURIComponent($('#email').val()), async: false,
+		}).responseText;
+		var content = JSON.parse(html);
+
+		if (content.status == 0) {
+			$('#errorTips').html(content.msg).show();
+			return false;
+		}
+
+		var pLen = $('#pwd').val().length;
+		if(pLen < 6 || pLen > 20) {
+			$('#errorTips').html('密码长度在6-20个字符之间').show();
+			return false;
+		}
+
+		var repLen = $('#repwd').val().length;
+		if(repLen < 6 || repLen > 20) {
+			$('#errorTips').html('密码长度在6-20个字符之间').show();
+			return false;
+		}
+
+		if($('#pwd').val() != $('#repwd').val()) {
+			$('#errorTips').html('密码不一致，请重新输入').show();
+			return false;
+		}
+
+		if($(this).val().length < 2) {
+			$('#errorTips').html('请输入验证码').show();
+			return false;
+		}
+
+		return true;
+
+	}
+</script>
+<? include PATH_TPL.'/tpl.footer.phtml'?>

@@ -1,0 +1,58 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle left">成交查询</h3>
+				<p class="right" style="padding:10px 10px 0 0;">
+					<span style="color:#666;">成交查询类型：</span>
+					<select onchange="top.location='/user_order/list/type/'+this.value" style="height:30px; line-height:30px; border:1px solid #ddd; border-radius:5px; cursor:pointer;">
+					<option value="all">全部成交</option>
+					<? foreach ($pairs as $k => $v) { ?>
+						<option value="<?=$v['coin_from']?>" <? echo $type == $v['coin_from']?'selected':'';?> ><?=$v['display']?></option>
+					<? } ?>
+					</select>
+				</p>
+			</div>
+			<table id="Transaction" class="Transaction">
+				<thead>
+				<tr>
+					<th width="50">订单号</th>
+					<th width="115">成交时间</th>
+					<th width="75">类型</th>
+					<th width="55">买/卖</th>
+					<th width="80">成交价格</th>
+					<th width="80">成交数量</th>
+					<th width="80">成交金额</th>
+				</tr>
+				</thead>
+				<tbody>
+				<? foreach($datas['orderlist'] as $v1){ ?>
+					<? if($v1['buy_uid'] == $user['uid']){ ?>
+					<tr>
+						<td><?=$v1['id']?></td>
+						<td><?=date('Y-m-d H:i:s', $v1['created'])?></td>
+						<td><?=$cData[$v1['coin_from']]['display']?></td>
+						<td class="buy">买入</td>
+						<td><?if($v1['opt']!=3){?>￥<?=sprintf( '%.'.$cData[$v1['coin_from']]['price_float'].'f', $v1['price'] )?><?}?></td>
+						<td>Ф <?if($v1['opt']==3){?>-<?}?><?=sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['number'] )?></td>
+						<td><?if($v1['opt']!=3){?>￥-<?=sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['price']*$v1['number'] )?><?}?></td>
+					</tr>
+					<? }
+					if($v1['sale_uid'] == $user['uid']){ ?>
+					<tr>
+						<td><?=$v1['id']?></td>
+						<td><?=date('Y-m-d H:i:s', $v1['created'])?></td>
+						<td><?=$cData[$v1['coin_from']]['display']?></td>
+						<td class="sell">卖出</td>
+						<td>￥<?if($v1['opt']==3){?>-<?}?><?=sprintf( '%.'.$cData[$v1['coin_from']]['price_float'].'f', $v1['price'] )?></td>
+						<td><?if($v1['opt']!=3){?>Ф <?=sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['number'] )?><?}?></td>
+						<td><?if($v1['opt']!=3){?>￥<?=sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['price']*$v1['number'] )?><?}?></td>
+					</tr>
+					<? }?>
+				<? }?>
+				</tbody>
+			</table>
+			<?=$datas['pageinfo']?>
+		</div>
+	</div>
+</div></div>
