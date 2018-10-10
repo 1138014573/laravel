@@ -1,4 +1,4 @@
-function Kline() {}
+function Kline() {} 
 Kline.prototype = {
     browerState: 0,
     klineWebsocket: null ,
@@ -58,7 +58,7 @@ Kline.prototype = {
 		    $.get('/market/depths?depth=' + symbol + '&v=' + Math.random(), function(result) {
 				$this.updateDepth(result);
 			});
-		}, 10000);
+		}, parent.canvasReTime);
         return false;
 		/*symbol = "btcchinabtccny";
         if (this.klineWebsocket && this.klineWebsocket.readyState == 1) {

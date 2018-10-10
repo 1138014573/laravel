@@ -9395,7 +9395,7 @@ function KLineMouseEvent() {
     })
 }
 var refresh_counter = 0;
-var refresh_handler = setInterval(refresh_function, 1000);
+var refresh_handler = setInterval(refresh_function, parent.canvasReTime);
 function refresh_function() {
     refresh_counter++;
     var b = ChartManager.getInstance().getLanguage();
@@ -9447,7 +9447,7 @@ var RequestData = function(showLoading) {
         url: GLOBAL_VAR.url,
         dataType: "json",
         data: GLOBAL_VAR.requestParam,
-        timeout: 30000,
+        timeout: parent.canvasReTime,
         created: Date.now(),
         beforeSend: function() {
             this.time = GLOBAL_VAR.time_type;
@@ -9456,7 +9456,7 @@ var RequestData = function(showLoading) {
         success: function(json) {
             if (GLOBAL_VAR.G_HTTP_REQUEST) {
                 if (this.time != GLOBAL_VAR.time_type || this.market != GLOBAL_VAR.market_from) {
-                    GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
+                    GLOBAL_VAR.TimeOutId = setTimeout(RequestData, parent.canvasReTime);
                     return
                 }
                 if (!json) {
@@ -9479,18 +9479,18 @@ var RequestData = function(showLoading) {
                 try {
                     if (!GLOBAL_VAR.chartMgr.updateData("frame0.k0", GLOBAL_VAR.KLineData)) {
                         GLOBAL_VAR.requestParam = setHttpRequestParam(GLOBAL_VAR.market_from, GLOBAL_VAR.time_type, GLOBAL_VAR.limit, null );
-                        GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
+                        GLOBAL_VAR.TimeOutId = setTimeout(RequestData, parent.canvasReTime);
                         return
                     }
                     clear_refresh_counter()
                 } catch (err) {
                     if (err == "data error") {
                         GLOBAL_VAR.requestParam = setHttpRequestParam(GLOBAL_VAR.market_from, GLOBAL_VAR.time_type, GLOBAL_VAR.limit, null );
-                        GLOBAL_VAR.TimeOutId = setTimeout(RequestData, 1000);
+                        GLOBAL_VAR.TimeOutId = setTimeout(RequestData, parent.canvasReTime);
                         return
                     }
                 }
-                GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, 8 * 1000);
+                GLOBAL_VAR.TimeOutId = setTimeout(TwoSecondThread, parent.canvasReTime);
                 $("#chart_loading").removeClass("activated");
                 ChartManager.getInstance().redraw("All", false)
             }
@@ -9501,7 +9501,7 @@ var RequestData = function(showLoading) {
             }
             GLOBAL_VAR.TimeOutId = setTimeout(function() {
                 RequestData(true)
-            }, 1000)
+            }, parent.canvasReTime)
         },
         complete: function() {
             GLOBAL_VAR.G_HTTP_REQUEST = null 
