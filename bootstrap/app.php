@@ -52,6 +52,4 @@ $app->singleton(
 |
 */
 
-define('REDIRECT_URL', empty($_SERVER['REQUEST_URI'])? '/': strtolower($_SERVER['REQUEST_URI']));
-
 return $app;
