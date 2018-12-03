@@ -1,0 +1,75 @@
+
+<style>
+.walletAddress{width: 450px;text-align:center;}
+</style>
+<div class="RightBox">
+	<div class="wrap" style="min-height: 200px;">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">转入<?php  echo $coInfo['display']?></h3>
+			</div>
+			<p class="inBTtext">请将您的<?php  echo $coInfo['display']?>转入下面的钱包地址(最低转入数量为Ф 0.001)：</p>
+
+			<div class="outwallet walletAddress"><?php  echo $moneykey?>
+			</div>
+			<img src="/api/qrimages?margin=0&text=<?php echo $moneykey?>" style="float: right; margin-top: -100px; margin-right: 80px; width:120px;">
+            <p class="inBP"><span data-osc="orange">此地址是您专用地址</span>，您可以多次向此地址转账，也可以同时转入多笔<br>
+            </p><br>
+		</div>
+	</div>
+</div>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">转入记录<a name="btcin_new"></a></h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th width="89">记录ID</th>
+					<th width="280">转入钱包地址</th>
+					<th width="90">数量</th>
+					<th width="99">确认数</th>
+					<th width="143">发送时间</th>
+					<th class="tableEnd">状态</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr id="btcin_box" class="btcin_new" style="display:none">
+					<td id="btcin_id"></td>
+					<td id="btcin_btckey"><?php  echo $moneykey?></td>
+					<td id="btcin_number">未知</td>
+					<td id="btcin_created"></td>
+					<td class="tableEnd" id="btcin_status">等待</td>
+				</tr>
+				<?php  foreach($datas as $v1){ ?>
+					<tr>
+						<td><?php  echo $v1['id']?></td>
+						<td><?php  echo substr($v1['wallet'],0,10).'************'.substr($v1['wallet'],-10,10)?></td>
+						<td><?php  echo (float)$v1['number']?></td>
+						<td><?php  echo $v1['confirm'] < 2? $v1['confirm']: '>=2'?></td>
+						<td><?php  echo date('Y-m-d H:i:s', $v1['created'])?></td>
+						<td class="tableEnd"><?php  if($v1['status']=='成功'){echo '<font color="#090">成功</font>';}else{echo $v1['status'];} ?></td>
+					</tr>
+				<?php  }?>
+				</tbody>
+			</table>
+			<?php  echo $pageinfo?>
+		</div>
+		<style>.btcin_new,.btcin_new td {background: #DDFFDD !important;}</style>
+	</div>
+</div>
+<script>
+	//
+	window.onload = function() {
+		console.log(location.href);
+		// tur osc
+		var tips = new TIPS();
+		if (location.href.indexOf('osc') > -1) {
+			$('span[data-osc="orange"]').css({color: 'orange'}).html('此地址是您新的专用桂花积分地址');
+			tips.setHeader('http://www.bijiaosuo.com上的网页提示');
+			tips.show('您在币交所的桂花积分钱包地址已更新，旧钱包地址已失效，请不要再转入到旧钱包地址中！');
+		}
+	}
+</script>

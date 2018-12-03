@@ -1,0 +1,70 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<?php $type = array('未发货','已发货','确认收货', '取消订单')?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">人民币</h3>
+		<ul class="tabs">
+			<li<?php if($status=='') echo ' class="cur"'?>><a href="/manage_info/cardout/">全部</a></li>
+			<li<?php if($status=='0') echo ' class="cur"'?>><a href="/manage_info/cardout/status/0">未发货</a></li>
+			<li<?php if($status=='1') echo ' class="cur"'?>><a href="/manage_info/cardout/status/1">已发货</a></li>
+			<li<?php if($status=='2') echo ' class="cur"'?>><a href="/manage_info/cardout/status/2">确认收货</a></li>
+			<li<?php if($status=='3') echo ' class="cur"'?>><a href="/manage_info/cardout/status/3">取消订单</a></li>
+		</ul>
+		<form style="float:right" method='get' action=''>
+        <input name="kw" value="<?php  echo isset($_GET['kw'])&&!empty($_GET['kw']) ? $_GET['kw'] : ''?>">
+			<select id="yaf_field" name="id">
+				<option value="" <?php if(!isset($_GET['id'])){echo 'selected';} else {'';}?>>全部</option>
+				<option value="uid" <?php if(isset($_GET['id'])&&$_GET['id']=='uid'){echo 'selected';} else {'';}?>>购买者ID</option>
+				<option value="cid" <?php if(isset($_GET['id'])&&$_GET['id']=='cid'){echo 'selected';} else {'';}?>>订单ID</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th width="100">操作</th>
+				<th>订单id</th>
+				<th>购买用户id</th>
+				<th>姓名</th>
+				<th>电话</th>
+				<th>地址</th>
+				<th>订单信息</th>
+				<th>状态</th>
+				<th>创建时间</th>
+				<th>快递单号</th>
+			<!--	<th>发货卡号</th>-->
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach ($datas as $v1){?>
+		<tr>	
+			<td>
+			<?php if($v1["status"]=='0'){?>
+				<button onclick="WVKE.confirm('/manage_info/cancel/id/<?php  echo $v1['id']?>', 'ok')">取消</button>
+				<button onclick="WVKE.confirm('/manage_info/cardedit/id/<?php  echo $v1['id']?>', 'ok')">修改信息</button>
+				<button onclick="WVKE.confirm('/manage_info/cardok/id/<?php  echo $v1['id']?>', 'ok')">确认发货</button>
+			<?php }else if($v1["status"]=='1'){?>
+				<button onclick="WVKE.confirm('/manage_info/confirm/id/<?php  echo $v1['id']?>', 'ok')">确认收货</button>
+           
+			<?php }?>
+			</td>
+			<td><?php  echo $v1["cid"]?></td>
+			<td><?php  echo $v1["uid"]?></td>
+			<td><?php  echo Tool_Str::safestr($v1["name"])?></td>
+			<td><?php  echo $v1["phone"]?></td>
+			<td><?php  echo $v1["address"]?></td>
+			<td><?php  echo $v1["info"]?></td>
+			<td><?php  echo $type[$v1["status"]]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["ctime"])?></td>
+			<td><?php  echo $v1["kdid"]?></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>

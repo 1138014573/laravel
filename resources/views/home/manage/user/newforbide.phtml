@@ -1,0 +1,64 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<style>
+	.loginValue{border: 1px solid #D5D5D5;float: left;height: 29px;line-height: 29px;margin-right: 15px;padding: 3px;width: 400px;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">添加冻结用户</h3>
+	</div>
+	<div class="bd">
+		<table class="formtable">
+ 			<form method="post" onsubmit="return checkForm();">
+ 				<input name="id" type="hidden" value="<?php if(!empty($data['id'])) echo $data["id"]?>"/>
+	 			<tbody>
+	 				<tr>
+	 					<th>用户ID</th>
+	 					<td><input name="uid" id="uid" class="loginValue" placeholder="请输入要冻结的用户ID" value="<?php if(!empty($data['uid'])) echo $data["uid"]?>" <?php if(!empty($data['uid'])) echo 'readonly';?> /></td>
+	 				</tr>
+	 				<tr>
+	 					<th>冻结原因</th>
+	 					<td><input name="bak" id="bak" class="loginValue" placeholder="请填写冻结原因" value="<?php if(!empty($data['bak'])) echo $data["bak"]?>"/></td>
+	 				</tr>
+	 				<tr>
+	 					<th>允许操作</th>
+	 					<td>
+	 						<input type="checkbox" name="canbuy" value="1" <?php if(!empty($data['canbuy']) && $data['canbuy']==1) echo 'checked';?>> 交易买
+	 						<input type="checkbox" name="cansale" value="1" <?php if(!empty($data['cansale']) && $data['cansale']==1) echo 'checked';?>> 交易卖
+	 						<input type="checkbox" name="canrmbout" value="1" <?php if(!empty($data['canrmbout']) && $data['canrmbout']==1) echo 'checked';?>> 人民币提现
+	 						<input type="checkbox" name="cancoinout" value="1" <?php if(!empty($data['cancoinout']) && $data['cancoinout']==1) echo 'checked';?>> 数字货币提现
+	 						<span style="font-size: 16px;color: red;">（选中代表冻结后仍可以进行的操作）</span>
+	 					</td>
+	 				</tr>
+	 				<tr>
+	 					<th>&nbsp;</th>
+	 					<td>&nbsp;</td>
+	 				</tr>
+	 				<tr>
+	 					<th>&nbsp;</th>
+	 					<td><input class="submit" type="submit" value="确定"></td>
+	 				</tr>
+	 			</tbody>
+	 		</form>
+ 		</table>
+	</div>
+</div>
+</body>
+</html>
+
+<script>
+	function checkForm(){
+		if( !$('#uid').val() ){
+			alert('请填写要冻结的用户ID');return false;
+		}
+
+		if( !$('#bak').val() ){
+			alert('请填写冻结原因');return false;
+		}
+
+		if(confirm('确定要进行此操作吗？')){
+			return true;
+		} else{
+			return false;
+		}
+	}
+</script>

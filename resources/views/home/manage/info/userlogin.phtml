@@ -1,0 +1,47 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<?php 
+	function ipadd($ip){
+		$data = json_decode(file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip='.$ip), true);
+		$data = $data['data'];
+		return $data['country'].' '.$data['region'].' '.$data['city'].' '.$data['isp'];
+	}
+?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户登陆日志&nbsp;&nbsp;&nbsp;</h3>
+		<form style="float:right">
+			<input name="kw" value="<?php if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="id">id</option>
+				<option value="uid">uid</option>
+				<option value="ip">ip</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>uid</th>
+				<th>登陆时间</th>
+				<th>登陆IP</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			<td><?php  echo $v1["id"]?></td>
+			<td><?php  echo $v1["uid"]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["login_time"])?></td>
+			<td><a href="http://www.ip138.com/ips1388.asp?ip=<?php  echo $v1["ip"]?>&action=2" target="_blank"><?php  echo $v1["ip"]?></a></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>

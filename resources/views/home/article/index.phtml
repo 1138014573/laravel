@@ -1,0 +1,58 @@
+<?php  include PATH_TPL.'/tpl.header.phtml'; ?>
+<style>
+	.aboutText a {
+		text-decoration: none;
+	}
+	.ss-box {
+		min-height: 30px;
+		line-height: 30px;
+		margin-bottom: 10px;
+		border-bottom: #F3F3F3 1px solid;
+	}
+</style>
+<div class="content clear">
+	<div class="Left">
+		<div class="accountBox">
+			<div class="wrap">
+				<div class="box">
+					<div class="TitleBox">
+						<h3 class="PlateTitle">文章分类</h3>
+					</div>
+					<div class="about clear">
+						<?php  foreach($categorys as $v1){?>
+							<a  href="./?cid=<?php  echo $v1['id']?>"><?php  echo $v1['name']?></a>
+						<?php  }?>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="Right">
+		<div class="accountBox">
+			<div class="wrap">
+				<div class="box">
+					<div class="TitleBox">
+						<h3 class="PlateTitle"><?php  echo $cname?></h3>
+					</div>
+					<div class="aboutText">
+						<?php  foreach ($datas as $row) { ?>
+						<a href="/article/detail?id=<?php  echo $row['id']?>">
+						<div class="ss-box">
+								<?php  echo $row['title'] ?>
+								<?php  if(1==$row['is_top']) { ?>
+									<img src="/img/icon_top.png">
+								<?php  } ?>
+								<span style="display:block;float:right;">
+									<?php  echo date('Y-m-d H:i:s', $row['created'])?>
+								</span>
+						</div>
+						</a>
+						<?php  } ?>
+					</div>
+					<?php  echo $pageinfo?>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<?php  include PATH_TPL.'/tpl.footer.phtml'?>

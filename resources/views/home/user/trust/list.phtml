@@ -1,0 +1,67 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle left">委托管理</h3>
+				<p class="right" style="padding:10px 10px 0 0;">
+					<span style="color:#666;">委单查询类型</span>
+					<!-- top.location='/user_trust/list/type/'+this.value+'/current/'+this.name -->
+					<select id="selectType" style="height:30px; line-height:30px; border:1px solid #ddd; border-radius:5px; cursor:pointer;">
+						<!--<option value="all_1" <?php /* echo $status == 'all_1'?'selected':'';*/?> >全部委托</option>-->
+						<?php  foreach ($pairs as $k => $v) { ?>
+							<option value="<?php  echo $v['coin_from'].'_1'?>" <?php  echo $status == $v['coin_from'].'_1'?'selected':'';?> ><?php  echo $v['display']?>近期委托</option>
+							<option value="<?php  echo $v['coin_from'].'_2'?>" <?php  echo $status == $v['coin_from'].'_2'?'selected':'';?> ><?php  echo $v['display']?>未成交</option>
+						<?php  } ?>
+					</select>
+				</p>
+				<script>
+					var oSelect = document.getElementById('selectType');
+					oSelect.onchange = function(){
+						var str = this.value;
+						var arr = str.split('_');
+						top.location='/user_trust/list/type/'+arr[0]+'/current/'+arr[1];
+					}
+				</script>
+			</div>
+			<table id="Transaction" class="Transaction">
+				<thead>
+				<tr>
+					<th width="160">委托时间</th>
+					<th width="54">类型</th>
+					<th width="91">委托数量</th>
+					<th width="88">委托价格</th>
+					<th width="91">成交数量</th>
+					<th width="91">尚未成交</th>
+					<th width="79">状态</th>
+					<th class="tableEnd">操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php  $tStatus = array(array('buy', '未成交'), array('part', '部分成交'), array('sell', '全部成交'), array('buy cancel', '已撤销'));
+				foreach($datas['trustlist'] as $v1){
+					?>
+					<tr>
+						<td><?php  echo date('Y-m-d H:i:s', $v1['created'])?></td>
+						<?php  if($v1['flag'] == 'buy'){ ?>
+                            <td class="buy"><?php  echo $cData[$v1['coin_from']]['display']?>买入</td>
+						<?php  }else{ ?>
+                            <td class="sell"><?php  echo $cData[$v1['coin_from']]['display']?>卖出</td>
+						<?php  }?>
+						<td>Ф <?php  echo sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['number'] )?></td>
+						<td>￥<?php  echo sprintf( '%.'.$cData[$v1['coin_from']]['price_float'].'f', $v1['price'] )?></td>
+						<td>Ф <?php  echo sprintf( '%.'.$cData[$v1['coin_from']]['number_float'].'f', $v1['numberdeal'] )?></td>
+						<td id="t_n_o_<?php  echo $v1['id']?>">Ф <?php  echo $v1['numberover']?></td>
+						<td class="<?php  echo  $tStatus[$v1['status']][0] ?>" id="t_s_<?php  echo $v1['id']?>"><?php  echo $tStatus[$v1['status']][1]?></td>
+						<td class="tableEnd" id="t_opt_<?php  echo $v1['id']?>">
+							<?php  if(in_array($v1['status'], array(0, 1))){?>
+                            <a class="remove" href="javascript:void(0)" onclick="ajaxtrustcancel(<?php  echo $v1['id']?>,1,'<?php echo $v1['coin_from'] ?>')">撤销</a><!--chen-->
+							<?php  }?>
+						</td>
+					</tr>
+				<?php  }?>
+				</tbody>
+			</table>
+			<?php  echo $datas['pageinfo']?>
+		</div>
+	</div>
+</div>

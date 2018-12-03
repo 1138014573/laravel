@@ -1,0 +1,44 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<?php  $allCoins = User_CoinModel::getInstance()->getList(); ?>
+<div class="mod">
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>币名</th>
+				<th>休市规则总开关</th>
+				<th>开盘时间</th>
+				<th>闭盘时间</th>
+				<th>周几休市</th>
+				<th>节假日休市</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $k1=>$v1){?>
+			<tr>
+				<td><?php  echo $v1["id"]?></td>
+				<td><?php  echo $v1["display"]."(".$v1["coin_from"].")"?></td>
+				<td><?php  echo $v1["rule_open"]?></td>
+				<td><?php  echo $v1["open_start"]?></td>
+				<td><?php  echo $v1["open_end"]?></td>
+				<td><?php  echo $v1["open_week"]?></td>
+				<td><?php  echo $v1["open_date"]?></td>
+				<td>
+					<div>
+						<?php  if($btnAuth['user_user_modify']){ ?>
+						<a href="/manage_ybc/tradingdayrule?id=<?php  echo $v1["id"]?>" title="修改账户资料">
+							<img src="/img/pma/s_rights.png" alt="修改资料">
+						</a>
+						<?php  } ?>
+					<div>
+				<td>
+			</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户关系</h3>
+		<form style="float:right" method='get' action=''>
+        <input name="kw" value="<?php  echo isset($_GET['kw'])&&!empty($_GET['kw']) ? $_GET['kw'] : ''?>">
+			<select id="yaf_field" name="field">
+				<option value="" <?php if(!isset($_GET['id'])){echo 'selected';} else {'';}?>>全部</option>
+				<option value="uid" <?php if(isset($_GET['id'])&&$_GET['id']=='uid'){echo 'selected';} else {'';}?>>邀请者ID</option>
+				<option value="oid" <?php if(isset($_GET['id'])&&$_GET['id']=='oid'){echo 'selected';} else {'';}?>>被邀请者ID</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>邀请者ID</th>
+				<th>被邀请者ID</th>
+				<th>奖励金额</th>
+				<th>奖励时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php if(!empty($datas)){?>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			<td><?php  echo $v1["id"]?></td>
+			<td><?php  echo $v1["uid"]?></td>
+			<td><?php  echo $v1["oid"]?></td>
+			<td><?php  echo $v1["reward"]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["creatime"])?></td>
+		</tr>
+		<?php  }}?>
+		</tbody>
+	</table>
+	<?php if(isset($_GET['id']) && $_GET['id'] == 'pid'){
+	echo '';
+	}else{?>
+	<?php  echo $pageinfo;}?>
+	</div>
+</div>
+</body>
+</html>

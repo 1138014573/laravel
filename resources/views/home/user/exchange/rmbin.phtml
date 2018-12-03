@@ -1,0 +1,207 @@
+<style>
+.input {
+    border: 1px solid #D5D5D5;
+    color: #797D7F;
+    float: left;
+    height: 27px;
+    line-height: 27px;
+    padding: 3px;
+    width: 260px;
+}
+.sellmonyl{float:left;width:70px;font-size: 14px;margin-left: 100px;}
+.sellmonyr{float:left;}
+.sellbox{width: 520px; margin-left: 50px; overflow: hidden; margin-bottom:10px;}
+.sellbox a {
+background: url(<?php  echo host_img()?>/images/submitBg.png) no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    color: #FFFFFF;
+    float: left;
+    font-size: 14px;
+    font-weight: bold;
+    height: 20px;
+    line-height: 16px;
+    margin-left: 20px;
+    padding: 10px 10px;
+    text-decoration: none;
+    width: 86px;
+}
+.false, .loginB1{
+    width: 148px;
+}
+	.banks{
+		font-weight:bold;
+		font-size:16px;
+		color:red;
+	}
+</style>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">人民币充值</h3>
+			</div>
+			<table class="payRMB">
+				<tbody>
+                <?php  if(isset($orderid) && $orderid){?>
+                <tr>
+					<td width="131" class="firstTd" style="font-size:24px;">操作步骤：</td>
+					<td colspan="3">
+                    <p style="line-height:22px; padding:5px 8px 0px;font-size:14px;">第一步：登录您的<strong class="banks"><?php  echo $bankfrom?>网银</strong>或<strong class="banks">手机银行</strong>，选择转账汇款。</p>
+                    <p style="height:22px; line-height:22px; padding:10px 8px;font-size:14px;">第二步：按如下内容进行汇款信息填写</p>
+                    <div style="font-size:16px;margin-left:10px;font-weight:bold;">
+                    收款人：<?php  echo $b[0]?><br />
+                    收款人帐号：<?php  echo $b[1]?><br />
+                    收款人开户行：<?php  echo $b[2]?><br />
+                    金额：<?php  echo $amount?><font color="#ff0000">(请务必按此金额付款，否则无法快速到账)</font><br />
+					付款人：<?php  echo $name?><br />
+                    付款人帐号：<?php  echo $account?><br />
+                    付款人开户行：<?php  echo $bankfrom?><br />
+                    <!--备注：<font color="#ff0000"><?php  echo $orderid?>,<?php  echo $user['uid']?></font>(请务必填上备注，以确保快速到账。)<br />-->
+                    </div>
+                    <p style="height:22px; line-height:22px; padding:0px 8px 0px;font-size:14px; margin-top:50px;">第三步：请您务必按照以上要求先完成汇款，再点击确认</p>
+					<div class="rePWBtn">
+                    <input type="submit" value="确认" class="rePWButton" onclick="oksub()">
+                    </div>
+                    </td>
+                </tr>
+                <?php  }else{?>
+				<tr>
+					<td width="131" class="firstTd">充值说明：</td>
+                    <td colspan="3">
+					<p style="font-size:14px;margin-left:10px;">
+					<b style="color:#ff0000;font-size:14px;">为了工作人员区分您的汇款，系统会自动给您生成两位小数点，实际汇款金额请带2位小数点。</b><br />
+					汇款受理时间：7*24小时<br>
+					最小充值金额为：10元<br>
+					如果您有疑问，可以 QQ咨询：<script charset="utf-8" type="text/javascript" src="http://wpa.b.qq.com/cgi/wpa.php?key=XzkzODAwMjI0M185NjI2MF80MDA4MzY3NjY3Xw"></script>
+					</p>
+				</tr>
+				<tr><form method="post" action="/user_exchange/rmbin" onsubmit="return bankconfirm('epaynumber');">
+                    <td colspan=4>
+                    <div class="buyText clear rePW">
+                    <span>您汇到哪个银行：</span>
+                    <div style="font-size:14px;">
+                    <input type="radio" name="bank" value="zs" checked/>招商银行&nbsp;
+                    </div>
+                    </div>
+                    <div class="buyText clear rePW">
+                    <span>充值金额：</span> <input name="number" id="epaynumber" class="loginValue" type="text" onkeyup="value=value.replace(/[^\d]/g,'')" value="500"><b style="font-size:14px;">.<?php  echo $rand?>元</b><font style="color:#ff0000;">(汇款时此两位小数点务必带上)</font>
+                    <input type="hidden" name="floatnum" value="<?php  echo $rand?>" />
+                    </div>
+					<div class="buyText clear rePW">
+						<div style="height:30px" class="sellmonyl">姓名：</div>
+						<div class="sellmonyr">
+							<input type="text" id="name" name="name" value="" class="input"><b style="margin-left:10px;" id="namemsg" class="rePWB">如（张三）</b>
+						</div>
+					</div>
+					<div class="buyText clear rePW">
+						<div style="height:30px" class="sellmonyl">银行账号：</div>
+						<div class="sellmonyr">
+							<input type="text" id="account" name="account" value="" class="input"><b style="margin-left:10px;" id="accountmsg" class="rePWB">(输入您的银行账号以便我们区分)</b>
+						</div>
+					</div>
+					<div class="buyText clear rePW">
+						<div style="height:30px" class="sellmonyl">银行名称：</div>
+						<div class="sellmonyr">
+							<input type="text" id="bankfrom" name="bankfrom" value="" class="input"><b style="margin-left:10px;" id="bankfrommsg" class="rePWB">(输入您的银行的开户行)</b>
+						</div>
+					</div>
+                    <div class="rePWBtn">
+                    <input type="submit" value="充值" class="rePWButton">
+                    </div>
+                </td></form>
+				</tr>
+                <?php  }?>
+				<tr>
+				</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">充值记录</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th>订单ID</th>
+					<th>时间</th>
+					<th>金额</th>
+					<th>充值方式</th>
+					<th>状态</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php  foreach($datas as $v1){ ?>
+				<?php if($v1['accounttype'] == '双乾' && $v1['status'] == '等待' && $v1['created']+1800>time()){?>
+				<?php }else{?>
+					<tr>
+						<td><?php  echo $v1['id']?></td>
+						<td><?php  echo date('Y-m-d H:i', $v1['created'])?></td>
+						<td><?php  echo $v1['money']?></td>
+						<td><?php if($v1['accounttype'] == '双乾'){echo "直充";}else{echo $v1['accounttype'];}?></td>
+						<td class="tableEnd"><?php  echo $v1['status']=='等待'?'处理中':$v1['status']?></td>
+					</tr>
+				<?php  }}?>
+				</tbody>
+			</table>
+			<?php  echo $pageinfo?>
+		</div>
+	</div>
+</div>
+<?php  if(!isset($orderid) && isset($rand)){?>
+<script type="text/javascript">
+function bankconfirm(payid){
+    var num = document.getElementById(payid).value;
+    if(num < 10){
+        alert('充值最小金额为10元，请重新输入');
+        return false;
+    }
+    if(confirm('您本次充值金额'+num+'.'+<?php  echo $rand?>+'元')){
+        return true;
+    } else {
+        return false;
+    }
+}
+</script>
+<?php  }else{?>
+<script src="/js/form.js"></script>
+<script type="text/javascript">
+function oksub(){
+	if(confirm('确认已付款')){
+		window.location.href="/user_exchange/rmbin2";
+    }
+}
+vali = {name: 0, order: 0, account: 0, bankfrom: 0};
+	$('#name').bind('blur', function(){
+		var pLen = $(this).val().length;
+		if(pLen == 0) return validateMsg('name', '名字不能为空', 0);
+		return validateMsg('name', '', vali.name = 1);
+	});
+	$('#bankfrom').bind('blur', function(){
+		var pLen = $(this).val().length;
+		if(pLen == 0) return validateMsg('bankfrom', '银行名字不能为空', 0);
+		return validateMsg('bankfrom', '', vali.bankfrom = 1);
+	});
+
+	$("#sub").click(function(){
+		var name = $("#name").val();
+		var order = $("#order").val();
+		var account = $("#account").val();
+		var bankfrom = $("#bankfrom").val();
+		var orderid = $("#orderid").val();
+		if(name == ''){
+			alert('名字不能为空');
+			return;
+		}
+		if(bankfrom == ''){
+			alert('银行名字不能为空');
+			return;
+		}
+    })
+</script>
+
+<?php  }?>

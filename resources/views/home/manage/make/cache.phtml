@@ -1,0 +1,11 @@
+<?php  include PATH_TPL.'/manage/tpl.header.phtml'?>
+<form method="post">
+  <fieldset id="pboxuser">
+    <legend><b>更新缓存</b> <input type="checkbox" onClick="WVKE.subchk('pboxuser', this.checked)"/> 全选 [ 损耗性能，建议逐一生成 ]</legend>
+    <label><input type="checkbox" name="opt[]" value="1"/> 用户(user) </label>
+    <label><input type="checkbox" name="opt[]" value="2"/> 分类(category) </label>
+  </fieldset>
+  <fieldset><input class="submit" type="submit" value="更新缓存"></fieldset>
+</form>
+</body>
+</html>

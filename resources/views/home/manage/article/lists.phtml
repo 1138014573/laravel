@@ -1,0 +1,79 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"; ?>
+<style>
+.loginValue {
+    border: 1px solid #D5D5D5;
+    float: left;
+    height: 29px;
+    line-height: 29px;
+    margin-right: 15px;
+    padding: 3px;
+    width: 100px;
+}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">文章</h3>
+		<form style="float:right">
+			<input name="kw" value="<?php if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="uid">uid</option>
+				<option value="email">邮箱</option>
+			</select>
+      <script>$('#yaf_field').val('<?php  echo isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>操作</th>
+				<th>id</th>
+				<th>文章标题</th>
+				<th>文章分类</th>
+				<th>发布时间</th>
+				<th>是否置顶</th>
+				<th>排序</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+		    <td><a href="./modify/?id=<?php  echo Tool_Str::safestr($v1["id"])?>">编辑</a>/<a href="./lists/?id=<?php  echo Tool_Str::safestr($v1["id"])?>&ac=rm">删除</a></td>
+			<td><?php  echo Tool_Str::safestr($v1["id"])?></td>
+			<td><?php  echo Tool_Str::safestr($v1["title"])?></td>
+			<td>
+				<?php 
+					foreach ($categorys as $row) {
+						if($row['id'] == $v1["category_id"]) {
+							echo Tool_Str::safestr($row["name"]);
+							break;
+						}		
+					}
+				?>
+			</td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><?php  if(0!=$v1["is_top"]){ ?> <img src="/img/icon_top.png"> <?php  }?></td>
+			<td><input class="loginValue" type="text" name="orderno" value="<?php  echo $v1['orderno']?>" idv="<?php  echo $v1['id']?>" /></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+<script type="text/javascript">
+$(function() {  
+	$(".loginValue").blur(function(){
+		var id = $(this).attr('idv');
+		var val = $(this).val();
+		var data = {val:val};
+		$.post('/Manage_Article/lists/?id=' + id + '&ac=' +  'orderno', data, function(txt){
+			window.location.reload();  
+		});
+	});
+});
+
+</script>
+</body>
+</html>

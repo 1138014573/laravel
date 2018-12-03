@@ -1,0 +1,127 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">添加<?php  echo $coInfo['display']?>地址</h3>
+			</div>
+			<form method="post" class="coinaddressfm">
+				<input type="hidden" name="coin" value="<?php  echo $coInfo['name']?>">
+				<p class="prompt1" id="cb_msg_box" style=""></p>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>地址标签：</span> <input id="btckey" class="loginValue" type="text" name="name">
+				</div>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b><?php  echo $coInfo['display']?>地址：</span> <input id="btckey" class="loginValue widthleng" type="text" name="address">
+				</div>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>验证码：</span><input style="width:138px;" class="loginValue signinCode" name="captcha" id="captcha" placeholder="请输入验证码">
+					<img id="captchaimg" src="/index/captcha?t=<?php  echo rand(100000, 999999)?>" style="float:left;margin-left: 10px;"> <a id="changeCode" href="javascript:void(0);" onclick="$('#captchaimg').attr('src', '/index/captcha?t='+Math.random())" style="float:left; line-height:40px; padding-left:10px;">看不清，再换一张</a>
+				</div>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>手机验证码：</span>
+					<input type="code" name="code" id="code" value="" class="loginValue">
+				</div>
+				<div class="phone_verify clearfix">
+					<a class="aButton1 left" data-time="60" onclick="verifySub(this,2,'<?php  echo $coInfo['display']?>');" id="btn">获取短信验证码</a>
+					<a class="aButton1 right" data-time="60" onclick="verifySub(this,6,'<?php  echo $coInfo['display']?>');" id="btn1">获取语音验证码</a>
+				</div>
+				<div class="buyText clear rePW" style="margin-top:0;">
+					<span><b class="importantB">&nbsp;</b></span>
+					<?php if(isset($codemsg)){?>
+						<b class="false" id="codemsg" style="width:180px;"><?php  echo $codemsg?></b>
+					<?php }else{?>
+						<b class="phone" id="codemsg" style="width:180px;">如果您的手机号为空或有误，请联系客服</b>
+					<?php }?>
+				</div>
+				<!-- error Tips -->
+				<div class="errorTips addressbindErrorTips" id="errorTips" style="display: <?php  echo isset($errorTips) ? 'block' : 'none'; ?>;"><?php  echo isset($errorTips) ? $errorTips : ''; ?></div>
+				<div class="rePWBtn">
+					<input id="btc_btn" class="inBtnA1" type = "submit" value="添加地址" style="width:234px; margin:0;"/>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<div class="outBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">地址记录</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th width="89">记录ID</th>
+					<th width="286">地址</th>
+					<th width="95">地址标签</th>
+					<th width="183">操作时间</th>
+					<th class="tableEnd">状态</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr id="btc_box" class="btc_new" style="display:none">
+					<td id="btc_id"></td>
+					<td id="btc_btckey"></td>
+					<td id="btc_number"></td>
+					<td id="btc_created"></td>
+					<td class="tableEnd" id="btc_status">等待转出</td>
+				</tr>
+				<?php  foreach($datas as $v1){?>
+					<tr >
+						<td><?php  echo $v1['id']?></td>
+						<td><?php  echo $v1['wallet']?></td>
+						<td><?php  echo $v1['name']?></td>
+						<td><?php  echo date('Y-m-d H:i:s', $v1['created'])?></td>
+						<td><?php  if( $v1['status'] == 0 ) echo '已认证';?></td>
+					</tr>
+				<?php  }?>
+				</tbody>
+			</table>
+			<?php  echo isset($pageinfo) ? $pageinfo : '';?>
+		</div>
+	</div>
+</div>
+<style>.btc_new,.btc_new td {background: #DDFFDD !important;}#cb_msg_box{background:#B50000;color:#FFF;display:none;text-align:center;padding:0px;}</style>
+<script>
+	var reloadPage = '<?php  echo  isset($errorTips) ? $errorTips : '' ?>';
+	if (reloadPage == '地址添加成功') {
+		setTimeout(function() {
+			top.location = '/user_exchange/coinout/name/'+'<?php  echo $coInfo['name']?>';
+		}, 2000);
+	}
+	// 验证码
+	function verifySub(obj, num, name){
+		if( !$('#captcha').val() ){
+			$('#errorTips').html('请填写图形验证码').show();
+			return false;
+		}
+		$.post('/user_exchange/verifycheck1', {'captcha':$('#captcha').val()}, function(data){
+			if(data==2){
+				console.log(data);
+				$('#errorTips').html('图形验证码错误').show();
+				return false;
+			}
+			sendmsg(obj, num, name);
+			return false;
+		})
+	}
+
+	function time(obj) {
+		var times = parseInt($(obj).data('time'));
+		if (times == 0) {
+			$(obj).removeClass('aButton2').addClass('aButton1');
+			$(obj).html("重新获取验证码");
+			$(obj).data("time", "60");
+			wait = 60;
+		} else {
+			times--;
+			$(obj).removeClass('aButton1').addClass('aButton2');
+			$(obj).data("time", times);
+			$(obj).html("重新发送(" + times + ")");
+			setTimeout(function() {
+					time(obj);
+				},
+				1000)
+		}
+	}
+</script>

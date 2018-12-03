@@ -1,0 +1,50 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<?php  $allCoins = User_CoinModel::getInstance()->getList(); ?>
+<div class="mod">
+	<div class="hd">
+		<select onchange='window.location.href = "/manage_coins/have/status/<?php  echo $status?>/coin/"+this.value' class="title" style="width: 100px;height: 30px;font-size: 18px;font-weight: bolder;margin-left: 10px;">
+			<?php  foreach ($allCoins as $key => $value) { ?>
+				<option value="<?php  echo $value['name']?>" <?php if($value['name']==$coin){?>selected<?php }?> ><?php  echo $value['display']?></option>
+			<?php  } ?>
+		</select>
+		<ul class="tabs">
+			<li<?php if(0==$status) echo ' class="cur"'?>><a href="/manage_coins/have/coin/<?php echo $coin ?>/status/<?php  echo urlencode('0')?>">全部</a></li>
+			<li<?php if(1==$status) echo ' class="cur"'?>><a href="/manage_coins/have/coin/<?php echo $coin ?>/status/<?php  echo urlencode('1')?>">去除官方</a></li>
+		</ul>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>排名</th>
+				<th>UID</th>
+				<th>邮箱</th>
+				<th>姓名</th>
+				<th>手机</th>
+				<th>总量/<?php  echo $coin?></th>
+				<th>可用/<?php  echo $coin?></th>
+				<th>冻结/<?php  echo $coin?></th>
+				<th style="min-width: 150px;">注册时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $k1=>$v1){?>
+			<tr>
+				<td><?php  echo $k1+1?></td>
+				<td><?php  echo $v1["uid"]?></td>
+				<td><?php  echo $v1["email"]?></td>
+				<td><?php  echo $v1["name"]?></td>
+				<td><?php  echo $v1["mo"]?></td>
+				<td><?php  echo $v1["total"]?></td>
+				<td><?php  echo $v1["over"]?></td>
+				<td><?php  echo $v1["lock"]?></td>
+				<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+			</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo;?>
+	</div>
+</div>
+</body>
+</html>

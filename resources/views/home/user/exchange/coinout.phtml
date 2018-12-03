@@ -1,0 +1,168 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box coinout_con">
+			<div class="TitleBox" style="margin-bottom: 50px;">
+				<h3 class="PlateTitle">转出<?php  echo $coInfo['display']?></h3>
+			</div>
+            <?php  if($page == 'default'){?>
+			<p class="prompt1" id="cb_msg_box" style=""></p>
+            <div class="buyText clear rePW">
+               <span><b class="importantB">*</b>提币地址：</span>
+               <select name="bank" class="loginValue left" style="width: 232px; height:40px;" id="btckey">
+                   <option value="">请选择提币地址</option>
+                   <?php  foreach ($addresslist as $key => $value) { ?>
+                   <option value="<?php  echo $value['id']?>"><?php  echo $value['wallet']?>,<?php  echo $value['name']?></option>
+                   <?php  } ?>
+               </select>
+               <b class="rePWB"><a href="/user_exchange/addressbind/coin/<?php  echo $coInfo['name']?>" style="color:#329ddc;">添加提币地址</a></b>
+            </div>
+			<div class="buyText clear rePW">
+				<span><b class="importantB">*</b>转出数额(Ф)：</span> <input id="num" class="loginValue" type="text">
+				<b class="rePWB">转出数额不能小于Ф <?php  echo (float)$coInfo['minout']?>。</b>
+			</div>
+			<div class="buyText clear rePW">
+				<span><b class="importantB">*</b>交易密码：</span> <input id="pwdtrade" class="loginValue" type="password">
+				<b class="rePWB">请输入交易密码。</b>
+			</div>
+			<!-- <div class="buyText clear rePW">
+				<span><b class="importantB">*</b>手机验证码：</span>
+				<input type="code" name="code" id="code" value="" class="loginValue">
+				<a class="aButton1" onclick="sendmsg(this,2);" id="btn">获取短信验证码</a>
+				<a class="aButton1" onclick="sendmsg(this,6);" id="btn">获取语音验证码</a>
+
+			</div>
+			<div class="buyText clear rePW" style="margin-top:0;">
+				<span><b class="importantB">&nbsp;</b></span>
+				<?php if(isset($codemsg)){?>
+					<b class="false" id="codemsg" style="width:180px;"><?php  echo $codemsg?></b>
+				<?php }else{?>
+					<b class="phone" id="codemsg" style="width:180px;">如果您的手机号为空或有误，请联系客服</b>
+				<?php }?>
+			</div> -->
+			<?php if($ga['open']){?>
+				<!-- 双重验证密码 -->
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>双重验证密码：</span>
+					<input type="password" name="hotp" id="hotp" value="" class="loginValue">
+					<?php if(isset($msg_hotp)){?>
+						<b class="false" id="hotpmsg"><?php  echo $msg_hotp?></b>
+					<?php  } else {?>
+						<b class="rePWB" id="hotpmsg">请输入双重验证密码。</b>
+					<?php  }?>
+				</div>
+			<?php }?>
+			<input type="hidden" name="hotp" id="hotp" value="hotpone" class="loginValue">
+            <!-- error Tips -->
+            <div class="errorTips coinErrorTips" id="errorTips" style="display: <?php  echo isset($errorTips) ? 'block' : 'none'; ?>;"><?php  echo isset($errorTips) ? $errorTips : ''; ?></div>
+			<div class="rePWBtn">
+				<a id="btc_btn" class="inBtnA1" href="javascript:void(0);" onclick="exchangebtc()" >转出</a>
+			</div>
+            <?php  }elseif($page == 'wait'){?>
+                <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+                提交成功，请进入您的注册邮箱确认或取消操作。<br />
+                <?php  echo $_SESSION['user']['email']?>
+                </p>
+            <?php  }elseif($page == 'success'){?>
+                <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+                <?php  echo $coInfo['display']?>转出成功！<br />
+                </p>
+            <?php  }elseif($page == 'already'){?>
+	            <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+	            <?php  echo $coInfo['display']?>转币操作已确认！<br />
+	            </p>
+            <?php  }elseif(strpos($page,'fail') !== FALSE){?>
+                <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+                <?php  echo $coInfo['display']?>转出失败，请联系客服或&nbsp;<a href="/user_exchange/coinout/" style="font-size:14px;">重新操作</a>
+                </p>
+            <?php  }elseif($page == 'timeout'){?>
+                <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+                转币操作已取消，请&nbsp;<a href="/user_exchange/coinout/" style="font-size:14px;">重新操作</a>
+                </p>
+            <?php  }elseif($page == 'sys'){?>
+                <p class="payText" style="text-align:center;font-size:18px;margin-top:30px;color:#fc4e00;">
+                系统错误，请联系管理员，ERROR_BALANCE_EMPTY
+                </p>
+            <?php  }?>
+
+            <div class="rmbin_confirmtil">
+          		<h3>转出须知：</h3>
+				<p>
+				<!--	1. 实时转出，需要到您的注册邮箱进行确认操作<br />-->
+		            1. 每笔转出最低额度为<span><?php  echo (float)$coInfo['minout']?><?php  echo $coInfo['display']?></span>，最高限额为<span><?php  echo $coInfo['maxout']?><?php  echo $coInfo['display']?></span><br/>
+		            2. 转出<?php  echo $coInfo['display']?>手续费为<span><?php  echo ($coInfo['rate_out']*100).'%'?></span><br />
+		            3. 转出额度超过<span><?php  echo (float)User_CoinModel::outlimit($coInfo['name'])?></span><?php  echo $coInfo['display']?>时需人工审核。
+		        </p>
+			</div>
+
+		</div>
+
+	</div>
+</div>
+<div class="outBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">转出记录</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th width="89">记录ID</th>
+					<th width="286">转入钱包地址</th>
+					<th width="95">转出数量</th>
+					<th width="183">操作时间</th>
+					<th class="tableEnd">状态</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr id="btc_box" class="btc_new" style="display:none">
+					<td id="btc_id"></td>
+					<td id="btc_btckey"></td>
+					<td id="btc_number"></td>
+					<td id="btc_created"></td>
+					<td class="tableEnd" id="btc_status">等待转出</td>
+				</tr>
+				<?php  foreach($datas as $v1){ ?>
+				<tr >
+					<td><?php  echo $v1['id']?></td>
+					<td><?php  echo strlen($v1['wallet'])==34 ? (substr($v1['wallet'],0,strlen($v1['wallet'])-4).'****') : $v1['wallet']?></td>
+					<td><?php  echo $v1['number']?></td>
+					<td><?php  echo date('Y-m-d H:i:s', $v1['created'])?></td>
+					<td class="tableEnd<?php if('成功'==$v1['status'])echo ' sell'?>"><?php  echo $v1['status']=='等待'?'处理中':$v1['status']?></td>
+				</tr>
+				<?php  }?>
+				</tbody>
+			</table>
+			<?php  echo $pageinfo?>
+		</div>
+	</div>
+</div>
+<script>
+	function exchangebtc(){
+        var coinkey = $('#btckey').val();
+        if(!coinkey){
+            return $('#errorTips').html('请选择提币地址, 没有请添加').show();
+        }
+        var continue1 = false;
+        var coin = "<?php  echo $coInfo['name']?>";
+		$.post('/ajax/exchangebtc/mk/' + coinkey + '/coin/'+coin,
+            {num: $('#num').val(), addressid:coinkey,pwdtrade: $('#pwdtrade').val()<?php if($ga['open'])echo ',hotp:$("#hotp").val()'?><?php if($user['uid']<6)echo ',bak:$("#bak").val()'?>},
+			function(d){
+                if(d.status){
+                    continue1 = true;
+					if(continue1)location.href='/user_exchange/coinout/page/success/name/'+coin;
+                } else {
+                    $('#errorTips').html(d.msg).show();
+                }
+			}, 'json');
+	}
+	//
+	console.log(location.href);
+	// tur osc
+	var tips = new TIPS();
+	if (location.href.indexOf('osc') > -1) {
+		tips.setHeader('http://www.bijiaosuo.com上的网页提示');
+		tips.show('您在币交所的桂花积分钱包地址已更新，旧钱包地址已失效，请不要再转入到旧钱包地址中！');
+	}
+</script>
+<style>.btc_new,.btc_new td {background: #DDFFDD !important;}#cb_msg_box{background:#B50000;color:#FFF;display:none;text-align:center;padding:0px;}</style>

@@ -1,0 +1,46 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户关系</h3>
+		<form style="float:right" method='get' action=''>
+        <input name="kw" value="<?php  echo isset($_GET['kw'])&&!empty($_GET['kw']) ? $_GET['kw'] : ''?>">
+			<select id="yaf_field" name="id">
+				<option value="uid" <?php if(isset($_GET['id'])&&$_GET['id']=='uid'){echo 'selected';} else {'';}?>>邀请者ID</option>
+				<option value="pid" <?php if(isset($_GET['id'])&&$_GET['id']=='pid'){echo 'selected';} else {'';}?>>被邀请者ID</option>
+				<option value="femail" <?php if(isset($_GET['id'])&&$_GET['id']=='femail'){echo 'selected';} else {'';}?>>邀请者Email</option>
+				<option value="temail" <?php if(isset($_GET['id'])&&$_GET['id']=='temail'){echo 'selected';} else {'';}?>>被邀请者Email</option>
+			</select>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>邀请者ID</th>
+				<th>邀请者用户名</th>
+				<th>被邀请者ID</th>
+				<th>被邀请者用户名</th>
+				<th>邀请注册时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php if(!empty($datas)){?>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			<td><?php  echo $v1["yid"]?></td>
+            <td><?php  echo $v1["ymail"]?></td>
+			<td><?php  echo $v1["bid"]?></td>
+            <td><?php  echo $v1["bmail"]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["btime"])?></td>
+		</tr>
+		<?php  }}?>
+		</tbody>
+	</table>
+	<?php if(isset($_GET['id']) && $_GET['id'] == 'pid'){
+	}else{?>
+	<?php  echo $pageinfo;}?>
+	</div>
+</div>
+</body>
+</html>

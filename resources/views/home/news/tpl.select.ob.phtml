@@ -1,0 +1,8 @@
+<select id="yaf_ob" name="ob">
+<?php 
+for ($i = 0; $i < 256; $i++) {
+    echo '<option value="', $i, '">', $i, '</option>';
+}
+?>
+</select>
+<em>数字越大越靠前(0:普通, 255:最靠前)</em>

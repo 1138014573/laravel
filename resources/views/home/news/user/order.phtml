@@ -1,0 +1,40 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">成交</h3>
+		<?php search_form(array('buy_tid'=>'买委托', 'buy_uid'=>'买家', 'sale_tid'=>'卖委托', 'sale_uid'=>'卖家'))?>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>单价</th>
+				<th>数量</th>
+				<th>购买委托id</th>
+				<th>购买用户id</th>
+				<th>出售委托id</th>
+				<th>出售用户id</th>
+				<th>创建时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach ($datas as $v1){?>
+		<tr>
+			<td><?php  echo $v1["id"]?></td>
+			<td><?php  echo $v1["price"]?></td>
+			<td><?php  echo $v1["number"]?></td>
+			<td><?php  echo $v1["buy_tid"]?></td>
+			<td><?php  echo $v1["buy_uid"]?></td>
+			<td><?php  echo $v1["sale_tid"]?></td>
+			<td><?php  echo $v1["sale_uid"]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>

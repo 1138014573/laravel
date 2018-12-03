@@ -1,0 +1,117 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"; ?>
+<style>
+	.title {
+		padding-left: 0px;
+	}
+	.rights-form {
+		width: 800px;
+		height: 300px;
+		font-size:14px;
+		display: none;
+	}
+	.rights-form table {
+		margin-left: 20px;
+	}
+	table td {
+		padding: 10px 5px 10px 0;
+	}
+	.rights-form input[type=text] {
+		width: 200px;
+		height: 22px;
+	}
+	.rights-form input[type=submit] {
+		width: 120px;
+		height: 30px;
+		border: #e3e3e3 1px solid;
+		color: #fff;
+		background: #163483;
+		border-radius: 5px;
+	}
+	#rights-form {
+		height: 10px;
+		width:10px;
+		background: red;
+	}
+	.rights-form h3 {
+		height: 80px;
+		line-height: 80px;
+		text-align: center;
+	}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">权限管理</h3>
+		<ul class="tabs">
+			<li id="create"><a href="#">添加权限</a></li>
+			<li id="lists" class="cur"><a href="">权限列表</a></li>
+		</ul>		
+	</div>
+	<div class="rights-form">
+		<h3>添加权限信息</h3>
+		<form action="/manage_rights/create" method="post">
+			<table>
+				<tr>
+					<td>权限名称：</td>
+					<td><input type="text" name="rights_name" id="rights_name" /></td>
+					<td>是否开启：</td>
+					<td><input type="radio" name="status" value="0" checked>是&nbsp;&nbsp;<input type="radio" name="status" value="1">否</td>					
+				</tr>
+				<tr>
+					<td>权限码：</td>
+					<td><input type="text" name="code" id="code" /></td>
+					<td>权限描述：</td>
+					<td><input type="text" name="readme" id="readme" /></td>
+				</tr>
+				<tr>
+					<td rowspan="4"><input type="submit" id="create" value="添加权限"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<!-- <th>权限ID</th> -->
+				<th width="120">权限码</th>
+				<th>权限名称</th>
+				<th>描述信息</th>
+				<th width="150">添加时间</th>
+				<th width="150">更新时间</th>
+				<th width="80">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			<!-- <td><?php  echo Tool_Str::safestr($v1["rights_id"])?></td> -->
+			<td><?php  echo Tool_Str::safestr($v1["code"])?></td>
+			<td><?php  echo Tool_Str::safestr($v1["rights_name"])?></td>
+			<td><?php  echo Tool_Str::safestr($v1["readme"])?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["updated"])?></td>
+		    <td align="center"><a href="/manage_rights/push/?id=<?php  echo Tool_Str::safestr($v1["rights_id"])?>&ac=rm">禁用</a></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+
+<script>
+	$('#create').click(function() {
+		$('.tabs li').removeClass('cur');
+		$(this).addClass('cur');
+		$('.rights-form').show();
+		$('.bd').hide();
+	});
+	$('#lists').click(function() {
+		$('.tabs li').removeClass('cur');
+		$(this).addClass('cur');
+		$('.rights-form').hide();
+		$('.bd').show();
+	});
+</script>
+</body>
+</html>

@@ -26,6 +26,10 @@ $app = new Illuminate\Foundation\Application(
 |
 */
 
+
+define('REDIRECT_URL', empty($_SERVER['REQUEST_URI']) ? '/' : strtolower($_SERVER['REQUEST_URI']));
+
+
 $app->singleton(
     Illuminate\Contracts\Http\Kernel::class,
     App\Http\Kernel::class

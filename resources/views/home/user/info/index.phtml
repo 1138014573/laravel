@@ -1,0 +1,121 @@
+<script type="text/javascript" src="/js/jquery/jquery.zclip.min.js"></script>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box" style="height:380px;">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">我的邀请和奖励</h3>
+			</div>
+			<div class="payText" style="padding:10px; height:360px;">
+				<b style="color:red; padding-right:10px;">1.活动内容</b></br> 富途币老用户邀请好友注册富途币用户将获得宝贵的用户等级积分，邀请越多，奖励就越多！</br>
+				<b style="color:red; padding-right:10px;">2.活动期限</b></br> 从即日起执行，长期有效。</br>
+				<b style="color:red; padding-right:10px;">3.活动规则</b></br> 
+					1）每邀请1名好友注册，就一次性奖励50积分。</br>
+					2）好友在富途币获得积分，邀请人也能同步获得积分，邀请人获得的积分=好友每日累计积分/100积分。</br>
+					3）邀请多个新用户，奖励进行累加。</br>
+					4）邀请好友信息可以在“我的邀请”页面查看，奖励积分可以在“我的积分”页面查看。</br>
+				<b style="color:red; padding-right:10px;">4.邀请链接</b>
+					<div style="padding:8px 0px 10px 15px;">
+						<input type="text" class="loginValue" style="width:450px; height:29px; line-height:29px; color:#666;" id="url" name="url" value="<?php  echo $url?>">
+						<button id="button" style="line-height:26px" onclick="init();">点击复制</button></div>
+				<b style="color:red;">富途币拥有本活动最终解释权。</b>
+			</div> 
+		</div>
+	</div>
+</div>
+
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">最近接受推荐的用户</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th width=150>注册ID</th>
+					<th width=280>注册邮箱</th>
+					<th>注册时间</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php if($unum > 0){foreach($data as $v){?>
+				<tr>
+					<td><?php  echo $v['uid']?></td>
+					<?php  $email = explode('@',$v['email']);?>
+					<td><?php  echo '******@'.$email[1]?></td>
+					<td><?php  echo date('Y-m-d H:i:s', $v['created'])?></td>
+				</tr>
+				<?php }}else{?>
+				<tr><td colspan=3>您还没有邀请其他人注册！！！</td></tr>
+				<?php }?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">奖励记录</h3>
+			</div>
+			<table class="Transaction">
+				<thead>
+				<tr>
+					<th width=150>奖励类型</th>
+	<!--				<th>充值用户ID</th>
+-->
+					<th width=280>奖励金额</th>
+					<th>奖励时间</th>
+				</tr>
+				</thead>
+				<tbody>
+				<?php if($count > 0){?>
+				<?php foreach($datas as $vv){?>
+				<tr>
+					<td>邀请注册</td>
+				<!--	<td><?php //=$vv['oid']?></td>-->
+					<td><?php  echo $vv['reward']?></td>
+					<td><?php  echo date('Y-m-d H:i:s', $vv['creatime'])?></td>
+				</tr>
+				<?php }?>
+				<tr>
+					<td colspan=4 style="padding-left:540px;">共<b style="color:red"><?php  echo $count?></b>笔，总共奖励<b style="color:red"><?php  echo $total?></b>元。</td>
+				</tr>
+				<?php }else{?>
+				<tr><td colspan=4>您还没有奖励记录！！！</td></tr>
+				<?php }?>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#button").zclip({
+		path: "/js/jquery/ZeroClipboard.swf",
+		copy: function(){
+			return $('#url').val();
+		}
+	//	afterCopy:function(){/* 复制成功后的操作 */
+        //		alert('复制成功!');
+	//	}
+	});
+});
+//alert($('#url').val());
+function bankconfirm(payid){
+    if(!payid){
+        return false;
+    }
+    var num = document.getElementById(payid).value;
+    if(num < 10){
+        alert('充值最小金额为10元，请重新输入');
+        return false;
+    }
+    if(confirm('即将跳转到第三方网站进行充值，您本次充值金额'+num+'元')){
+        return true;
+    } else {
+        return false;
+    }
+}
+</script>

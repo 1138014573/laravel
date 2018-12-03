@@ -1,0 +1,25 @@
+<?php  include PATH_TPL . "/manage/tpl.header.phtml" ?>
+<style>
+.loginValue{border: 1px solid #D5D5D5;float: left;height: 29px;line-height: 29px;margin-right: 15px;padding: 3px;width: 224px;}
+</style>
+<form method="post">
+  <input id="yaf_uid" name="uid" type="hidden" value="<?php  echo $uid?>"/>
+  <fieldset>
+    <legend><h3 class="title">添加积分</h3></legend>
+    <table class="formtable">
+      <tbody>
+			<tr>
+				<th>积分</th>
+				<td><input type="text" name="credit" value="" class="loginValue"/></td>
+			</tr>
+			<tr>
+				<th>原因</th>
+				<td><input type="text" name="description" value="" class="loginValue"/></td>
+			</tr>
+      </tbody>
+    </table>
+  </fieldset>
+	<fieldset><input class="submit" type="submit" value="添加"></fieldset>
+</form>
+</body>
+</html>

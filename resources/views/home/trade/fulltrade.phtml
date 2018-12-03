@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title>币交所-区块链权益资产交易平台</title>
+	<meta name="keywords" content="富途币中国交易平台,币交所,富途币,富途币行情,富途币交易,买富途币" />
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<link href="<?php  echo host()?>/css/style.css?v=18" rel="stylesheet"/>
+	<link href="<?php  echo host()?>/css/header.css?v=18" rel="stylesheet"/>
+	<!-- 引入 CSS -->
+	<link href="/css/frozen.css" rel="stylesheet">
+	<link href="/css/screenstyle.css?v=1" rel="stylesheet">
+	<script src="<?php  echo host()?>/js/jquery/1.9.1.min.js"></script>
+	<!-- <script src="<?php  echo host()?>/js/index.js?v=37"></script> -->
+	<!-- <script src="<?php  echo host()?>/js/tab.js"></script> -->
+	<!--[if IE 6]><script src="js/DD_belatedPNG_0.0.8a.js"></script><![endif]-->
+	<script>
+	<?php  # 用户信息(模板初始化)
+	isset($user) || $user = empty($this->layout['user'])? array(): $this->layout['user'];
+	if($user){ ?>
+		user = {uid:<?php  echo $user['uid']?>, email:'<?php  echo $user['email']?>', name:'<?php  echo $user['name']?>'};
+		<?php  foreach ($user as $k => $v) {
+			if(strpos($k, '_over') !== false || strpos($k, '_lock') !== false){ ?>
+				user['<?php  echo $k?>'] = '<?php  echo $v?>';
+		<?php  }
+		} ?>
+	<?php  } ?>
+	var isonline = "<?php  echo $isonline?>";
+	</script>
+</head>
+<body>
+	<div class="header">
+		<div class="bjsLogo">
+			<a href="/"><img src="/img/fullLogo.png" alt="币交所"> </a>
+		</div>
+		<div class="jiaoyiType">
+			<?php 
+				$count = count($allCoins);
+				for ($i=0; $i < $count; $i++) {
+					if( $allCoins[$i]['name'] == $cData['name'] ){
+						$index = $i;
+					}
+				}
+				if( $index <= 4 ){
+					for ($i=0; $i <= 4; $i++) {
+			?>
+						<a href="/fulltrade/<?php  echo $allCoins[$i]['name']?>"<?php if($cData['name']==$allCoins[$i]['name']) echo ' class="active"';?>><?php  echo strtoupper($allCoins[$i]['coin_from'])?>/<?php  echo strtoupper($allCoins[$i]['coin_to'])?>交易</a>
+			<?php 
+					}
+				}else{
+					for ($i=$index-4; $i <= $index ; $i++) {
+			?>
+						<a href="/fulltrade/<?php  echo $allCoins[$i]['name']?>"<?php if($cData['name']==$allCoins[$i]['name']) echo ' class="active"';?>><?php  echo strtoupper($allCoins[$i]['coin_from'])?>/<?php  echo strtoupper($allCoins[$i]['coin_to'])?>交易</a>
+			<?php 
+					}
+				}
+			?>
+		</div>
+		<a href="javascript:;" class="hd_more">更多…</a>
+		<div class="exchangeSize">
+			<a href="javascript:;" class="toggleBtm" onclick="toggleBtm()"></a>
+			<a href="javascript:;" class="toggleRt" onclick="toggleRight()"></a>
+		</div>
+		<div class="loginNav">
+			<?php  if($user){ ?>
+				<a href="/user_index"><?php  echo $user['email']; ?></a><font style="margin:0 10px; color:#fb4; font-size:14px;">ID:<?php  echo $user['uid']?></font>|<a href="/user/logout">退出</a>|
+			<?php  }else{ ?>
+				<a href="/user/login">登录</a>|<a href="/user/register">注册</a>|
+			<?php  } ?>
+		</div>
+		<!-- 隐藏全部币种列表 -->
+		<div class="hd_hidemenu">
+			<div class="hd_allcurrency">
+				<h2>全部币种</h2>
+				<div class="hd_curlists">
+					<?php  foreach ($allCoins as $k => $v) { ?>
+						<a href="/fulltrade/<?php  echo $v['name']?>" <?php if($cData['name']==$v['name']) echo ' class="active"';?>><?php  echo strtoupper($v['coin_from'])?>/<?php  echo strtoupper($v['coin_to'])?>交易</a>
+					<?php  } ?>
+				</div>
+			</div>
+			<div class="hd_maskbg"></div>
+		</div>
+	</div>
+	<!--K线图中间内容-->
+	<div class="maincontent">
+		<!--左侧K线图-->
+		<div class="ltKline">
+			<iframe id="klineFrame" src="/market?symbol=<?php  echo $cData['name']?>"></iframe>
+		</div>
+		<!--右侧数据信息-->
+		<div class="rtTrade">
+			<div class="depth">
+				<div class="depthHead">
+					<span class="tPrice">价格(¥)</span>
+					<span class="tNumber">数量(฿)</span>
+					<span class="tTotal">累计(฿)</span>
+				</div>
+				<div class="depthMiddleOut">
+					<div class="depthMiddle">
+						<div class="depthsell"><p>数据加载中...</p></div>
+						<div class="depthNewPrice">
+							<p class="zuixinjia">
+								<span>最新价</span>
+								<em class="fontDown"></em>
+							</p>
+							<p class="zhangfu">
+								<span>涨跌比</span>
+								<em class="fontDown"></em>
+							</p>
+						</div>
+						<div class="depthbuy"><p>数据加载中...</p></div>
+					</div>
+				</div>
+				<!-- <div class="depthfoot">深度
+					<span class="this">0</span>
+					<span>1</span>
+					<span>2</span>
+					<span>3</span>
+					<span>4</span>
+					<span>5</span>
+				</div> -->
+			</div>
+			<div class="priceNumTim">
+				<div class="depthHead">
+					<span class="tPrice">时间</span>
+					<span class="tNumber">价格(¥)</span>
+					<span class="tTotal">数量(฿)</span>
+				</div>
+				<div class="listInfoMe"><p>数据加载中...</p></div>
+			</div>
+		</div>
+	</div>
+	<!--脚部-->
+	<div class="scFooter">
+		<!--脚部左侧委托模块-->
+		<div class="ftLeft">
+			<div class="ulList">
+				<ul>
+					<li class="this">当前委托</li>
+					<li>历史委托</li>
+				</ul>
+				<a class="more" href="/user_trust/list">更多&gt;&gt;</a>
+			</div>
+			<div class="tabelBox">
+				<div class="weituoInfo" style='display: block;'>
+					<table class="ui-table" id="curTrust" cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<th>委托时间</th>
+							<th>委托类型</th>
+							<th>委托数量/已成交(<?php  echo strtoupper($cData['coin_from'])?>)</th>
+							<th>委托价格(<?php  echo strtoupper($cData['coin_to'])?>)</th>
+							<th>成交总额(<?php  echo strtoupper($cData['coin_to'])?>)</th>
+							<th>操作</th>
+						</tr>
+						<?php if($user){?>
+						<!--已经登录注册-->
+						<tr>
+							<td colspan="6">暂无委托</td>
+						</tr>
+						<?php  }else{ ?>
+						<!--未登录注册-->
+						<tr style="border-bottom: none;">
+							<td colspan="6" style="border: none;">
+								<div class="loginConfirm">
+									<div class="lgConInfo">
+										<i></i>
+										<span>您还没有登录，请<a href="/user/login" class="login">登录</a>或<a href="/user/register" class="register">注册</a>后再尝试</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<?php  } ?>
+					</table>
+				</div>
+				<div class="weituoInfo">
+					<table class="ui-table" id="hisTrust" cellpadding="0" cellspacing="0" border="0">
+						<tr>
+							<th>委托时间</th>
+							<th>委托类型</th>
+							<th>委托数量/已成交(<?php  echo strtoupper($cData['coin_from'])?>)</th>
+							<th>委托价格(<?php  echo strtoupper($cData['coin_to'])?>)</th>
+							<th>成交总额(<?php  echo strtoupper($cData['coin_to'])?>)</th>
+							<th>操作</th>
+						</tr>
+						<?php  if($user){ ?>
+						<!--已经登录注册-->
+						<tr>
+							<td colspan="6">暂无委托</td>
+						</tr>
+						<?php  }else{ ?>
+						<!--未登录注册-->
+						<tr style="border-bottom: none;">
+							<td colspan="6" style="border: none;">
+								<div class="loginConfirm">
+									<div class="lgConInfo">
+										<i></i>
+										<span>您还没有登录，请<a href="/user/login" class="login">登录</a>或<a href="/user/register" class="register">注册</a>后再尝试</span>
+									</div>
+								</div>
+							</td>
+						</tr>
+						<?php  } ?>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!--右侧买入卖出模块-->
+		<div class="ftRight">
+			<div class="buyLeft">
+				<div class="buyForm">
+					<!-- <form class="buyFormInfo" onsubmit="return false;"> -->
+						<div class="explain buyexplain">
+							<p>可用<?php  echo $cData['display_to']?>：<i id="buy_to_over">--</i><?php  echo strtoupper($cData['coin_to'])?></p>
+							<p>可买<?php  echo $cData['display']?>：<i id="buy_max_num">--</i><?php  echo strtoupper($cData['coin_from'])?></p>
+						</div>
+						<div class="inputCon">
+							<label for="a">买入价<?php  echo strtoupper($cData['coin_to'])?></label>
+							<input type="text" id="buy_price" onkeyup="buyPrice(<?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);">
+						</div>
+						<div class="inputCon">
+							<label for="a">买入量<?php  echo strtoupper($cData['coin_from'])?></label>
+							<input type="text" id="buy_number" onkeyup="buyNumber(<?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);">
+						</div>
+						<div class="huaaddbili buyrate">
+							<span>下单比例</span>
+							<a href="javascript:;" onclick="numberRate('buy', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 4, 0);">1/4</a>
+							<a href="javascript:;" onclick="numberRate('buy', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 3, 1);">1/3</a>
+							<a href="javascript:;" onclick="numberRate('buy', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 2, 2);">1/2</a>
+							<a href="javascript:;" onclick="numberRate('buy', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 1, 3);">1/1</a>
+						</div>
+						<div class="jiaoyie jiaoyieBuy">
+							<span>交易额：<strong id="buy_sum_money">0.00</strong><?php  echo strtoupper($cData['coin_to'])?></span>
+						</div>
+						<div class="hbtn buyBtn">
+							<input type="submit" value="立即买入" onclick="submit('buy', '<?php  echo $cData['coin_from']?>', <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);">
+						</div>
+					<!-- </form> -->
+				</div>
+			</div>
+			<div class="sellRight">
+				<div class="sellForm">
+					<!-- <form class="sellFormInfo" onsubmit="return false;"> -->
+						<div class="explain sellexplain">
+							<p>可用<?php  echo $cData['display']?>：<i id="sell_from_over">--</i><?php  echo strtoupper($cData['coin_from'])?></p>
+							<p>可卖<?php  echo $cData['display_to']?>：<i id="sell_max_num">--</i><?php  echo strtoupper($cData['coin_to'])?></p>
+						</div>
+						<div class="inputCon">
+							<label for="a">卖出价<?php  echo strtoupper($cData['coin_to'])?></label>
+							<input type="text" id="sell_price" onkeyup="sellPrice(<?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);">
+						</div>
+						<div class="inputCon">
+							<label for="a">卖出量<?php  echo strtoupper($cData['coin_from'])?></label>
+							<input type="text" id="sell_number" onkeyup="sellNumber(<?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);">
+						</div>
+						<div class="huaaddbili sellrate">
+							<span>下单比例</span>
+							<a href="javascript:;" onclick="numberRate('sell', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 4, 0);">1/4</a>
+							<a href="javascript:;" onclick="numberRate('sell', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 3, 1);">1/3</a>
+							<a href="javascript:;" onclick="numberRate('sell', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 2, 2);">1/2</a>
+							<a href="javascript:;" onclick="numberRate('sell', <?php  echo $cData['number_float']?>, <?php  echo $cData['price_float']?>, 1, 3);">1/1</a>
+						</div>
+						<div class="jiaoyie jiaoyieSell">
+							<span>交易额：<strong id="sell_sum_money">0.00</strong><?php  echo strtoupper($cData['coin_to'])?></span>
+						</div>
+						<div class="hbtn sellBtn">
+							<input type="submit" value="立即卖出" onclick="submit('sell', '<?php  echo $cData['coin_from']?>', <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>)">
+						</div>
+					<!-- </form> -->
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="maskWrap"></div>
+	<div class="maskTradePwd">
+		<!-- <h2>请输入交易密码</h2> -->
+		<a href="javascript:;">X</a>
+		<input type="password" id="tradepwd" placeholder="请输入交易密码">
+		<span id="pwdok" onclick="pwdConfirm();" style="background: #ee484c;">确定</span>
+		<span id="pwdcancel" style="margin-left: 25px; background: #1c2e54;">取消</span>
+	</div>
+</body>
+</html>
+<!-- 引入 JS -->
+<script src="/js/zepto.min.js"></script>
+<script src="/js/frozen.js"></script>
+<script src="/js/screen.js"></script>
+<script src="/js/socket.io-1.4.5.js"></script>
+<!-- <script src="/js/fulltrade.js"></script> -->
+<script src="/js/fulltrade.min.js"></script>
+<script>
+	// coinsum(30, "<?php  echo $cData['name']?>", <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>, 0);
+	// coinorder(30, "<?php  echo $cData['name']?>", <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>, "<?php  echo $cData['yesterday_close']?>", "<?php  echo $cData['display']?>");
+
+	// socket
+	socketConnection(30, "<?php  echo $cData['name']?>", <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>, "<?php  echo $cData['yesterday_close']?>", "<?php  echo $cData['display']?>");
+	<?php if($user){?>
+		$('#buy_to_over').html( formatfloat(user['cny_over'], <?php  echo $cData['price_float']?>, 0) );
+		$('#sell_from_over').html( formatfloat(user['<?php  echo $cData['coin_from']?>_over'], <?php  echo $cData['number_float']?>, 0) )
+
+		mytrust(1, "<?php  echo $cData['coin_from']?>", <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);
+		myhistrust(1, "<?php  echo $cData['coin_from']?>", <?php  echo $cData['price_float']?>, <?php  echo $cData['number_float']?>);
+	<?php }?>
+</script>
+<script>
+	$(function(){
+		// 设置顶部隐藏菜单的不透明度
+		var oListH = $('.hd_hidemenu').outerHeight();
+		$('.hd_maskbg').css({'height':oListH,'opacity':'0.8'});
+
+		// 导航菜单的点击事件；
+		$(".jiaoyiType").delegate("a", "click", function(){
+	   		$(this).addClass('active').siblings().removeClass();
+
+	   		var coin = $(this).attr('name');
+	   		$(".hd_curlists a[name='"+coin+"']").addClass('active').siblings().removeClass();
+		});
+
+		$('.jiaoyiType a').mouseenter(function(){
+			$('.hd_hidemenu').hide();
+		});
+
+		// 更多币种的mouseenter事件
+		$('.hd_more').mouseenter(function(){
+			$('.hd_hidemenu').show();
+		});
+
+		// 鼠标移走蒙版消失；
+		$('.hd_hidemenu').mouseleave(function(){
+			$(this).hide();
+		});
+	})
+</script>

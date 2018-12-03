@@ -1,0 +1,548 @@
+<?php  include PATH_TPL . "/manage/tpl.header.phtml"
+?>
+
+<link href="<?php  echo host()?>/fancybox/jquery.fancybox.min.css" rel="stylesheet" type="text/css" />
+<script src="<?php  echo host()?>/fancybox/jquery.fancybox.min.js"></script>
+<script src="<?php  echo host()?>/layer/layer.js"></script>
+<style type="text/css">
+	.content_filter > p{
+		font-size: 18px;
+		margin-bottom: 10px;
+		font-weight: bold;
+	}
+	.filter_container{
+		margin: 20px 0;
+	}
+	.filter_container p, .content_table p {
+		font-size: 16px;
+		margin-bottom: 8px;
+		font-weight: bold;
+	}
+	.choose_container{
+		height: 26px;
+	}
+	.type_choose, .status_choose{
+		float: left;
+	}
+	.type_choose{
+		width: 180px;
+	}
+	.type_choose select{
+		height: 26px;
+	}
+	
+	.status_choose{
+		width: 280px;
+	}
+	.status_choose li{
+		float: left;
+		width: 69px;
+		height: 26px;
+		background: #ECECEC;
+		line-height: 26px;
+		color: #333;
+		cursor: pointer;
+		text-align: center;
+		border-right: 1px solid #CCC9A4;
+	}
+	.status_choose li:hover, .status_choose li.selected{
+		background: #CCCCCC;
+		color: #FFF;
+	}
+	.status_choose li:first-child{
+		border-bottom-left-radius: 4px;
+		border-top-left-radius: 4px;
+	}
+	.status_choose li:last-child{
+		border: none;
+		border-bottom-right-radius: 4px;
+		border-top-right-radius: 4px;
+	}
+	table.userList{
+		width: 100%;
+		text-align: center;
+	}
+	table.userList th{
+		font-size: 16px;
+		font-weight: normal;
+		background: lightsteelblue;
+		padding: 8px;
+	}
+	table.userList td{
+		padding: 8px;
+		letter-spacing: .4px;
+	}
+	table.userList td a img{
+		width: 100px;
+	}
+	table.userList td button{
+
+		width: 80px;
+		height: 30px;
+		border: 1px solid #CCCBD9;
+		color: #666;
+		background: #fffFFF;
+		border-radius: 2px;
+		cursor: pointer;
+	}
+	table.userList td button:hover{
+		background: #0069CD;
+		color: #FFFFFF;
+	}
+	.clearfix::after{
+		content: '';
+		height: 0;
+		display: table;
+		overflow: hidden;
+		clear: both;
+	}
+	.pagination{
+		width: 408px;
+		margin: 40px auto;
+		border-radius: 4px;
+		-webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    	-moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    	text-align: center;
+	}
+	
+	.pagination >li:first-child>a{
+		border-left-width: 1px;
+    	-webkit-border-top-left-radius: 4px;
+    	-moz-border-radius-topleft: 4px;
+    	border-top-left-radius: 4px;
+    	-webkit-border-bottom-left-radius: 4px;
+    	-moz-border-radius-bottomleft: 4px;
+    	border-bottom-left-radius: 4px;
+	}
+	.pagination >li>a{
+		float: left;
+    	padding: 4px 12px;
+    	line-height: 20px;
+    	text-decoration: none;
+    	background-color: #ffffff;
+    	border: 1px solid #dddddd;
+    	border-left-width: 0;
+    	color: #0088cc;
+	}
+	.pagination >li:last-child>a{
+	    -webkit-border-top-right-radius: 4px;
+    	-moz-border-radius-topright: 4px;
+    	border-top-right-radius: 4px;
+    	-webkit-border-bottom-right-radius: 4px;
+    	-moz-border-radius-bottomright: 4px;
+    	border-bottom-right-radius: 4px;
+	}
+	.pagination >li>a:hover{
+		background-color: #f5f5f5;
+		color: #0088cc;
+	}
+	.pagination >li>a.active{
+		background-color: #ccc;
+	}
+	.layui-layer-content p{
+		font-size: 16px;
+		font-weight: bold;
+		text-align: center;
+		margin-top: 10px;
+	}
+	.user_info, .change_status{
+		padding: 30px 50px;
+	}
+	.user_info .user_item{
+		height: 50px;
+		border-bottom: 1px solid #f2f2f2;
+	}
+	.user_info .user_item label, .user_info .user_item input{
+		display: inline-block;
+		height: 50px;
+		font-size: 16px;
+	}
+	.user_info .user_item label{
+		width: 50%;
+	}
+	.user_info .user_item input{
+		border: none;
+		letter-spacing: .4px;
+	}
+	.change_status #pass_user{
+		margin-right: 20px;
+	}
+	.multi_search{
+		margin-top: 10px;
+	}
+	.multi_search input{
+		margin-right: 10px;
+		
+	}
+	.reject_reason{
+		display: none;
+		padding: 30px 50px;
+	}
+	.reject_reason textarea{
+		width: 100%;
+		height: 200px;
+	}
+</style>
+<div class="main_wrapper">
+		<!--隐藏DOM-->
+		<div class="popout" style="display: none;">
+			<form  method="post" class="userInfo_form">
+				<p>用户信息</p>
+				<div class="user_info">
+					<div class="user_item">
+						<label>姓名</label>
+						<input type="text" value="" readonly="readonly" name="userName"/>
+					</div>
+					<div class="user_item">
+						<label class="idType">身份证号</label>
+						<input type="text" value="34567890876578905343" readonly="readonly" name="idNum"/>
+					</div>
+					<input type="hidden" name="userId" value="" />
+				</div>
+				<p>审核</p>
+				<div class="change_status">
+					<label for="pass_user">通过</label>
+					<input type="radio" name="userStatus" id="pass_user" value="2"/>
+					<label for="reject_user">拒绝</label>
+					<input type="radio" name="userStatus" id="reject_user" value="3"/>
+				</div>
+				<div class="reject_reason">
+					<textarea name="text" placeholder="审核失败原因必填!"></textarea>
+
+				</div>
+			</form>
+		</div>
+		<!--隐藏DOM-->
+	
+	
+	<form method="post" class="content_filter">
+		<p>实名认证</p>
+		<hr />
+		<div class="filter_container">
+			<p>筛选条件</p>
+			<div class="choose_container">
+				<div class="type_choose">
+					<label for="id_type">证件类型：</label>
+					<select id="id_type" name='cardtype'>
+						<option value="1" <?php if($cardtype=='1'){?>selected<?php }?>>身份证</option>
+						<option value="2" <?php if($cardtype=='2'){?>selected<?php }?>>驾驶证</option>
+						<option value="3" <?php if($cardtype=='3'){?>selected<?php }?>>护照</option>
+						<option value="4" <?php if($cardtype=='4'){?>selected<?php }?>>军官证</option>
+						<option value="5" <?php if($cardtype=='5'){?>selected<?php }?>>港澳通行证</option>
+						<option value="6" <?php if($cardtype=='6'){?>selected<?php }?>>香港身份证</option>
+						<option value="7" <?php if($cardtype=='7'){?>selected<?php }?>>澳门身份证</option>
+					</select>
+				</div>
+				<div class="status_choose">
+					<ul id="condition">
+						<li class="selected" data-type = "4"><a href="/manage_user/autonym/type/<?php  echo 'all';?>/cardtype/<?php  echo $cardtype;?>">全部</a></li>
+						<li data-type = "2"><a href="/manage_user/autonym/type/<?php  echo 2;?>/cardtype/<?php  echo $cardtype;?>">已认证</a></li>
+						<li data-type = "0"><a href="/manage_user/autonym/type/<?php  echo 0;?>/cardtype/<?php  echo $cardtype;?>">待审核</a></li>
+						<li data-type = "3"><a href="/manage_user/autonym/type/<?php  echo 3;?>/cardtype/<?php  echo $cardtype;?>">已拒绝</a></li>
+					</ul>
+				</div>
+			</div>
+			
+			<div class="multi_search">
+				<p>查询条件</p>
+				<span>查询类型：</span>
+				<label>UID</label>
+				<input type="radio" name="search_type" value="1" checked='checked'/>
+				<label>姓名</label>
+				<input type="radio" name="search_type" value="2"/>
+				<label>证件号</label>
+				<input type="radio" name="search_type" value="3"/>
+				<input type="text" class="search_input" name='search_input' value="" />
+				<button id="btn_search">查询</button>
+			</div>
+		</div>
+	</form>
+	<div class="content_table">
+		<p>用户实名认证管理</p>
+		<table border="1px" cellspacing="0" cellpadding="0" class="userList">
+			<thead>
+				<tr>
+					<th>序号</th>
+					<th>UID</th>
+					<th>姓名</th>
+					<th>证件类型</th>
+					<th>证件号</th>
+					<th>证件正面照</th>
+					<th>证件反面照</th>
+					<th>手持证件照</th>
+					<th>提交审核时间</th>
+					<th>状态</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<?php if(is_array($data)) foreach ($data as $k=>$v) { ?>
+				<tr>
+					<td><?php echo  $v['id']?></td>
+					<td><?php echo $v['uid']?></td>
+					<td><?php echo $v['name']?></td>
+					<td><?php if($v['cardtype']==1){
+						 echo "身份证";
+						}else if($v['cardtype']==2){
+                               echo "驾驶证";
+							}else if($v['cardtype']==3){echo "护照";}else if(
+								$v['cardtype']==4){
+                                       echo "军官证";
+							}else if($v['cardtype']==5){
+                                 echo "港澳通行证";     
+							}else if($v['cardtype']==6){
+                                  echo "香港身份证";
+							}else if($v['cardtype']==7){
+                                  echo "澳门身份证";
+							}
+
+							?></td>
+					<td><?php echo $v['idcard']?></td>
+					<td>
+						<a data-fancybox="gallery" href="<?php echo str_replace(['../public/','./'], '/',$v['frontFace'])?>">
+							<img src="<?php echo preg_replace('#(../public/|./)(.+)\.(.+?)$#', '/$2_thumb.jpg', $v['frontFace'])?>">
+
+						</a>
+					</td>
+					<td>
+						<a data-fancybox="gallery" href="<?php echo str_replace(['../public/','./'], '/',$v['backFace'])?>">
+							<img src="<?php echo preg_replace('#(../public/|./)(.+)\.(.+?)$#', '/$2_thumb.jpg', $v['backFace'])?>">
+						</a>
+					</td>
+					<td>
+						<a data-fancybox="gallery" href="<?php echo str_replace(['../public/','./'], '/',$v['handkeep'])?>">
+							<img src="<?php echo preg_replace('#(../public/|./)(.+)\.(.+?)$#', '/$2_thumb.jpg', $v['handkeep'])?>">
+						</a>
+					</td>
+					<td><?php echo date('Y-m-d H:i:s',$v['created'])?></td>
+					<td><?php if($v['status']==0||$v['status']==1)
+                         {echo "待审核";}else if($v['status']==2){
+                         	echo "已认证";
+                         }else {
+                         	echo "审核失败";
+                         }
+					?></td>
+					<td>
+						<?php if($v['status']==0) {?>
+					    <?php echo '<button>审核</button>' ?>
+						<?php }?>
+					</td>
+				</tr>
+			  <?php } ?>
+			
+			</tbody>
+		</table>
+		<?php echo $page;?>
+		
+		
+	</div>
+</div>
+<script type="text/javascript">
+	/*+function () {
+		console.log(window.location.href);
+	}();*/
+	/*function test() {
+		return false;
+	}*/
+
+
+	$(".userList tr").on('click', 'button', function(){
+		var thisTr = $(this).parents('tr');
+		var userId = thisTr.find('td').eq(1).html();  //用户UID
+		var userName = thisTr.find('td').eq(2).html();//用户名
+		var userIdType = thisTr.find('td').eq(3).html(); //证件类型
+		var userIdNum = thisTr.find('td').eq(4).html();  //证件号码
+		var oldUserStatus = thisTr.find('td').eq(9).html();  //获取数据库中用户的状态
+		var content = $(".popout").html();
+
+
+		layer.open({
+  			type: 1,
+  			title: '实名认证审核',
+			area: ['700px', '500px'],
+			offset: '50px',
+  			scrollbar: false,
+  			shadeClose: true, //点击遮罩关闭
+  			content: content,
+  			btn: '确认',
+  			success: function( index, currentLayer){    //成功打开弹出层
+  				$(index).find('input[name="userId"]').val(userId);
+				$(index).find('input[name="userName"]').val(userName);
+				$(index).find('.idType').html(userIdType);
+				$(index).find('input[name="idNum"]').val(userIdNum);
+  				$("input[name='userStatus']").change(function(){
+
+					var id = $(this).attr('id');
+					if(id== 'pass_user'){
+						$(".reject_reason").hide();
+					}else if(id == 'reject_user'){
+						$(".reject_reason").show();
+					}
+
+				})
+//				$('#reject_user:last').click(function () {
+//					$(".reject_reason").show();
+//				})
+
+//				$('.change_status input[name="userStatus"]').on('checked', function () {
+//					$(this).attr('checked', 'checked').siblings('input').removeAttr('checked');
+//				})
+
+
+
+
+
+  			},
+  			yes: function(index, currentLayer){                         //点击确认按钮
+				var user_status = $('input[name="userStatus"]:checked').val();
+				var UID = thisTr.find('td').eq(1).html();
+				var reject_reason = $('.reject_reason textarea:last').val();
+				console.log('reject_reason'+reject_reason);
+				$.ajax({
+					type:"post",
+					url:"/manage_user/editAutonym",
+					async:false,
+					data: {
+						userStatus: user_status,
+						uid: UID,
+						text: reject_reason,
+					},
+				}).done(function(data){
+					console.log(data);
+					window.location.reload();
+
+
+
+//					if($('#condition').find('li').eq(0).hasClass('selected')) {   //当前是全部选中的状态
+//						if (user_status == 2) {            //判断radio选择的状态
+//							if ()
+//								thisTr.find('td').eq(9).text('');
+//						}
+//
+//					}else{
+//						thisTr.hide();     //除了全部选中的状态下，直接隐藏
+//					}
+
+				})
+				layer.close(layer.index);
+
+
+
+  			}
+  		});
+	})
+/*	$("#btn_search").on('click', function(){
+		var searchType = $(".multi_search").find('input[name="search_type"]:checked').val();
+		var searchStr  = $(".multi_search").find('.search_input').val();
+	console.log(searchType);	$.ajax({
+			type:"post",
+			url:"http://www.local.bijiaosuo.com/manage_user/autonym",
+			async:true,
+			data: {
+				searchType: searchType,
+				searchStr: searchStr
+			}
+
+		}).done(function(data){
+			if(data.status = 1){
+				console.log(data.data);
+			}else if(data.status = -1){
+				alert('没有搜索到结果');
+			}
+		})
+	})*/
+
+	$(".status_choose li").click(function(){
+		$(this).addClass('selected').siblings().removeClass('selected');
+		var idType =  $(this).parents('.status_choose').siblings('.type_choose').find('select').val();
+		var filterType = $(this).data('type');
+
+		$.ajax({
+			type:"post",
+			url:"http://www.local.bijiaosuo.com/manage_user/autonym",
+			async:true,
+			data: {
+				idType: idType,
+				filterType: filterType
+			}
+		}).done(function(data){
+			console.log(data);
+		})
+	});
+//
+	function getIdVal(_this) {
+		var val = $(_this).val();
+
+		var as = $("#condition li a");
+		if (as.length && as.length > 0) {
+			as = [].slice.call(as);
+			as.forEach(function(key) {
+				var aDomLink = $(key).attr('href');
+				if (aDomLink.indexOf('cardtype') > -1) {
+					aDomLink = aDomLink.slice(0, -1);
+					$(key).attr('href', aDomLink+val);
+				} else {
+					$(key).attr('href', aDomLink+'/cardtype/'+val);
+				}
+			});
+		}
+	}
+	$('#id_type').change(function () {
+		getIdVal(this);
+	});
+	getIdVal($('#id_type'));
+
+		$('#condition li a').click(function () {
+		var href = this.href;
+			console.log(href);
+
+			var reg = /type\/([\d]{1})/g;
+			var type = reg.exec(href)[1];
+			console.log(type);
+			if(!window.localStorage){
+			alert("浏览器不支持localstorage");
+			return false;
+		}else{
+				console.log('inserting');
+				localStorage.setItem("pass-type",type);
+		}
+	});
+
+	$('iframe[src*="/manage_user"]').contents().ready(function () {
+		var pass_type = window.localStorage["pass-type"];
+		var lis = $('#condition li');
+		for(var i=0;i<lis.length;i++){
+			if($(lis[i]).data('type')==pass_type){
+				$(lis[i]).addClass('selected').siblings().removeClass('selected');
+			}
+		}
+
+		$('#condition li[data-type=pass_type]').addClass('selected').siblings().removeClass('selected');
+		console.log('frame加載成功');
+	});
+
+	
+
+
+
+
+			$('[data-fancybox]').fancybox({ 
+				afterShow: function() {
+					var click = 0;
+					var len = $('.fancybox-toolbar').find('.rotate_button').length;
+					if(len >= 1){
+						$('.fancybox-toolbar').find('.rotate_button:last').remove();
+					}
+					$('.fancybox-toolbar').prepend('<button  class="fancybox-button rotate_button">旋转</button>')
+						.on('click', '.rotate_button', function() {
+							var n = 90 * ++click;
+							$('.fancybox-image').css('webkitTransform', 'rotate(-' + n + 'deg)');
+							$('.fancybox-image').css('mozTransform', 'rotate(-' + n + 'deg)');
+						})
+				}
+			})
+
+
+
+</script>

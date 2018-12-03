@@ -1,0 +1,90 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"; ?>
+<style>
+	.tabs li{cursor: pointer;}
+	.role-form {width: 400px;height: 300px;font-size: 14px;display: none;margin-left: 20px; }
+	.role-form p {margin-bottom: 20px;}
+	.role-form h3 {height: 80px;line-height: 80px;}
+	input[type=text] {width: 300px;height: 25px;border: #e3e3e3 1px solid;}
+	#role-id2 {width: 300px;height: 25px;border: #e3e3e3 1px solid;}
+	input[type=submit] {width: 120px;height: 30px;border: #e3e3e3 1px solid;color: #fff;background: #163483;border-radius: 5px;}
+	.roleForm{width: 800px;margin-left: 100px;}
+	.twoClass{margin-left: 50px;}
+	.twoClass p{margin-bottom: 5px;}
+	.threeClass{display: block;margin-left: 50px;}
+	#roleSubmit{margin: 30px 0;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">角色管理</h3>
+		<ul class="tabs">
+			<li id="create">添加角色</li>
+			<li id="lists" class="cur">角色列表</li>
+		</ul>
+	</div>
+	<div class="role-form">
+		<form action="/manage_role/create" method="post">
+			<h3>添加角色信息</h3>
+			<p><span style="display:block;width: 80px;">角色：</span><input type="text" name="role_name" id="role_name" /></p>
+			<p><span style="display:block;width: 80px;">描述：</span><input type="text" name="explains" id="explains" /></p>
+			<p><input type="submit" id="create" value="添加" /></p>
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th style="width: 60px;">角色ID</th>
+				<th>角色名称</th>
+				<th>角色权限</th>
+				<th>描述信息</th>
+				<th style="width: 150px;">添加时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			<td><?php  echo Tool_Str::safestr($v1["role_id"])?>
+				<!-- [<?php if(1!=Tool_Str::safestr($v1["role_id"])) {?>
+				<?php  echo (0!=$v1["status"]) ? "<span id='" . $v1["role_id"].":" .$v1["status"]. "' class='span' style='color:red;'>关闭</span>" : "<span  id='" . $v1["role_id"].":" .$v1["status"]. "' class='span' style='color:green;'>开启</span>";?>
+				<?php }?>] -->
+			</td>
+			<td><?php  echo Tool_Str::safestr($v1["role_name"])?>
+			</td>
+			<td>
+				<?php  $tmp = RoleRightsModel::getInstance()->where("role_id = {$v1["role_id"]}")->fRow(); ?>
+				<?php  if($tmp){ ?>
+					<span>已设置权限（<a href="/manage_role/newrole/hasSet/1/role_id/<?php  echo $v1["role_id"]?>" style="color:#333;">查看编辑</a>）</span>
+				<?php  }else{ ?>
+					<span style="color:red;">未设置过权限（<a href="/manage_role/newrole/hasSet/2/role_id/<?php  echo $v1["role_id"]?>" style="color:red;">设置</a>）</span>
+				<?php  } ?>
+			</td>
+			<td>
+				<?php  echo Tool_Str::safestr($v1["explains"])?>
+			</td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+
+<script>
+	$('#create').click(function() {
+		$('.tabs li').removeClass('cur');
+		$(this).addClass('cur');
+		$('.role-form').show();
+		$('.bd').hide();
+	});
+	$('#lists').click(function() {
+		$('.tabs li').removeClass('cur');
+		$(this).addClass('cur');
+		$('.role-form').hide();
+		$('.bd').show();
+	});
+
+</script>
+
+</body>
+</html>

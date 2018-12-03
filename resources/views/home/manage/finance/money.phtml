@@ -1,0 +1,236 @@
+<link rel="stylesheet" type="text/css" href="/css/calendar/jquery.datetimepicker.css"/>
+<link href="<?php  echo host()?>/css/admin/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="/css/finance.css">
+<style media="screen">
+  .coin_list_chk{
+    display:none;
+  }
+</style>
+<div class="finance_s">
+  <div class="r_win">
+    <!-- 头部 -->
+    <div class="table_title bt_bor">
+      提现记录
+      <form action="/manage_finance/moneycsv" method="post" style="float: right" id="form">
+        <input type="hidden" name="getStatType" value="">
+        <input type="hidden" name="startTime" value="">
+        <input type="hidden" name="endTime" value="">
+        <input type="hidden" name="selMonth" value="">
+        <input type="hidden" name="selYear" value="">
+
+        <button type="submit" class="submit rf">导出Excel</button>
+      </form>
+    </div>
+    <!-- 筛选 条件 -->
+    <?php  include PATH_TPL."/manage/finance/condition.phtml";?>
+    <!-- 展示表格 -->
+    <div class="t_contain">
+      <table>
+        <thead id="date">
+         <!-- <tr>
+            <td>
+              <b class="oblique_line"></b>
+              <span class="f_til_r">日期</span>
+              <span class="f_til">币种</span>
+            </td>
+            <td>2017-07-01</td>
+            <td>2017-07-02</td>
+            <td>2017-07-03</td>
+            <td>2017-07-04</td>
+          </tr>-->
+        </thead>
+        <tbody id="data">
+          <!-- 充值记录 -->
+         <!-- <tr>
+            <td>总提现额</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>提现笔数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>总提现人数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td>总提现手续费</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>-->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script src="/js/jquery/1.9.1.min.js"></script>
+<script src="/js/calendar/jquery.datetimepicker.js"></script>
+<script src="/js/finance_stat.js"></script>
+<script>
+  $(document).ready(function ()
+  {
+    conditionSettings();
+
+    function inidata()
+    {
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+      });
+
+      var html = '';
+      html += '<input type="hidden" name="getStatType" value="' + getStatType() + '">';
+      html += '<input type="hidden" name="startTime" value="' + getSelVal("#startTime") + '">';
+      html += '<input type="hidden" name="endTime" value="' + getSelVal("#endTime") + '">';
+      html += '<input type="hidden" name="selMonth" value="' + getSelVal(".month_set") + '">';
+      html += '<input type="hidden" name="selYear" value="' + getSelVal(".year_set") + '">';
+
+      for (var i = 0; i < coinsCode.length; i++)
+      {
+        html += '<input type="hidden" name="coins[]" value=' + coinsCode[i] + '>';
+
+      }
+      html += '<button type="submit" class="submit rf">导出Excel</button>';
+      $('#form').html(html);
+
+      getdata();
+    }
+
+    inidata();
+    // 点击筛选按钮
+    $("#selBtn").click(function ()
+    {
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+      });
+      if (coinsCode.length == 0)
+      {
+        alert('请选择币种');
+        return false;
+      }
+      var start = getSelVal("#startTime").substr(0, 4);
+      var end = getSelVal("#endTime").substr(0, 4);
+      if (start != end)
+      {
+        alert('请选择同一个年份');
+        return false;
+      }
+      var start1 = getSelVal("#startTime").substr(5, 2);
+      var end1 = getSelVal("#endTime").substr(5, 2);
+      if (start1 != end1)
+      {
+        alert('请选择同一个月份');
+        return false;
+      }
+      if(getSelVal(".month_set")==''){
+        alert('请选择月份');
+        return false;
+      };
+      var html = '';
+      html += '<input type="hidden" name="getStatType" value="' + getStatType() + '">';
+      html += '<input type="hidden" name="startTime" value="' + getSelVal("#startTime") + '">';
+      html += '<input type="hidden" name="endTime" value="' + getSelVal("#endTime") + '">';
+      html += '<input type="hidden" name="selMonth" value="' + getSelVal(".month_set") + '">';
+      html += '<input type="hidden" name="selYear" value="' + getSelVal(".year_set") + '">';
+
+      for (var i = 0; i < coinsCode.length; i++)
+      {
+        html += '<input type="hidden" name="coins[]" value=' + coinsCode[i] + '>';
+
+      }
+      html += '<button type="submit" class="submit rf">导出Excel</button>';
+      $('#form').html(html);
+
+      getdata();
+    });
+    function getdata()
+    {
+      // 获取所有选择的币的code
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+
+      });
+
+      var postJson = {
+        getStatType: getStatType(), // 获取 统计选项 日 / 月
+        startTime  : getSelVal("#startTime"), // 开始时间
+        endTime    : getSelVal("#endTime"), // 结束时间
+        selMonth   : getSelVal(".month_set"), // 获取选取的月份
+        selYear    : getSelVal(".year_set"), // 获取 选取 年份
+        coins      : coinsCode
+      }
+
+      $.ajax({
+        url     : '/manage_finance/getmoney',
+        type    : 'POST',
+        dataType: 'json',
+        data    : postJson,
+        success : function (data)
+        {
+          console.log(data);
+          var html = '<tr>';
+          html += '<td colspan="2"><b class="oblique_line"></b><span class="f_til_r">时间</span><span class="f_til">统计内容</span></td>';
+          var money = '<tr>';
+          money += '<td rowspan="4">提现记录</td><td class="bold_f">总提现额</td>';
+          var count = '<tr>';
+          count += '<td>提现笔数</td>';
+          var membertotal = '<tr>';
+          membertotal += '<td>总提现人数</td>';
+          var outfee = '<tr>';
+          outfee += '<td>总提现手续费</td>';
+          for (var key in data)
+          {
+            html += '<td>' + key + '</td>';
+            money += '<td>' + data[key]['money'] + '</td>';
+            count += '<td>' + data[key]['count'] + '</td>';
+            membertotal += '<td>' + data[key]['membertotal'] + '</td>';
+            outfee += '<td>' + data[key]['outfee'] + '</td>';
+
+          }
+          html += '</tr>';
+          money += '</tr>';
+          count += '</tr>';
+          membertotal += '</tr>';
+          outfee += '</tr>';
+
+          $('#date').html(html);
+          $('#data').html(money + count + membertotal + outfee);
+
+        },
+        error   : function (data)
+        {
+          //alert("失败:"+data);
+          console.log('获取数据失败');
+        }
+      });
+
+    }
+
+    function getStatType()
+    {
+      return $('.finance_s .t_condition .sel_tab input[name="filterTime"]:checked').val();
+    }
+
+    // 选择器 值
+    function getSelVal(sel)
+    {
+      return $(sel).val();
+    }
+  });
+</script>

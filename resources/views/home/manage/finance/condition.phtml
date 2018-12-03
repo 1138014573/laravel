@@ -1,0 +1,53 @@
+<!-- 筛选 条件 -->
+<div class="t_condition bt_bor">
+  <div class="sel_tab" data-type="stat">
+    时间统计方式：&nbsp;&nbsp;&nbsp;&nbsp;
+    <label><input type="radio" name="filterTime" value="day" checked>按日统计</label> &nbsp;&nbsp;&nbsp;&nbsp;
+    <label><input type="radio" name="filterTime" value="month" >按月统计</label>
+  </div>
+  <div class="sel_tab" data-time="packer">
+    <div class="change_tab">
+      <div data-stat="day">
+        起止时间：&nbsp;&nbsp;&nbsp;&nbsp;从 <input type="text" id="startTime" class="date" /> 到 <input type="text" id="endTime" class="date" />
+      </div>
+      <div>
+        <span data-stat="day">选择月份： &nbsp;&nbsp;
+          <select class="month_set" name="month"></select>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+        </span>
+        选择年份： &nbsp;&nbsp;
+        <select class="year_set" name="year">
+          <?php foreach ($year as $k => $v)
+          { ?>
+            <option value="<?php echo $v;?>" <?php if ($k == 0)
+            { ?>selected<?php } ?> ><?php echo $v; ?></option>
+          <?php } ?>
+          <!--<option value="2016">2016</option>
+          <option value="2017" selected>2017</option>-->
+        </select>
+      </div>
+      <div class="coin_list_chk">
+        币种选择：&nbsp;&nbsp;&nbsp;&nbsp;
+        <label data-chk="all">
+          <input type="checkbox" name="all" value="all" checked="checked">全部币种
+        </label>
+        <!-- 币种列表 -->
+        <div class="coin_list_chk_sel">
+          <?php foreach ($pairs as $k => $v){?>
+            <label>
+              <input type="checkbox" name="coin" value="<?php echo $v['name'] ?>" checked="checked"><?php echo $v['display'] ?>
+              <input type="hidden" name="<?php echo $v['name'] ?>" value="<?php echo $v['display'] ?>">
+            </label>
+          <?php } ?>
+          <!--<label>
+            <input type="checkbox" name="btc" value="btc">比特币
+          </label>
+          <label>
+            <input type="checkbox" name="ltb" value="ltb">莱特币
+          </label>-->
+        </div>
+      </div>
+      <button type="button" id="selBtn" class="submit">筛选</button>
+    </div>
+  </div>
+</div>

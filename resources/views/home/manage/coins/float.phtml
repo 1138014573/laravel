@@ -1,0 +1,42 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">每日涨跌幅</h3>
+		<ul class="tabs">
+			<li id="lists" class="cur"><a>全部</a></li>
+		</ul>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>日期</th>
+				<th>交易区</th>
+				<th>价格浮动/CNY</th>
+				<th>收盘价/CNY</th>
+				<th>日涨跌幅</th>
+				<th>涨停价/CNY</th>
+				<th>跌停价/CNY</th>
+				<th width="140">最后更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v){?>
+		<tr>
+			<td style="text-align: center;"><?php  echo $v["day"]?></td>
+			<td><?php  echo $v["coin_from"]?>-<?php  echo $v['coin_to']?></td>
+			<td><?php  echo $v["price_float"]?></td>
+			<td><?php  echo $v["price_close"]?></td>
+			<td><?php  echo $v["percent"]*100?><?php  echo (0!=$v["percent"]?'%':'')?></td>
+			<td><?php  echo $v["price_up"]?></td>
+			<td><?php  echo $v["price_down"]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v["updated"])?></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+		<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>

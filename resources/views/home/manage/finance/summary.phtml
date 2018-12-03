@@ -1,0 +1,475 @@
+<link href="<?php  echo host()?>/css/admin/style.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/css/calendar/jquery.datetimepicker.css"/>
+<link rel="stylesheet" href="/css/finance.css">
+<div class="finance_s">
+  <div class="r_win">
+    <!-- 头部 -->
+    <div class="table_title bt_bor">
+      财务统计汇总
+      <form action="/manage_finance/summarycsv" method="post" style="float: right" id="form">
+        <input type="hidden" name="getStatType" value="">
+        <input type="hidden" name="startTime" value="">
+        <input type="hidden" name="endTime" value="">
+        <input type="hidden" name="selMonth" value="">
+        <input type="hidden" name="selYear" value="">
+
+        <button type="submit" class="submit rf">导出Excel</button>
+      </form>
+    </div>
+    <!-- 筛选 条件 -->
+    <?php  include PATH_TPL."/manage/finance/condition.phtml";?>
+  </div>
+  <!-- 展示表格 -->
+  <div class="t_contain">
+    <table>
+        <thead id="date">
+          <!-- <td>
+            <b class="oblique_line"></b>
+            <span class="f_til_r">日期</span>
+            <span class="f_til">币种</span>
+          </td>
+          <td>2017-07-01</td>
+          <td>2017-07-02</td>
+          <td>2017-07-03</td>
+          <td>2017-07-04</td>
+          <td>2017-07-05</td> -->
+         <!-- <tr>
+          </tr>-->
+        </thead>
+        <tbody id="data">
+          <!-- 充值记录 -->
+         <!-- <tr>
+            <td rowspan="3">充值记录</td>
+            <td class="bold_f">总充值额</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="bold_f">充值笔数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="bold_f">总充值人数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>-->
+          <!-- 提现记录 -->
+         <!-- <tr>
+            <td rowspan="4">提现记录</td>
+            <td class="bold_f">总提现额</td>
+            <td>2</td>
+            <td>3</td>
+            <td>5</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td class="bold_f">提现笔数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="bold_f">总提现人数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="bold_f">总提现手续费</td>
+            <td>2</td>
+            <td>3</td>
+            <td>5</td>
+            <td>6</td>
+          </tr>-->
+          <!-- 交易成交记录 -->
+         <!-- <tr>
+            <td rowspan="3">交易成交记录</td>
+            <td class="bold_f">成交总人数</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+            <td>5</td>
+          </tr>
+          <tr>
+            <td class="bold_f">成交总额/¥</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td class="bold_f">卖出总手续费/¥</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>-->
+          <!-- 1.某某币（BTC） -->
+        <!--  <tr>
+            <td rowspan="11">某某币（BTC）</td>
+            <td class="bold_f">总人数</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>总笔数</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>总数量/币</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>总额/¥</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>买入手续费/币</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>卖出手续费/¥</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>转入笔数</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>转入数量</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>转出笔数</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>转出数量</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <td>转出手续费</td>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>-->
+        </tbody>
+      </table>
+  </div>
+</div>
+<script src="/js/jquery/1.9.1.min.js"></script>
+<script src="/js/calendar/jquery.datetimepicker.js"></script>
+<script src="/js/finance_stat.js"></script>
+<script>
+  $(document).ready(function ()
+  {
+    conditionSettings();
+
+    function inidata()
+    {
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+      });
+
+      var html = '';
+      html += '<input type="hidden" name="getStatType" value="' + getStatType() + '">';
+      html += '<input type="hidden" name="startTime" value="' + getSelVal("#startTime") + '">';
+      html += '<input type="hidden" name="endTime" value="' + getSelVal("#endTime") + '">';
+      html += '<input type="hidden" name="selMonth" value="' + getSelVal(".month_set") + '">';
+      html += '<input type="hidden" name="selYear" value="' + getSelVal(".year_set") + '">';
+
+      for (var i = 0; i < coinsCode.length; i++)
+      {
+        html += '<input type="hidden" name="coins[]" value=' + coinsCode[i] + '>';
+
+      }
+      html += '<button type="submit" class="submit rf">导出Excel</button>';
+      $('#form').html(html);
+
+      getdata();
+    }
+
+    inidata();
+    // 点击筛选按钮
+    $("#selBtn").click(function ()
+    {
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+      });
+      if (coinsCode.length == 0)
+      {
+        alert('请选择币种');
+        return false;
+      }
+      var start = getSelVal("#startTime").substr(0, 4);
+      var end = getSelVal("#endTime").substr(0, 4);
+      if (start != end)
+      {
+        alert('请选择同一个年份');
+        return false;
+      }
+      var start1 = getSelVal("#startTime").substr(5, 2);
+      var end1 = getSelVal("#endTime").substr(5, 2);
+      if (start1 != end1)
+      {
+        alert('请选择同一个月份');
+        return false;
+      }
+      if (getSelVal(".month_set") == '')
+      {
+        alert('请选择月份');
+        return false;
+      };
+      var html = '';
+      html += '<input type="hidden" name="getStatType" value="' + getStatType() + '">';
+      html += '<input type="hidden" name="startTime" value="' + getSelVal("#startTime") + '">';
+      html += '<input type="hidden" name="endTime" value="' + getSelVal("#endTime") + '">';
+      html += '<input type="hidden" name="selMonth" value="' + getSelVal(".month_set") + '">';
+      html += '<input type="hidden" name="selYear" value="' + getSelVal(".year_set") + '">';
+
+      for (var i = 0; i < coinsCode.length; i++)
+      {
+        html += '<input type="hidden" name="coins[]" value=' + coinsCode[i] + '>';
+
+      }
+      html += '<button type="submit" class="submit rf">导出Excel</button>';
+      $('#form').html(html);
+      getdata();
+    });
+    function getdata()
+    {
+      // 获取所有选择的币的code
+      var coinsCode = [];
+      [].slice.call($('.finance_s .coin_list_chk_sel input:checked')).forEach(function (elem)
+      {
+        coinsCode.push($(elem).val());
+
+      });
+
+      var postJson = {
+        getStatType: getStatType(), // 获取 统计选项 日 / 月
+        startTime  : getSelVal("#startTime"), // 开始时间
+        endTime    : getSelVal("#endTime"), // 结束时间
+        selMonth   : getSelVal(".month_set"), // 获取选取的月份
+        selYear    : getSelVal(".year_set"), // 获取 选取 年份
+        coins      : coinsCode
+      }
+
+      $.ajax({
+        url     : '/manage_finance/getsummary',
+        type    : 'POST',
+        dataType: 'json',
+        data    : postJson,
+        success : function (data)
+        {
+
+          $('#date').html("");
+          $('#data').html("");
+          var html = '<tr>';
+          html += '<td colspan="2"><b class="oblique_line"></b><span class="f_til_r">时间</span><span class="f_til">统计内容</span></td>';
+          for (var key in data)
+          {
+            for (var key1 in data[key])
+            {
+              html += '<td>' + key1 + '</td>';
+            }
+            break;
+          }
+          html += '</tr>';
+          $('#date').html(html);
+          for (var key in data)
+          {
+            if (key == 'recharge')
+            {
+
+              var str1 = '<tr><td rowspan="3">充值记录</td><td class="bold_f">总充值额</td>';
+              var str2 = '<tr><td class="bold_f">充值笔数</td>';
+              var str3 = '<tr><td class="bold_f">总充值人数</td>';
+
+              for (var key1 in data[key])
+              {
+                str1 += '<td>' + data[key][key1]['inmoney'] + '</td>';
+                str2 += '<td>' + data[key][key1]['incount'] + '</td>';
+                str3 += '<td>' + data[key][key1]['inmembertotal'] + '</td>';
+              }
+              str1 += '</tr>';
+              str2 += '</tr>';
+              str3 += '</tr>';
+              //console.log(str1 + str2 + str3);
+              $('#data').append(str1 + str2 + str3);
+            }
+            else if (key == 'getmoney')//总提现记录
+            {
+              var str1 = '<tr><td rowspan="4">提现记录</td><td class="bold_f">总提现额</td>';
+              var str2 = '<tr><td class="bold_f">提现笔数</td>';
+              var str3 = '<tr><td class="bold_f">总提现人数</td>';
+              var str4 = '<tr><td class="bold_f">总提现手续费</td>';
+              for (var key1 in data[key])
+              {
+                str1 += '<td>' + data[key][key1]['money'] + '</td>';
+                str2 += '<td>' + data[key][key1]['count'] + '</td>';
+                str3 += '<td>' + data[key][key1]['membertotal'] + '</td>';
+                str4 += '<td>' + data[key][key1]['outfee'] + '</td>';
+
+              }
+              str1 += '</tr>';
+              str2 += '</tr>';
+              str3 += '</tr>';
+              str4 += '</tr>';
+
+              //console.log(str1 + str2 + str3+ str4);
+              $('#data').append(str1 + str2 + str3 + str4);
+            }
+            else if (key == 'trade')//总交易记录
+            {
+              var str1 = '<tr><td rowspan="3">交易成交记录</td><td class="bold_f">所有币的成交总人数</td>';
+              var str2 = '<tr><td class="bold_f">所有币的成交总额/¥</td>';
+              var str3 = '<tr><td class="bold_f">卖出总手续费/¥</td>';
+
+              for (var key1 in data[key])
+              {
+                str1 += '<td>' + data[key][key1]['membertotal'] + '</td>';
+                str2 += '<td>' + data[key][key1]['money'] + '</td>';
+                str3 += '<td>' + data[key][key1]['salefee'] + '</td>';
+              }
+              str1 += '</tr>';
+              str2 += '</tr>';
+              str3 += '</tr>';
+              $('#data').append(str1 + str2 + str3);
+            }
+            else
+            { //币
+              var name = $("[name=" + key + "]").val();
+              var str = name + "(" + key.toUpperCase() + ")";
+              var str1 = '<tr><td rowspan="11">' + str + '</td><td class="bold_f">成交总人数</td>';
+              var str2 = '<tr><td class="bold_f">成交总笔数</td>';
+              var str3 = '<tr><td class="bold_f">成交总数量/币</td>';
+              var str4 = '<tr><td class="bold_f">成交总额/¥</td>';
+              var str5 = '<tr><td class="bold_f">买入手续费/币</td>';
+              var str6 = '<tr><td class="bold_f">卖出手续费/¥</td>';
+              var str7 = '<tr><td class="bold_f">转入笔数</td>';
+              var str8 = '<tr><td class="bold_f">转入数量</td>';
+              var str9 = '<tr><td class="bold_f">转出笔数</td>';
+              var str10 = '<tr><td class="bold_f">转出数量</td>';
+              var str11 = '<tr><td class="bold_f">转出手续费</td>';
+
+              for (var key1 in data[key])
+              {
+                str1 += '<td>' + data[key][key1]['membertotal'] + '</td>';
+                str2 += '<td>' + data[key][key1]['count'] + '</td>';
+                str3 += '<td>' + data[key][key1]['coinnumber'] + '</td>';
+                str4 += '<td>' + data[key][key1]['money'] + '</td>';
+                str5 += '<td>' + data[key][key1]['buyfee'] + '</td>';
+                str6 += '<td>' + data[key][key1]['salefee'] + '</td>';
+                str7 += '<td>' + data[key][key1]['incount'] + '</td>';
+                str8 += '<td>' + data[key][key1]['innumber'] + '</td>';
+                str9 += '<td>' + data[key][key1]['outcount'] + '</td>';
+                str10 += '<td>' + data[key][key1]['outnumber'] + '</td>';
+                str11 += '<td>' + data[key][key1]['rate'] + '</td>';
+
+              }
+              str1 += '</tr>';
+              str2 += '</tr>';
+              str3 += '</tr>';
+              str4 += '</tr>';
+              str5 += '</tr>';
+              str6 += '</tr>';
+              str7 += '</tr>';
+              str8 += '</tr>';
+              str9 += '</tr>';
+              str10 += '</tr>';
+              str11 += '</tr>';
+
+              $('#data').append(str1 + str2 + str3 + str4 + str5 + str6 + str7 + str8 + str9 + str10 + str11);
+            }
+
+            continue;
+            var name = $("[name=" + key + "]").val();
+            var str = name + "(" + key.toUpperCase() + ")";
+            var str1 = '<tr><td rowspan="5">' + str + '</td><td class="bold_f">转入笔数</td>';
+            var str2 = '<tr><td class="bold_f">转入数量</td>';
+            var str3 = '<tr><td class="bold_f">转出笔数</td>';
+            var str4 = '<tr><td class="bold_f">转入数量</td>';
+            var str5 = '<tr><td class="bold_f">转出手续费</td>';
+
+            for (var key1 in data[key])
+            {
+              str1 += '<td>' + data[key][key1]['incount'] + '</td>';
+              str2 += '<td>' + data[key][key1]['innumber'] + '</td>';
+              str3 += '<td>' + data[key][key1]['outcount'] + '</td>';
+              str4 += '<td>' + data[key][key1]['outnumber'] + '</td>';
+              str5 += '<td>' + data[key][key1]['rate'] + '</td>';
+
+            }
+            str1 += '</tr>';
+            str2 += '</tr>';
+            str3 += '</tr>';
+            str4 += '</tr>';
+            str5 += '</tr>';
+            $('#data').append(str1 + str2 + str3 + str4 + str5);
+          }
+
+        },
+        error   : function (data)
+        {
+          //alert("失败:"+data);
+          console.log('获取数据失败');
+        }
+      });
+    }
+
+    function getStatType()
+    {
+      return $('.finance_s .t_condition .sel_tab input[name="filterTime"]:checked').val();
+    }
+
+    // 选择器 值
+    function getSelVal(sel)
+    {
+      return $(sel).val();
+    }
+  });
+</script>

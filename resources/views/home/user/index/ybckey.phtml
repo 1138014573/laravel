@@ -1,0 +1,60 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">YBEX唯一绑定码获取</h3>
+			</div>
+			<form id="form" method="post" onsubmit="return valiForm();">
+				<div style="color:#ff0000;font-size:14px;margin-top:20px;margin-left:80px;"><?php  echo $tips?>
+				</div>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>交易密码：</span>
+					<input type="password" value="" id="pwd" name="pwd" class="loginValue">
+					<?php if(isset($pwdmsg)){?>
+						<b class="false" id="pwdmsg"><?php  echo $pwdmsg?></b>
+					<?php }else{?>
+						<b class="phone" id="pwdmsg"></b>
+					<?php }?>
+				</div>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>手机验证码：</span>
+					<input type="code" name="code" id="code" value="" class="loginValue">
+					<a class="aButton1" onclick="sendmsg(this,3);">获取短信验证码</a>
+                    <a class="aButton1" onclick="sendmsg(this,4);">获取语音验证码</a>
+					
+				</div>
+				<div class="buyText clear rePW" style="margin-top:0;">
+					<span><b class="importantB">&nbsp;</b>&nbsp;</span>
+					<?php if(isset($codemsg)){?>
+						<b class="false" id="codemsg" style="width:180px;"><?php  echo $codemsg?></b>
+					<?php }else{?>
+						<b class="phone" id="codemsg" style="width:180px;">如果您的手机号为空或有误，请联系客服</b>
+					<?php }?>
+				</div>
+			    <?php if($ga['open'] && false){?>
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>双重验证密码：</span>
+					<input type="password" value="" id="google" name="google" class="loginValue">
+					<b class="phone" id="googlemsg"></b>
+				</div>
+                <?php }?>
+				<div class="rePWBtn">
+					<input type="submit" value="查看" class="rePWButton">
+				</div>
+				<div class="rePWBtn" style="padding:0 20px;">
+                <span style="color:#ff0000;font-size:20px"><?php  echo $ybex?></span>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="<?php  echo  host() ?>/js/form.js"></script>
+<script>
+	vali = {pwd: 0};
+	$('#pwd').bind('blur', function(){
+		var pLen = $(this).val().length;
+		if(pLen < 6 || pLen > 20) return validateMsg('pwd', '密码长度在6-20个字符之间', 0);
+		return validateMsg('pwd', '', vali.pwd = 1);
+	});
+	
+</script>

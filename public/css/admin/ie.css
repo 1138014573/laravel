@@ -1,0 +1,4 @@
+html,body{+overflow:hidden;}
+html,body,#page_body,.left_bar{_height:100%;}
+.main_page{_padding-right:220px; _padding-bottom:51px;}
+*+html .main_iframe,*+html #block iframe{+position:absolute;}

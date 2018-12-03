@@ -1,0 +1,88 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<link rel="stylesheet" href="/js/alert/alert.css" />
+<style media="screen">
+.table_s01 span[data-modify] {
+	display: none;
+}
+.table_s01 span[data-modify="diff"] input {
+	width: 70px;
+}
+.title_wrap p{ background:  }
+.title{ width:64px; height:18px; background: url("../img/loading/title_bj.png"); background-repeat: no-repeat; padding-left:19px; color:#e9f0ff; font-size:12px; line-height:18px; margin-bottom:10px; margin-top: 16px;}
+</style>
+<div class="mod">
+	<div class="hd">
+		<h3 style="padding-left: 10px">预警设置</h3>
+		<form style="float:right">
+			<input name="kw" value="<?php if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="coin">货币类型</option>
+			</select>
+      <script>$('#yaf_field').val('<?php  echo isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<div class="title_wrap">
+		<div class="title btn">说明</div>
+		<p style="padding-bottom: 18px; padding-left:16px; background:url('../img/loading/dot1.png') no-repeat  0px 5px;">数据算法：当钱包余额＞用户余额，差值=钱包余额-用户余额，差值比例=差值/钱包余额X100%；当钱包余额＜用户余额，差值=用户余额-钱包余额，差值比例=差值/用户余额X100%；</p>
+		<p style="padding-bottom: 18px; padding-left:16px; background:url('../img/loading/dot2.png') no-repeat  0px 5px;">预警条件：当同时满足钱包余额＜用户余额（或＞)，且差值比例的绝对值大于所填数额，则报警。</p>
+		<p style="padding-bottom: 26px; padding-left:16px; background:url('../img/loading/dot3.png') no-repeat  0px 5px;">发送规则：当数字货币触发预警条件的情况下，发送一次预警短信，每隔24h后再检测是否达到触发条件，是的话则再发送一次短信。</p>
+	</div>
+
+	<table class="table_s01">
+		<thead>
+			<tr>
+                <th>货币类型</th>
+                <th>钱包余额</th>
+                <th>用户余额</th>
+                <th>差值</th>
+                <th>差值比例</th>
+                <th colspan="2">报警条件</th>
+                <th>短信提醒</th>
+                 <th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($data as $k => $v1){?>
+		<tr>
+			<td><?php  echo $v1["coin"]?> </td>
+			<td><?php  echo $v1["wallet_over"]?></td>
+			<td><?php  echo $v1["user_over"]?></td>
+			<td <?php if($v1['red']==1) echo 'style="color: red"'; else echo 'style="color: green"'; ?>><?php  echo $v1["interval"]?></td>
+			<td <?php if($v1['red']==1) echo 'style="color: red"'; else echo 'style="color: green"'; ?>><?php  echo $v1["rate"];?></td>
+			<td>
+				<select style="width: 160px" name="condition">
+					<option value ="0" <?php if($v1["condition"]=='0') echo "selected";?> >钱包余额>用户余额</option>
+					<option value ="1" <?php if($v1["condition"]=='1') echo 'selected';?> >钱包余额<用户余额</option>
+				</select>
+			</td>
+			<td data-col="7">丨差值比例丨＞
+				<span data-fixed="val"><?php  echo $v1["condition_rate"].'%' ?></span>
+				<span data-modify="diff">
+					<input type="text">
+					<button type="button" data-fiextype="sure" name="button">修改</button>
+					<button type="button" data-fiextype="cancel" name="button">取消</button>
+				</span>
+			</td>
+			<td data-col="8">
+				<span data-fixed="val"><?php  echo $v1["mo"]?></span>
+				<span data-modify="phone">
+					<input name="phone" type="tel">
+					<button data-fiextype="sure" name="button">修改</button>
+					<button data-fiextype="cancel" name="button">取消</button>
+				</span>
+			</td>
+<!--			<td><span>--><?php // echo $v1["email"]?><!--</span><input type="text" name="email" style="display: none;"></td>-->
+			 <td><a value="1"><?php if($v1["status"]==0) echo '关闭'; else echo '开启'; ?></a></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+<script src="/js/alert/alertComponent.js"></script>
+<script src="/js/yujing.js"></script>
+</body>
+</html>

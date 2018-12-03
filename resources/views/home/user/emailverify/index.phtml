@@ -1,0 +1,233 @@
+<?php # list($seot, $seok, $seod) = array('交易中心 - 比特币交易网', '比特币中国交易平台,比特币交易平台,比特币,比特币行情,比特币交易,买比特币', '比特币交易网是中国较大的比特币交易平台，为比特币爱好者提供最安全、便捷和实时的交易服务，我们致力于打造最专业的比特币中国交易平台');?>
+<?php  include PATH_TPL.'/tpl.header.phtml'?>
+<link rel="stylesheet" href="/css/index.css">
+<style>
+#msg {
+    background-color: #EDFFD3;
+    background-position: -96px 4px;
+    height:40px;
+    line-height:40px;
+    font-size:14px;
+    color:red
+}
+#buyBtn{
+width:300px;
+}
+#changeemail {
+margin:12px 0px 12px 0px;
+}
+#changeemail td{
+font-size:15px;
+    color:#666;
+    height:30px;
+    width:400px;
+}
+
+.mysubmit {
+    background-color: #CB344D;
+    background-image: linear-gradient(to top, #006E08, #009842);
+        border-radius: 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+    height: 33px;
+    padding: 0 0 1px;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.14);
+    width: 101px;
+    margin:5px 0 0 100px;
+}
+.loginInput{margin-top:5px;}
+.loginInput .msg{height:40px;line-height:40px;font-size:14px;padding-left:12px;color:red;width:200px;font-size:12px;}
+.loginInput .msg2{height:16px;font-size:14px;padding-left:12px;color:red;width:200px;font-size:12px;}
+.loginInput .msg3{height:25px;line-height:25px;font-size:14px;padding-left:12px;color:red;width:200px;font-size:12px;}
+dl{font-size:14px}
+dl dt{line-height:20px}
+dl dd{line-height:20px}
+dl dd a{font-size:14px}
+.buyBtn input {
+    background-color: #CB344D;
+    background-image: linear-gradient(to top, #006E08, #009842);
+        border-radius: 4px;
+    color: #FFFFFF;
+    cursor: pointer;
+    float: left;
+    font-size: 14px;
+    height: 33px;
+    padding: 0 0 1px;
+    text-shadow: 0 -1px rgba(0, 0, 0, 0.14);
+    width: 101px;
+}
+.loginInput b{margin-left:10px;}
+.loginInput span {
+    width: 80px;
+    padding-right:5px;
+}
+.buyBtn {
+    padding-left: 0px;
+}
+.s_sent_msg img{padding:5px 0 0 5px}
+/**hua修改样式**/
+.uccontainer01{width:856px;margin:0 auto;padding:0;background:#fff;}
+.ucconinfo{width:620px;overflow:hidden;padding:28px 118px 50px;background:#fff;}
+.ucconinfotop h2{width: 450px; height: 84px;overflow: hidden;margin:0 auto 5px;}
+.ucconinfotop h2 img{float: left; vertical-align: bottom;}
+.ucconinfotop h2 span{float:left;font-size: 18px;color: #000;line-height: 84px;margin-left: 35px;}
+.ucconinfotop p{font-size:14px;color:#4d4c4c;margin-bottom: 25px;}
+.ucconinfotop p a{color: #fbad00;text-decoration: none;}
+.ucconinfotop>a{display: block;width: 168px;height: 38px;background: #fbad00;font-size: 14px;color: #fffffe;line-height: 38px; text-align: center; text-decoration: none;}
+.ucconinfobtm{margin:45px 0 0 0;}
+.ucconinfobtm h3{font-size: 16px;color: #555;line-height: 35px;margin-bottom: 25px;}
+.ucconinfobtm ul{width: 590px;overflow:hidden;padding: 0;}
+.ucconinfobtm ul li{float: left;padding:0 20px;width:160px;border-right: 1px solid #dcdcdc;font-size: 12px;color: #a2a2a2;text-align: left;line-height: 24px;}
+.ucconinfobtm ul li a{display: block;color: #fbad00;text-decoration: none;}
+</style>
+<div class="content clear">
+    <div class="mainbody">
+        <div id='msg' style='display:none'></div>
+        <div class="uccontainer01">
+            <div class="ucconinfo">
+                <div class="ucconinfotop">
+                    <h2>
+                        <img src="../img/smilebg.jpg" alt="注册">
+                        <span>还差一步就能注册成功！</span>
+                    </h2>
+                    <p>我们已经向您的邮箱<a href="javascript:;"><?php  echo $mCurUser['email']; ?></a>发送了一封激活邮件，点击邮件中的链接完成注册！</p>
+                    <a href="javascript:;" id="trustbtnin1">立即激活邮箱</a>
+                </div>
+                <div class="ucconinfobtm">
+                    <h3>还没收到激活邮件？</h3>
+                    <ul>
+                        <li>确认邮件是否被你提供的邮件系统拦截，或被误认为垃圾邮件放到垃圾箱了。</li>
+                        <li>如果依然没有收到激活信息请试试：<a href="javascript:;" id="trustbtnin">重发激活邮件</a><a href="javascript:;" id="emailNum" style="display:none;">60秒后重新发送</a></li>
+                        <li>如您想修改注册邮箱，请您联系：<a href="javascropt:;">QQ客服</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!--<ul>
+                <li style='border-bottom:1px solid #EEEEEE !important'>
+
+                    <?php  if($pUsertype == 1){?>
+                    <h5 class='blue'>恭喜注册完成！请查看您的注册邮箱并激活账号</h5>
+                    <?php  }else{?>
+                    <p style="line-height:20px;width:700px;font-size:14px;">尊敬的会员，从即日起为了保证账户安全，确保您的注册邮箱是真实邮箱，我们需要发送一封验证邮件到您的注册邮箱，请您验证后即可重新使用富途币各项功能。
+                    </p>
+                    <div class="buyBtn">
+                        <input type="button"  value="发 送" id="trustbtnin" class='sent' data='sent'>
+                        <span class='s_sent_msg msg' style="float:left;height:30px;width:80px; display:block"></span>
+                        <input type="button"  value="立即前往验证" class='sent' data='sent' id="trustbtnin1" style="margin-left:10px;">
+                    </div>
+                    <?php  }?>
+                    <br />
+                    <?php 
+                        //if($pEmailurl){
+                        //    echo '<p><a href=\'http://'.$pEmailurl.'\' target=\'_blank\'>立即前往验证</a></p>';
+                        //}
+                    ?>
+                </li>
+                <li style='padding-top:30px; padding-bottom:40px;color:#333'>
+                    <dl>
+                        <dt>还没有收到确认邮件怎么办?</dt>
+                        <dd>1.看看是否在邮箱垃圾箱里</dd>
+                        <dd>2.如您想修改注册邮箱，请您联系QQ客服</dd>
+                        <dd><span>3.如果您还没有收到激活的邮件，请试着<a href="" id="trustbtnin" class='again blue' data='again'>重发激活邮件</a></span><span class='msg2 s_again_msg'></span></dd>
+                    </dl>
+                </li>
+            <ul>-->
+        </div>
+    </div>
+</div>
+<script>
+    //ul li的样式；
+    $('.ucconinfobtm ul li:eq(0)').css('padding','0 20px 0 0');
+    $('.ucconinfobtm ul li:eq(2)').css({'padding':'0 0 0 20px','border-right':'none'});
+</script>
+<script src="<?php  echo host()?>/js/form.js"></script>
+<script>
+ vali = {passwd: 0, oldemail: 0,  newemail: 0, hotp: 0};
+ $('#oldemail').bind('blur', function(){
+  var pLen = $(this).val().length;
+  if(pLen < 6 || pLen > 30) return validateMsg('oldemail', '请输入当前邮箱', 0);
+  return validateMsg('oldemail', '', vali.oldemail = 1);
+});
+ $('#newemail').bind('blur', function(){
+  if($(this).val().length == 0) return validateMsg('newemail', '新邮箱不能为空', 0);
+//return validateMsg('newemail', '', vali.newemail = 1);
+$.get('/ajax/user/email/' + encodeURIComponent($(this).val()), function(d){
+	if(d['msg'] == '邮箱已经注册，您可以直接登录')
+		validateMsg('newemail', '邮箱已经注册，请使用其他邮箱', d['status']);
+	else
+		validateMsg('newemail', d['msg'], d['status']);
+	vali.newemail = d['status'];
+}, 'json');
+});
+ $('#passwd').bind('blur', function(){
+  if($(this).val().length < 2) return validateMsg('passwd', '请输入登陆密码', 0);
+  return validateMsg('passwd', '', vali.passwd = 1);
+});
+ $('#repasswd').bind('blur', function(){
+  if($(this).val().length < 2) return validateMsg('repasswd', '请输入交易密码', 0);
+  return validateMsg('repasswd', '', vali.repasswd = 1);
+});
+ $('#hotp').bind('blur', function(){
+  if($(this).val().length == 0) return validateMsg('hotp', 'google验证码不能为空', 0);
+  return validateMsg('hotp', '', vali.hotp = 1);
+});
+ $(document).ready(function(){
+    var emailNum=60;
+    $("#trustbtnin").click( function(){
+        var data = $(this).attr('data');
+        var msg_obj = $('.s_'+data+'_msg');
+        var emailInterval = setInterval(function(){
+             emailNum--;
+             $("#emailNum").css("display","block").text(emailNum+"秒后重新发送");
+             if(emailNum==0){
+                emailNum=60;
+                $("#emailNum").css("display","none");
+                $("#trustbtnin").css("display","block");
+                clearInterval(emailInterval);
+                 
+             }
+        },1000);
+        $(msg_obj).html('发送中...');
+        $.get('/user_emailverify/retrysent' ,function(data){
+            if(data == 'succeed'){
+                alert('发送成功');
+                //$("#emailNum").css("display","block");
+                $("#trustbtnin").css("display","none");
+                $(msg_obj).html('<img src="<?php  echo host_img()?>/images/loginB_bg1.jpg" />&nbsp;发送成功');
+            }else{
+                $(msg_obj).html('<img src="<?php  echo host_img()?>/images/loginB_bg.jpg" />&nbsp;'+data);
+            }
+        })
+    });
+    $("#trustbtnin1").click( function(){
+      window.open("http://<?php  echo $pEmailurl?>","_blank")
+  });
+    $('.mysubmit').click(function(){
+        var email = $('input[name="email"]').val();
+        var newemail = $('input[name="newemail"]').val();
+        var passwd = $('input[name="passwd"]').val();
+        var repasswd = $('input[name="repasswd"]').val();
+        var hotp = $('input[name="hotp"]').val();
+
+        $.post('/user_emailverify/changeEmail' , {email:email ,newemail:newemail , passwd:passwd,repasswd:repasswd,hotp:hotp } , function(data){
+            var obj = eval('('+data+')');
+            if(obj.status == 0){
+                alert(obj.msg);
+        //$('.msg3').html('&nbsp;&nbsp;<img src="../images/loginB_bg.jpg" />&nbsp;'+obj.msg);
+    }else{
+       alert(obj.msg);
+       location.href='/user/login/';
+   }
+});
+    });
+    $('.cEmail').click(function(){
+      if($('#changeemail').css('display') == 'none')
+       $('#changeemail').css('display' , 'block');
+   else
+       $('#changeemail').css('display' , 'none');
+});
+});
+</script>
+<?php  include PATH_TPL.'/tpl.footer.phtml'?>

@@ -1,0 +1,55 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="author" content="ISUX">
+    <meta name="format-detection" content="telephone=no"/>
+    <meta name="viewport" content="width=device-width,user-scalable=no"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <title>登录 | 币交所</title>
+    <link rel="stylesheet" type="text/css" href="/css/frozen.css">
+    <script src="/js/zepto.min.js"></script>
+    <script src="/js/frozen.js"></script>
+    <style>
+    .ui-tab-content{
+        display: -webkit-box;
+        width: 300%;
+     }
+    .ui-tab-content > li {
+        -webkit-box-flex: 1;
+        width: 100%;
+        height:300px;
+    }
+    </style>
+</head>
+<body>
+    <div class="ui-form ui-border-t">
+        <form action="/user/signin" method="post" id="signup_form" onsubmit="return valiForm();">
+            <div class="ui-form-item ui-form-item-pure" style="border-bottom: #e3e3e3 1px solid;">
+                国家和地区<i class="ui-icon-arrow"></i>
+            </div>
+            <div class="ui-form-item ui-form-item-pure" style="border-bottom: #e3e3e3 1px solid;">
+                <input type="text" id="email" name="email" placeholder="请输入您的邮箱" >
+            </div>
+            <div class="ui-form-item ui-form-item-pure" style="border-bottom: #e3e3e3 1px solid;">
+                <input type="password" id="pwd" name="pwd" placeholder="请输入您的密码">
+            </div>
+            <div class="ui-form-item ui-form-item-pure" style="border-bottom: #e3e3e3 1px solid;">
+                <input type="text" id="captcha" name="captcha" placeholder="请输入验证码">
+                <img id="captchaimg" src="/index/captcha?t=<?php  echo rand(100000, 999999)?>" style="position: absolute;right: 15px;top: 6px;" onclick="$(this).attr('src', '/index/captcha?t='+Math.random())">
+            </div>
+            <div class="ui-btn-wrap">
+                <input type="submit" class="ui-btn-lg ui-btn-danger" style="background:#00a5e0;" value="登录"/>
+                <a href="/user/signup" class="ui-btn-lg ybc-login">马上去注册</a>
+            </div>
+        </form>
+    </div>
+    <div class="ui-center" id="ybc_app" style="margin-top: -20px;">
+        <p style="font-size:16px; margin-bottom:10px;">触屏版 <span style="color:#999;">|</span>
+            <a href="/" target="_blank">电脑版</a>
+        <p style="color:#999;">© 币交所版权所有</p>
+    </div>
+</body>
+</html>
+<script src="/js/signin.js?v=20160508"></script>

@@ -1,0 +1,52 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<?php  $status = TrustModel::$status?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">委托</h3>
+		<ul class="tabs">
+			<li<?php if($cur==-2) echo ' class="cur"'?>><a href="/manage_user/trust/">全部</a></li>
+			<li<?php if($cur==-1) echo ' class="cur"'?>><a href="/manage_user/trust/?isnew=1">未处理</a></li>
+			<?php  foreach($status as $k1 => $v1){?>
+			<li<?php if($cur==$k1) echo ' class="cur"'?>><a href="/manage_user/trust/status/<?php  echo $k1?>"><?php  echo $v1?></a></li>
+			<?php  }?>
+		</ul>
+		<?php search_form(array('uid'=>'用户', 'flag'=>'买卖标志'))?>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>id</th>
+				<th>用户id</th>
+				<th>单价</th>
+				<th>数量</th>
+				<th>剩余数量</th>
+				<th>买卖标志</th>
+				<th>新委托</th>
+				<th>状态</th>
+				<th width="135">创建时间</th>
+				<th width="135">更新时间</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach ($datas as $v1){?>
+		<tr>
+			<td><?php  echo $v1["id"]?></td>
+			<td><?php  echo $v1["uid"]?></td>
+			<td><?php  echo $v1["price"]?></td>
+			<td><?php  echo $v1["number"]?></td>
+			<td><?php  echo $v1["numberover"]?></td>
+			<td><?php  echo $v1["flag"]?></td>
+			<td><?php  echo $v1["isnew"]?></td>
+			<td><?php  echo $status[$v1["status"]]?></td>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+			<td><?php  if($v1["updated"]) echo date('Y-m-d H:i:s', $v1["updated"])?></td>
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>

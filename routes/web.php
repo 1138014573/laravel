@@ -11,6 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+Route::get('/','Home\IndexController@index');
+Route::get('/index','Home\IndexController@index');
+Route::get('/index/index','Home\IndexController@index');
+Route::get('/index/captcha','Home\IndexController@captcha');
+Route::get('/user/login','Home\UserController@login');
+Route::get('/user/register','Home\UserController@register');
+
+Route::group(['middleware' => ['web']], function () {
+    // your routes here
 });

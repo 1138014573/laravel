@@ -1,0 +1,683 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml";?>
+<link rel="stylesheet" type="text/css" href="/css/calendar/jquery.datetimepicker.css"/>
+<link href="<?=host()?>/css/boot.css" rel="stylesheet" type="text/css" />
+<style>
+.form{height:40px; line-height:40px;float:right;margin:10px 0;}
+.date{width:150px; height:11px; line-height:11px; padding:5px; border:1px #AA9FFF solid; cursor:pointer; background:url(../images/dateIco.png) no-repeat right center;}
+.calender{ width:200px; margin:50px auto; top:0; left:0; border:4px #D6D6D6 solid; background:#EBEBEB; position:absolute; display:none; z-index:999;}
+.calendertb{width:100%;}
+.calendertb td{width:35px; height:30px;border:1px #CCCCCC solid; text-align:center; vertical-align:middle; cursor:pointer; font-size:14px; font-weight:bold;}
+.calendertb td.hover,.calendertb td.weekendhover{background:#D6D6D6;}
+.calendertb th{width:35px; height:30px;border:1px #CCCCCC solid; text-align:center; vertical-align:middle; cursor:pointer; color:#979797; }
+.tdtoday{ background:#0080FF;color:#fff;width:35px; height:35px;border:1px #CCCCCC solid; text-align:center; vertical-align:middle; cursor:pointer; font-size:14px; font-weight:bold;}
+.getyear{ height:35px; line-height:35px; width:100%; text-align:center;}
+.preMonth{ font-size:14px; font-weight:bold; cursor:pointer; margin-right:18px;color:#0080FF;}
+.nextMonth{ font-size:14px; font-weight:bold; cursor:pointer; margin-left:18px;color:#0080FF;}
+.zhezhao{width:100%; height:100%; position:fixed; z-index:998;	background:#fff;filter:alpha(opacity=10);opacity:0.1; display:none; }
+.select{width:100px; height:24px; border:2px #AA9FFF solid;}
+.page{float: left;}
+.tongji{min-width:570px;float: right;height: 44px;text-align: right;}
+.tongji span{margin-left: 10px;font-size: 17px;color:red;height: 44px;line-height: 44px;}
+.RightBox {
+    	margin: -20px 0 40px 0;
+    	
+	}
+	.slogan {
+	    margin-top: 28px;
+	    display: block;
+	    float: none;
+	}
+    .slogan span.number {
+	    display: inline-block;
+	    width: 14px;
+	    height: 14px;
+	    line-height: 14px;
+	    text-align: center;
+	    color: #ffffff;
+	    background: #0096df;
+	    margin: 0px 8px 0px 30px;
+	    border-radius: 7px;
+	}
+	.slogan span {
+	    color: #ff9900;
+	}
+	.numberBlock {
+	    padding: 0px 0px 10px 0px;
+	    
+	}
+	.numberBlock ul li {
+	    line-height: 35px;
+	    margin-top: 20px;
+	    padding-bottom: 0px;
+	}
+	.rmbin_confirmtil p {
+	    border: none;
+	    padding: 0;
+	}
+	.numberBlock ul li span.c2 {
+	    display: inline-block;
+	    font-size: 14px;
+	    padding-left: 20px;
+	    text-align: left;
+	    position: relative;
+	}
+	.numberBlock ul li span.c2 em.exp {
+	    color: #999;
+	    font-size: 12px;
+	    font-style: inherit;
+	}
+	.numberBlock ul li span.c2 {
+	    display: inline-block;
+	    font-size: 14px;
+	    padding-left: 20px;
+	    text-align: left;
+	    position: relative;
+	}
+	.numberBlock ul li span.c2 .bindedBank {
+	    display: inline-block;
+	    width: 348px;
+	    padding-left: 10px;
+	    height: 38px;
+	    line-height: 38px;
+	    border: 1px solid #e6e6e6;
+	    position: relative;
+	}
+	.numberBlock ul li span.c2 .bindedBank em img {
+	    vertical-align: middle;
+	    margin-bottom: 2px;
+	}
+	.numberBlock ul li em.tail{
+		font-style: inherit;
+		font-size: 12px;
+	    color: #767676;
+	    margin-left: 5px;
+	    font-weight: 100;
+	}
+	.numberBlock ul li span.c2 .bankBindedSelChange {
+	    float: right;
+	    display: inline-block;
+	    padding-left: 10px;
+	    border-left: 1px solid #e6e6e6;
+	    color: #0096e0;
+	    height: 18px;
+	    line-height: 18px;
+	    margin: 10px 30px 0px 0px;
+	    font-size: 14px;
+	    cursor: pointer;
+	}
+	.numberBlock ul li span.c2 .arrow-down {
+	    position: absolute;
+	    right: 10px;
+	    top: 17px;
+	    width: 0;
+	    height: 0;
+	    border-left: 5px solid transparent;
+	    border-right: 5px solid transparent;
+	    border-top: 5px solid #999;
+	}
+	.numberBlock ul li span.c2 .bindedContent {
+	    position: absolute;
+	    top: 38px;
+	    right: -1px;
+	    background: #ffffff;
+	    border: 1px solid #e6e6e6;
+	    width: 358px;
+	    z-index: 3;
+	    padding: 5px 0px 10px;
+	}
+	#ulFinCnyAddress li{
+		 margin: 0;
+	}
+	.numberBlock ul li span.c2 .bindedContent div {
+	    margin: 0px 10px;
+	}
+	.numberBlock ul li span.c2 .bindedContent div a.addNewBankCard {
+	    width: 340px;
+	    background: #f5f5f5;
+	    height: 34px;
+	    line-height: 34px;
+	    text-align: center;
+	    display: inline-block;
+	    color: #333;
+	    font-size: 14px;
+	    text-decoration: none;
+	}
+	.numberBlock ul li span.c2 .bindedContent div a.addNewBankCard em {
+	    color: #d8d8d8;
+	    margin-right: 5px;
+	    font-style: inherit;
+	}
+	.numberBlock ul li span input[type='text'] {
+	    height: 40px;
+	    width: 348px;
+	    padding-left: 10px;
+	    border: 1px solid #e6e6e6;
+	    font-size: 14px;
+	    color: #555;
+	    border-radius: 2px;
+	}
+	.numberBlock ul li span.c1 {
+	    display: inline-block;
+	    text-align: right;
+	    width: 115px;
+	    font-size: 14px;
+	}
+	
+	.numberBlock ul li span.c2 em.number {
+	    position: absolute;
+	    right: 10px;
+	    top: 5px;
+	    color: #f39800;
+	    font-style: inherit;
+	}
+	.numberBlock ul li p.care {
+	    display: inline-block;
+	    font-size: 12px;
+	    margin-left: 20px;
+	    text-align: left;
+	    color: #666;
+	    line-height: 17px;
+	    padding: 5px;
+	    margin-left: 139px;
+	}
+	.numberBlock ul li.submit {
+	    padding-left: 140px;
+	    margin-top: 0px;
+	}
+	.numberBlock .numberBlock ul li {
+	    line-height: 35px;
+	    margin-top: 20px;
+	    padding-bottom: 0px;
+	}
+	.numberBlock ul li.submit .button_blue {
+	    height: 40px;
+	    line-height: 40px;
+	    font-size: 14px;
+	}
+	.button_blue {
+	    background: #faad09;
+	    border: 1px solid #faad09;
+	    color: #fff;
+	    font-size: 14px;
+	    padding: 0px 30px;
+	    text-align: center;
+	    height: 34px;
+	    line-height: 34px;
+	    border-radius: 2px;
+	    cursor: pointer;
+	    display: inline-block;
+	}
+	.button_blue:hover {
+	    background: #ee8d02;
+	    border: 1px solid #ee8d02;
+	    color: #fff;
+	    text-decoration: none;
+	}
+	.rmbin_confirmtil {
+	    margin: 40px auto 0 auto;
+	}
+	#ulFinCnyAddress li:hover{
+		background: #f5f5f5;
+	}
+
+	#rechargeMsgModal .dialog_title {
+	    width: 100%;
+	    height: 30px;
+	    line-height: 30px;
+	    font-size: 14px;
+	    border-bottom: 1px solid #e6e6e6;
+	    font-weight: 700;
+	    cursor: move;
+	    background: -moz-linear-gradient(top, #f6f7fc, #f6f7fc 130%);
+	    background: -webkit-gradient(linear, 0 0, 0 130%, from(#f6f7fc), to(#f6f7fc));
+	    border-radius: 5px 5px 0px 0px;
+	}
+	#rechargeMsgModal  .dialog_title span {
+	    float: left;
+	    margin-left: 20px;
+	    line-height: 30px;
+	    font-size: 14px;
+	    border-bottom: 1px solid #e6e6e6;
+	    font-weight: 700;
+	    cursor: move;
+	}
+	#rechargeMsgModal .dialog_closed {
+	    	position: relative;
+	    background: url(/img/icon/close_p.png) no-repeat scroll transparent;
+	    float: right;
+	    margin: 5px 5px 5px 5px;
+	    display: inline-block;
+	    width: 20px;
+	    height: 20px;
+	}
+	#rechargeMsgModal .dialog_body {
+	    background: none repeat scroll 0 0 #ffffff;
+	    overflow: hidden;
+	    padding: 10px 0px 20px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo {
+	    padding: 0px 20px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li {
+	    margin-top: 15px;
+	    display: inline-block;
+	    width: 100%;
+	    position: relative;
+	        text-align: left;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.title {
+	    display: inline-block;
+	    width: 90px;
+	    text-align: right;
+	    margin-right: 10px;
+	    font-size: 14px;
+	    color: #333;
+	    float: left;
+	    line-height: 38px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.name {
+	    display: inline-block;
+	    font-size: 18px;
+	    color: #666;
+	    line-height: 38px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.name em {
+	    font-size: 12px;
+	    color: #666;
+	    margin-left: 5px;
+	        font-style: inherit;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.bankName {
+	    position: relative;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.bankName .banksel {
+	    width: 296px;
+	    background-position: 297px 17px;
+	    padding-left: 10px;
+	    color: #999;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.bankName .arrow-down {
+	    position: absolute;
+	    right: 10px;
+	    top: 5px;
+	}
+	.arrow-down {
+	    width: 0;
+	    height: 0;
+	    border-left: 5px solid transparent;
+	    border-right: 5px solid transparent;
+	    border-top: 5px solid #999;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li span.bankName .banksel {
+	    border: 1px solid #eee;
+	    color: #333;
+	    font-size: 14px;
+	    background-image: url(/okcoin/coin/image/future/open_close.png);
+	   background-repeat: no-repeat;
+	   background-attachment: scroll;
+	   background-color: transparent;
+	    height: 40px;
+	    line-height: 40px;
+	    padding: 0 10px 0px 10px;
+	    display: inline-block;
+	    border-radius: 5px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li input[type='text'] {
+	    width: 304px;
+	    height: 36px;
+	    line-height: 36px;
+	    padding-left: 10px;
+	    border: 1px solid #e6e6e6;
+	    font-size: 16px;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li .bankList {
+	    position: absolute;
+	    top: -80px;
+	    right: 0px;
+	    background: #ffffff;
+	    border: 1px solid #e6e6e6;
+	    width: 280px;
+	    z-index: 3;
+	    padding: 5px 0px;
+	    height: 320px;
+	    overflow: auto;
+	    max-height: 240px;
+	    border-radius: 0 0 3px 3px;
+	    box-shadow: 0px 2px 4px #f2f2f2;
+	    overflow-x: hidden;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li .bankList li {
+	    line-height: 30px;
+	    padding-left: 10px;
+	    width: 258px;
+	    margin-top: 5px;
+	    cursor: pointer;
+	    display: inline-block;
+	    position: relative;
+	        height: 34px;
+	    line-height: 34px;
+	    padding: 0 10px 0px 20px;
+	    cursor: pointer;
+	    color: #999;
+	}
+	#rechargeMsgModal .dialog_body .cardInfo ul li .bankList li:hover {
+	    background: #f5f5f5;
+	}
+	#rechargeMsgModal .errorTips {
+	     padding-left: 100px;
+	    text-align: left;
+	    height: 30px;
+	    line-height: 30px;
+	    color: #FF0000;
+	    border: none;
+	    background: none;
+	    margin: 0;
+	    	padding: 1px;
+	}
+	#rechargeMsgModal  .tishi{
+		margin: 30px 0;
+	    font-size: 18px;
+	    line-height: 30px;
+	}
+	.bankText{
+		font-size: 16px;
+    	line-height: 25px;
+	}
+	#rechargeSuccess .serialNumber,.sum,.serialNumber,.bankName,.rechargeText{
+		margin: 10px;
+	}
+
+</style>
+
+<script src="/js/calendar/jquery.datetimepicker.js"></script>
+
+<?php $tTS = $type.$status?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">人民币</h3>
+		<ul class="tabs">
+			<li<?php if($tTS=='out等待') echo ' class="cur"'?>><a href="/manage_user/rmb/type/out/status/<?php  echo urlencode('等待')?>">等待转出</a></li>
+			<li<?php if($tTS=='out成功') echo ' class="cur"'?>><a href="/manage_user/rmb/type/out/status/<?php  echo urlencode('成功')?>">成功转出</a></li>
+			<li<?php if($tTS=='in成功') echo ' class="cur"'?>><a href="/manage_user/rmb/type/in/status/<?php  echo urlencode('成功')?>">充值成功</a></li>
+			<li<?php if($tTS=='in等待') echo ' class="cur"'?>><a href="/manage_user/rmb/type/in/status/<?php  echo urlencode('等待')?>">充值等待</a></li>
+			<li<?php if($tTS=='in已取消') echo ' class="cur"'?>><a href="/manage_user/rmb/type/in/status/<?php  echo urlencode('已取消')?>">充值已取消</a></li>
+			<li<?php if($tTS=='out已取消') echo ' class="cur"'?>><a href="/manage_user/rmb/type/out/status/<?php  echo urlencode('已取消')?>">提现已取消</a></li>
+		</ul>
+		<!-- <?php search_form(array('uid'=>'用户', 'email'=>'邮箱', 'id'=>'订单ID'))?> -->
+		<div class="form">
+			<form method="post" style="float:left;margin-left:50px;">
+				<input class="inputBtn" name="kw" value="<?php if(isset($kw))echo $kw;?>">
+				<select id="yaf_field" name="field">
+			    	<option value="uid">用户ID</option>
+			    	<option value="email">邮箱</option>
+			    	<option value="id">订单ID</option>
+			    	<option value="name">姓名</option>
+			    	<option value="account">汇款帐号</option>
+					<option value="money">金额</option>
+				</select>
+			  <?php  if(isset($field)){ ?>
+				<script>$('#yaf_field').val('<?php  echo $field?>')</script>
+			  <?php  } ?>
+			  <span style="margin: 0 10px;"><input type="checkbox" name="hasTime" value="1" <?php if($hasTime==1){?>checked<?php }?> >是否筛选时间</span>
+				开始时间:<input type="text" class="date" value="<?php  echo date('Y-m-d H:i', $stime)?>" id="date-start" name="stime" readonly="true" /> 结束时间:<input type="text" class="date" value="<?php  echo date('Y-m-d H:i', $etime)?>" id="date-end" name="etime" readonly="true" />
+	            	<input type="submit" value="搜索"/>
+			<?php if($tTS=='in等待'){?><input type="submit" name="cancle_all" value="批量撤销"/><?php }?>
+	        </form>
+        </div>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<?php if('等待'==$status){?>
+				<th style="min-width: 100px;">操作</th>
+				<?php }?>
+				<th>id</th>
+				<th>用户id</th>
+				<th style="min-width: 60px;">姓名</th>
+				<th>邮箱</th>
+				<th>金额</th>
+				<?php if($tTS=='out成功' || $tTS=='out等待'){?><th>实付金额</th><th>手续费</th><?php }?>
+				<th>汇款单号</th>
+				<th>汇款账号</th>
+				<th style="min-width: 70px;">开户行</th>
+				<th>收款类别</th>
+				<?php if($tTS=='out成功' || $tTS=='out等待'){?><th>开户行地址</th><?php }?>
+				<th style="min-width: 150px;">创建时间</th>
+				<?php if($tTS=='in成功' || $tTS=='out成功'){?><th style="min-width: 150px;">到账时间</th><?php }?>
+				<th class="hide">创建ip</th>
+				<!-- <th <?php if($tTS!='in成功') {?>class="hide"<?php }?>>更新时间</th> -->
+				<th class="hide">更新ip</th>
+				<th>备注</th>
+				<!--chen-->
+				<?php if ($tTS == 'in已取消')
+				{ ?>
+					<th>操作</th>
+				<?php } ?>
+				<!--//chen-->
+						<!--chen-->
+				<?php if ($tTS == 'out成功')
+				{ ?>
+					<th>操作</th>
+				<?php } ?>
+				<!--//chen-->
+			</tr>
+		</thead>
+		<tbody>
+
+		<?php  foreach ($datas['list'] as $v1){?>
+		<?php 
+		$tUserMO = new UserModel();
+		$level = new UserLevelModel();
+		$leveldata = $level->fList();
+		$leveluser = level($tUserMO->getById($v1["uid"]),$leveldata);?>
+		<tr <?php if($leveluser[0]['rmb_out'] && ($tTS=='out等待' || $tTS=='out成功')){?>style="background:#FFFF00"<?php }?>>
+			<?php if($tTS=='out等待'){?>
+			<td>
+				<?php  if($btnAuth['user_rmb_outsuccess']){ ?>
+					<button onclick="WVKE.confirm('/manage_user/rmbout/id/<?php  echo $v1['id']?>', 'ok')">成功</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php  } ?>
+				<?php  if($btnAuth['user_rmb_outcancel']){ ?>
+					<button onclick="WVKE.confirm('/manage_user/rmbout/id/<?php  echo $v1['id']?>/cancel/1', 'ok')">撤消</button>
+				<?php  } ?>
+			</td>
+			<?php }else if($tTS=='in等待'){?>
+			<td>
+				<button onclick="WVKE.confirm('/manage_user/rmbpay/id/<?php  echo $v1['id']?>', 'ok')">到账</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<?php  if($btnAuth['user_rmb_incancel']){ ?>
+					<button onclick="WVKE.confirm('/manage_user/rmbpay/id/<?php  echo $v1['id']?>/cancel/1', 'ok')">撤消</button><br/>
+					<br />
+				<?php  } ?>
+				<a href="/manage_user/modrmbin/id/<?php  echo $v1['id']?>" style="font-size: 12px;">修改</a>
+			</td>
+			<?php }?>
+			<td><?php  echo $v1["id"]?></td>
+			<td><?php  echo $v1["uid"]?></td>
+			<td><?php  echo Tool_Str::safestr($v1["name"])?></td>
+			<td><?php  echo $v1["email"]?></td>
+			<td><?php  echo Tool_Str::format($v1['money'], 2)?></td>
+			<?php $level=leveluser($v1["uid"]);
+			?>
+			<?php if($tTS=='out成功' || $tTS=='out等待'){?><td><?php  echo $v1['money_u']==0?Tool_Str::format($v1['money']*0.995, 2):Tool_Str::format($v1['money_u'], 2)?></td><td><?php  echo $v1['money_u']==0?Tool_Str::format($v1['money']*(1-0.995), 2):Tool_Str::format($v1['money'] - $v1['money_u'], 2)?></td><?php }?>
+			<td><?php  echo Tool_Str::safestr($v1["order"])?></td>
+			<td><?php  echo Tool_Str::safestr($v1["account"])?></td>
+			<td><?php  echo Tool_Str::safestr($v1["bank"])?></td>
+			<td><?php  echo $v1["accounttype"]?></td>
+			<?php if($tTS=='out成功' || $tTS=='out等待'){?><td>
+				<?php 
+					if (!$v1['province']) {
+						$v1['province'] = '';
+					}
+					if (!$v1['city']) {
+						$v1['city'] = '';
+					}
+					if (!$v1['district']) {
+						$v1['district'] = '';
+					}
+					if (!$v1['subbranch']) {
+						$v1['subbranch'] = '';
+					}
+					$bank_address = $v1['province'] . ' ' . $v1['city'] . ' ' . $v1['district'] . ' ' . $v1['subbranch'];
+					$bank_address = trim($bank_address);
+
+					if (((int)$bank_address)!=0) {
+						$bank_address = '';
+					}
+				?>
+				<?php  echo $bank_address?>
+			</td><?php }?>
+			<td><?php  echo date('Y-m-d H:i:s', $v1["created"])?></td>
+			<?php if($tTS=='in成功' || $tTS=='out成功'){?><td><?php  echo  $v1['updated']==0 ? '' : date('Y-m-d H:i:s', $v1["updated"]) ?></td><?php }?>
+			<td class="hide"><?php  echo $v1["createip"]?></td>
+			<!-- <td <?php if($tTS!='in成功') {?>class="hide"<?php }?>><?php  echo date('Y-m-d H:i:s', $v1["updated"])?></td> -->
+			<td class="hide"><?php  echo $v1["updateip"]?></td>
+			<td><?php  echo $v1["bak"]?></td>
+			<!--chen-->
+			<?php if ($tTS == 'in已取消')
+			{ ?>
+				<td>
+					<button lang="<?= $v1["id"] ?>" class="bt">充值等待</button>
+				</td>
+			<?php } ?>
+
+			<!--chen-->
+						<?php if ($tTS == 'out成功')
+			{ ?>
+				<td>
+					<button lang="<?php echo $v1["id"]; ?>" class="outstats">提现已取消 </button>
+				</td>
+			<?php } ?>
+			<!--chen-->
+			
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $datas['pageinfo']?>
+	<p class="tongji">
+		<span>总笔数：<?php  echo $datas['total'][0]['num']?></span>
+		<span>总金额：<?php  echo (float)$datas['total'][0]['total']?>元</span>
+		<?php  if($tTS=='out等待' || $tTS=='out成功'){ ?>
+		<span>总实付金额：<?php  echo (float)$datas['total'][0]['total_u']?>元</span>
+		<span>总手续费：<?php  echo round((float)$datas['total'][0]['total']-(float)$datas['total'][0]['total_u'], 2)?>元</span>
+		<?php  } ?>
+	</p>
+	</div>
+</div>
+
+				<!--人民币充值添加银行卡 -->
+    <div class="modal fade in" id="rechargeMsgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="text-align: center; display: block; padding-right: 17px;  display: none;" >
+       <div class="modal-dialog" style="width:496px;text-align:center;">
+           <div id="autoCenter" class="modal-content" style=" height: 200px; margin-top: 290px;">
+                <div class="dialog_title">
+			      <span>请先验证身份</span>
+			      <a id="closeBtn" href="javascript:submitRechargeCnyAddress();" class="dialog_closed" title="关闭"></a>
+			    </div>
+			    <div class="dialog_body" id="">
+			      <form action="/manage_user/isGoogleAuth1" method="post">
+				  <input type='hidden' value='' name='id' id='yanzheng'>
+				<input type="password" name="auth" placeholder="请输入谷歌验证码" style="width: 200px;height: 40px;margin-left:130px;padding: 5px 10px 5px 17px;border: 1px solid #c9c9c9;font-size: 16px;color: #333;margin-top: 40px;display: block;" />
+				<input type="submit" style="width: 200px;height: 40px;font-size: 20px;line-height: 34px;text-align: center;color: #fff;margin-top: 40px;cursor: pointer;background: #ee484c;border:none;" />
+				</form>
+			    </div>
+           </div>
+       </div>
+   </div>
+  <!--人民币充值添加银行卡 -->
+  
+</body>
+</html>
+<script>
+	$(function(){
+		// 关键字和搜索字段
+		var kw = "<?php  echo $kw?>";
+		var field = "<?php  echo $field?>";
+		if( kw ){
+			var kwstr = '&kw=' + kw + '&field=' + field;
+		}else{
+			var kwstr = '';
+		}
+
+		var hasTime = "<?php  echo $hasTime?>";
+		$('.pageUl li').each(function(){
+			var oldHref = $(this).find('a').attr('href');
+
+			var prega = oldHref.match(/p=(\d*)$/);
+			var pregb = oldHref.match(/p=(\d*)&/);
+			if( prega != null ){
+				var p = prega[1];
+			}else if( pregb != null ) {
+				var p = pregb[1];
+			}else{
+				var p = 1;
+			}
+
+			if(hasTime==1){
+				var start = $('#date-start').val();
+				var end = $('#date-end').val();
+				var newHref = '?p=' + p + '&hasTime=1&stime=' + start + '&etime=' + end + kwstr;
+			}else{
+				var newHref = '?p=' + p + kwstr;
+			}
+
+			$(this).find('a').attr('href', newHref);
+		});
+	});
+</script>
+<script>
+	function submitRechargeCnyAddress(){
+		$("#rechargeMsgModal").hide(); 
+	}
+
+		/*chen*/
+	$('.outstats').click(function(){
+		var id=$(this).attr('lang');
+		var obj=$(this);
+ 		if(confirm('你确定要改变成提现已取消状态吗？')){
+			
+			$('#rechargeMsgModal').show();
+			$('#yanzheng').val(id);
+
+		} 
+
+	});
+/*	chen*/
+
+	$('#date-start').datetimepicker();
+	$('#date-end').datetimepicker();
+	/*chen*/
+	$('.bt').click(function ()
+	{
+		var id = $(this).attr('lang');
+		var obj = $(this);
+		if (confirm('你确定要改变成充值等待状态吗？'))
+		{
+			$.ajax({
+				url     : '/manage_user/canselorder',
+				type    : 'POST', //GET
+				data    : {
+					'id': id
+				},
+				dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+				success : function (data, textStatus, jqXHR)
+				{
+
+					if (data['status'] == 1)
+					{
+						obj.parent().parent().remove();
+					}
+
+				},
+				error   : function (xhr, textStatus)
+				{
+					console.log(xhr);
+				}
+
+			})
+
+		}
+
+	});
+	/*	chen*/
+</script>

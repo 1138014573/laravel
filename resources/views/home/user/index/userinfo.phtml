@@ -1,0 +1,82 @@
+<style>
+.userinfoErrorTips{margin-bottom: -15px;}
+.userinfoNoBorder input{border: none;}
+#changeCode:hover{text-decoration: none;color: #329ddc;}
+.buyText span,.buyText input{font-size: 14px;}
+.loginValue{min-width:152px;width: auto;margin-right: 10px;}
+</style>
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">账户信息</h3>
+			</div>
+			<form class="form-horizontal uadd_horizontalfm" id="form" method="post" onsubmit="return changePwd();">
+				<h2>账户信息</h2>
+				<div class="buyText clear userinfoNoBorder">
+					<span>当前账户：</span>
+					<input type="text" value="<?php  if($data['name']){echo $data['name'];} elseif($data['mo']) {echo $data['mo'];}else{echo $data['email'];}?>" id="curaccount" name="curaccount" readonly="readonly" class="loginValue">
+					<?php  if($authFlag == 2){ ?>
+						<em style="cursor:pointer;" onclick="javascript:window.location.href='/user/succeed';">[已认证]</em>
+					<?php  }else if($authFlag == 3){?>
+						<em style="cursor:pointer;" onclick="javascript:window.location.href='/user/fail';">[审核失败]</em>
+					<?php }else if($authFlag == 0){ ?>
+                          <em style="cursor:pointer;" onclick="javascript:window.location.href='/user/shenhe';">[待审核]</em>
+				<?php	}else{ ?>
+						<em style="cursor:pointer;" onclick="javascript:window.location.href='/user/modify';">[未认证]</em>
+					<?php  } ?>
+				</div>
+				<div class="buyText clear userinfoNoBorder">
+					<span>用户ID：</span>
+					<input type="text" value="<?php  if(isset($data['uid'])) echo $data['uid']; ?>" id="uesrID" name="userID" readonly="readonly" class="loginValue">
+				</div>
+				<div class="buyText clear userinfoNoBorder">
+					<span>注册时间：</span>
+					<input type="text" value="<?php  if(isset($data['created'])) echo date('Y-m-d', $data['created']); ?>" id="time" name="time" readonly="readonly" class="loginValue">
+				</div>
+
+				<h2>基本信息</h2>
+				<?php  if($authFlag == 1){ ?>
+				<div class="buyText clear userinfoNoBorder">
+					<span>真实姓名：</span>
+					<input type="text" value="<?php  if(isset($data['name'])) echo mb_substr($data['name'], 0, 1, 'utf-8').'**' ?>" id="name" name="name" readonly="readonly" class="loginValue">
+				</div>
+				<div class="buyText clear userinfoNoBorder">
+					<?php  if($data['cardtype'] == 1){$cardtype='身份证';
+						}else if($data['cardtype'] == 2){$cardtype='驾驶证';
+						}else if($data['cardtype'] == 3){$cardtype='护照';
+						}else if($data['cardtype'] == 4){$cardtype='军官证';
+						}else if($data['cardtype'] == 5){$cardtype='港澳通行证';}
+					?>
+					<span><?php  echo $cardtype?>号：</span>
+					<input type="text" value="<?php  if(isset($data['idcard'])) echo substr($data['idcard'],0,3).'*************'.substr($data['idcard'],-3,3) ?>" id="idcard" name="idcard" readonly="readonly" class="loginValue"><em>[<?php  echo $cardtype?>]</em>
+				</div>
+				<div class="buyText clear userinfoNoBorder">
+					<span>手机号码：</span>
+					<input type="text" value="<?php  echo isset($data['mo'])&&$data['mo']!='' ? substr($data['mo'],0,3).'******'.substr($data['mo'],-2,2) : ''?>" id="mo" name="mo" readonly="readonly" class="loginValue">
+				</div>
+				<?php  } ?>
+
+				<?php  if($data['mo']&&$data['registertype']==2) {?>
+				<div class="buyText clear userinfoNoBorder">
+					<span>联系邮箱：</span>
+
+					<input type="text" value="<?php  if(isset($data['email'])) echo $data['email']; ?>" id="mail" name="mail" readonly="readonly" class="loginValue">
+					<span><a href="/modifyemail/modifyemail">修改邮箱</span>
+				</div>
+				<?php  }else { ?>
+				<div class="buyText clear userinfoNoBorder">
+					<span>联系邮箱：</span>
+
+					<input type="text" value="<?php  if(isset($data['email'])) echo $data['email']; ?>" id="mail" name="mail" readonly="readonly" class="loginValue">
+					<!-- <span><a href="/modifyemail/modifyemail">修改邮箱</span> -->
+				</div>
+				<?php  } ?>
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+<!-- <a href="/modifyemail/modifyemail">d</a> -->

@@ -1,0 +1,127 @@
+<div class="RightBox">
+	<div class="wrap">
+		<div class="box">
+			<div class="TitleBox">
+				<h3 class="PlateTitle">修改交易密码</h3>
+			</div>
+			<form class="form-horizontal uadd_trapwdfm " id="form" method="post" onsubmit="return changePwdTrade();">
+				<?php  if(isset($msg_updated)){?>
+					<div class="rePWBtn" style="font-size:14px;color:red;">您的操作太快了，请休息一会儿吧！
+					</div><?php }?>
+				<!-- 登录密码 -->
+				<!-- <div class="buyText clear rePW">
+					<span><b class="importantB">*</b>登录密码：</span>
+					<input type="password" value="" id="oldpwd" name="oldpwd" class="loginValue" placeholder="请输入您当前的登录密码">
+				</div> -->
+				<!-- 交易密码 -->
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>交易密码：</span>
+					<input type="password" value="" id="oldpwdtrade" name="oldpwdtrade" class="loginValue" placeholder="请输入您当前的交易密码">
+				</div>
+				<!-- 新交易密码 -->
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>新交易密码：</span>
+					<input type="password" value="" id="pwdtrade" name="pwdtrade" class="loginValue" placeholder="密码长度在6-20个字符之间">
+				</div>
+				<!-- 重复新交易密码 -->
+				<div class="buyText clear rePW">
+					<span><b class="importantB">*</b>再次输入新密码：</span>
+					<input type="password" value="" id="repwdtrade" name="repwdtrade" class="loginValue" placeholder="请重复上面的交易密码">
+				</div>
+
+				<div class="buyText clear rePW">
+					<span>验证码：</span><input style="width:138px;" class="loginValue signinCode" name="captcha" id="captcha" placeholder="请输入验证码">
+					<img id="captchaimg" src="/index/captcha?t=<?php  echo rand(100000, 999999)?>" style="float:left; margin-left: 10px;"> <a id="changeCode" href="javascript:void(0);" onclick="$('#captchaimg').attr('src', '/index/captcha?t='+Math.random())" style="float:left; line-height:40px; padding-left:10px;">看不清，再换一张</a>
+				</div>
+				<div class="buyText clear rePW"> <span>手机验证码：</span>
+					<input type="code" name="code" id="code" value="" class="loginValue">
+				</div>
+				<div class="phone_verify clearfix">
+					<a class="aButton1 left" data-time="60" onclick="verifySub(this,7,'人民币');">获取短信验证码</a>
+					<a class="aButton1 right" data-time="60" onclick="verifySub(this,8,'人民币');">获取语音验证码</a>
+				</div>
+
+				<div class="buyText clear rePW">
+					<p style="margin-left: 25px;"><b class="importantB">*</b>提示信息：为了您的资产安全，忘记交易密码时请直接联系网站下方客服！</p>
+				</div>
+				<!-- error Tips -->
+				<div class="errorTips tradepwdErrorTips" id="errorTips" style="display: <?php  echo isset($errorTips) ? 'block' : 'none'; ?>;"><?php  echo isset($errorTips) ? $errorTips : ''; ?></div>
+				<!-- 注册按钮 -->
+				<div class="rePWBtn">
+					<input type="submit" value="保存" class="rePWButton">
+					<?php  if(isset($msg_ok)){ ?>
+						<a class="save" href="#">保存成功</a>
+					<?php  }?>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+<script src="<?php  echo  host() ?>/js/form.js"></script>
+<script>
+	function changePwdTrade() {
+
+		/*var pLen = $('#oldpwd').val().length;
+		 if(pLen < 6 || pLen > 20) {
+		 $('#errorTips').html('登录密码长度在6-20个字符之间').show();
+		 return false;
+		 }*/
+
+		var oldpwdLen = $('#oldpwdtrade').val().length;
+		if(oldpwdLen < 6 || oldpwdLen > 20) {
+			$('#errorTips').html('原始交易密码长度在6-20个字符之间').show();
+			return false;
+		}
+
+		var pwdtradeLen = $('#pwdtrade').val().length;
+		if(pwdtradeLen < 6 || pwdtradeLen > 20) {
+			$('#errorTips').html('新交易密码长度在6-20个字符之间').show();
+			return false;
+		}
+
+		var repwdtradeLen = $('#repwdtrade').val().length;
+		if(repwdtradeLen < 6 || repwdtradeLen > 20) {
+			$('#errorTips').html('重复交易密码长度在6-20个字符之间').show();
+			return false;
+		}
+
+		if($('#pwdtrade').val() != $('#repwdtrade').val()) {
+			$('#errorTips').html('新交易密码不一致，请重新输入').show();
+			return false;
+		}
+
+		return true;
+	}
+	// 验证码
+	function verifySub(obj, num, name){
+		if( !$('#captcha').val() ){
+			$('#errorTips').html('请填写图形验证码').show();
+			return false;
+		}
+		$.post('/user_exchange/verifycheck', {'captcha':$('#captcha').val()}, function(data){
+			if( data == 'fail' ){
+				$('#errorTips').html('图形验证码错误').show();
+				return false;
+			}
+			sendmsg(obj, num, name);
+		})
+	}
+	function time(obj) {
+		var times = parseInt($(obj).data('time'));
+		if (times == 0) {
+			$(obj).removeClass('aButton2').addClass('aButton1');
+			$(obj).html("重新获取验证码");
+			$(obj).data("time", "60");
+			wait = 60;
+		} else {
+			times--;
+			$(obj).removeClass('aButton1').addClass('aButton2');
+			$(obj).data("time", times);
+			$(obj).html("重新发送(" + times + ")");
+			setTimeout(function() {
+					time(obj);
+				},
+				1000);
+		}
+	}
+</script>

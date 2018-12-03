@@ -1,0 +1,101 @@
+<?php  include PATH_TPL."/manage/tpl.header.phtml"?>
+<div class="mod">
+	<div class="hd">
+		<h3 class="title">用户</h3>
+		<form style="float:right">
+			<input name="kw" value="<?php if(isset($_GET['kw']))echo $_GET['kw']?>">
+			<select id="yaf_field" name="field">
+				<option value="cdate">日期</option>
+			</select>
+      <script>$('#yaf_field').val('<?php  echo isset($_GET['field'])?$_GET['field']:'uid'?>')</script>
+			<input type="submit" value="搜索">
+		</form>
+	</div>
+	<div class="bd">
+	<table class="table_s01">
+		<thead>
+			<tr>
+				<th>时间</th>
+				<th>注册用户数</th>
+				<th>充值成功笔数</th>
+				<th>充值成功总额</th>
+				<th>提现成功笔数</th>
+				
+				<th>提现成功总额</th>
+				<th>充值提现差额</th>
+				<th>GOC转入笔数</th>
+				<th>GOC转入总数</th>
+				<th>GOC转出笔数</th>
+				
+				<th>GOC转出总数</th>
+				<th>转入转出差额</th>
+				<th>GOC买入用户数</th>
+				<th>GOC成功卖出用户数</th>
+				<th>GOC收盘价</th>
+				<th>BTC转入笔数</th>
+				
+				<th>BTC转入总数</th>
+				<th>BTC转出笔数</th>
+				<th>BTC转出总数</th>
+				<th>BTC买入用户数</th>
+				<th>BTC成功卖出用户数</th>
+				
+				<th>RMB大于100用户数</th>
+				<th>GOC大于1用户数</th>
+				<th>RMB总额</th>
+				<th>RMB可用余额</th>
+				<th>RMB冻结总额</th>
+				
+				<th>GOC总额</th>
+				<th>GOC可用余额</th>
+				<th>GOC冻结总额</th>
+			</tr>
+		</thead>
+		<tbody>
+		<?php  foreach($datas as $v1){?>
+		<tr>
+			
+			<td><?php  echo $v1["cdate"]?></td>
+			<td><?php  echo $v1["usernum"]?></td>
+			<td><?php  echo $v1["rmbinnum"]?></td>
+			<td><?php  echo $v1["rmbintotal"]?></td>
+			<td><?php  echo $v1["rmboutnum"]?></td>
+			
+			<td><?php  echo $v1["rmbouttotal"]?></td>
+			<td><?php  echo $v1["rmbintotal"]-$v1["rmbouttotal"]?></td>
+			<td><?php  echo $v1["ybcinnum"]?></td>
+			<td><?php  echo $v1["ybcintotal"]?></td>
+			<td><?php  echo $v1["ybcoutnum"]?></td>
+			
+			<td><?php  echo $v1["ybcouttotal"]?></td>
+			<td><?php  echo $v1["ybcintotal"]-$v1["ybcouttotal"]?></td>
+			<td><?php  echo $v1["ybcbuy"]?></td>
+			<td><?php  echo $v1["ybcsale"]?></td>
+			<td><?php  echo $v1["ybcprice"]?></td>
+			<td><?php  echo $v1["btcinnum"]?></td>
+			
+			<td><?php  echo $v1["btcintotal"]?></td>
+			<td><?php  echo $v1["btcoutnum"]?></td>
+			<td><?php  echo $v1["btcouttotal"]?></td>
+			<td><?php  echo $v1["btcbuy"]?></td>
+			<td><?php  echo $v1["btcsale"]?></td>
+			
+			<td><?php  echo $v1["userrmb"]?></td>
+			<td><?php  echo $v1["userybc"]?></td>
+			<td><?php  echo $v1["rmbover"]+$v1["rmblock"]?></td>
+			<td><?php  echo $v1["rmbover"]?></td>
+			<td><?php  echo $v1["rmblock"]?></td>
+			
+			<td><?php  echo $v1["ybcover"]+$v1["ybclock"]?></td>
+			<td><?php  echo $v1["ybcover"]?></td>
+			<td><?php  echo $v1["ybclock"]?></td>
+			
+		</tr>
+		<?php  }?>
+		</tbody>
+	</table>
+	<?php  echo $pageinfo?>
+	</div>
+</div>
+</body>
+</html>
